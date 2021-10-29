@@ -4,8 +4,8 @@
 baseurl:
 url: https://wwwangch.github.io/
 date_format: "ordinal"
-title: 码志
-subtitle: "公众号：闷骚的程序员"
+title: 阿辉
+subtitle: "。。。"
 description: "王晨辉的个人博客"
 keywords: 博客
 timezone: Asia/Shanghai
@@ -130,17 +130,17 @@ disqus:
     username: 
 # https://imsun.net/posts/gitment-introduction/
 gitment:
-    owner: mzlogin
-    repo: blog-comments
+    owner: wwwangch
+    repo: wwwangch.github.io
     oauth:
-        client_id: d2e1cbbd298958076462
-        client_secret: b42a4178e5fd4a7cf63189ef4b1453b05c375709
+        client_id: ce3c704806a6c87a5b71
+        client_secret: 1746595e6159dedd47e8f8ed7dbd73a084c01af0
 # https://github.com/gitalk/gitalk#install
 gitalk:
-    owner: mzlogin
-    repo: blog-comments
-    clientID: d2e1cbbd298958076462
-    clientSecret: b42a4178e5fd4a7cf63189ef4b1453b05c375709
+    owner: wwwangch
+    repo: wwwangch.github.io
+    clientID: ce3c704806a6c87a5b71
+    clientSecret: 1746595e6159dedd47e8f8ed7dbd73a084c01af0
 # 在使用其它评论组件时可点击显示 Disqus
 lazy_load_disqus : false
 
