@@ -2,15 +2,15 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url: https://mazhuang.org
+url: https://wwwangch.github.io/
 date_format: "ordinal"
 title: 码志
 subtitle: "公众号：闷骚的程序员"
-description: "马壮的个人博客，公众号：闷骚的程序员"
-keywords: 码志, Zhuang Ma, mzlogin, mazhuang, 闷骚的程序员
+description: "王晨辉的个人博客"
+keywords: 博客
 timezone: Asia/Shanghai
 encoding: "utf-8"
-repository: mzlogin/mzlogin.github.io
+repository: wwwangch/wwwangch.github.io
 # 对 css 和 js 资源的 cdn 加速配置
 cdn:
     jsdelivr:
