@@ -8,4 +8,4 @@ keywords: ClickHouse, Cluster
 
 # 利用ClickHouse-keeper搭建ClickHouse集群
 
-搭建集群前首先保证所有节点已经下载ClickHouse,具体安装教程可以查看 [ClickHouse在Centos安装](./2021-11-3-ClickHouse在Centos安装部署)
+搭建集群前首先保证所有节点已经下载ClickHouse,具体安装教程可以查看 [ClickHouse在Centos安装](./2021-11-3-ClickHouse在Centos安装部署) 这篇文章
