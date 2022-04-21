@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="springBoot配置多数据源以及动态切换">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springBoot配置多数据源以及动态切换">
+<meta property="og:url" content="http://example.com/2022/02/28/%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E5%88%87%E6%8D%A2%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="wch&#39;s blogs">
+<meta property="og:description" content="springBoot配置多数据源以及动态切换">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-11T15:02:34.166Z">
+<meta property="article:author" content="wch">
+<meta property="article:tag" content="多数据源">
+<meta property="article:tag" content="springBoot">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/02/28/%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E5%88%87%E6%8D%A2%E9%85%8D%E7%BD%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>springBoot配置多数据源以及动态切换 | wch's blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wch's blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E5%88%87%E6%8D%A2%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wch">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wch's blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          springBoot配置多数据源以及动态切换
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-28 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-28T00:00:00+08:00">2022-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-11 23:02:34" itemprop="dateModified" datetime="2022-04-11T23:02:34+08:00">2022-04-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springBoot/" itemprop="url" rel="index"><span itemprop="name">springBoot</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">springBoot配置多数据源以及动态切换</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在项目中需要用到多数据源的切换，主要用到AbstractRoutingDataSource类来实现这个功能。</p>
+<p>AbstractRoutingDataSource是Spring-jdbc中一个调用路由到各种目标 DataSource 之一的抽象类。</p>
+<p>通过determineCurrentLookupKey()方法来指定路由,切换数据源通过AOP加自定义注解实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">AbstractRoutingDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractDataSource</span> <span class="keyword">implements</span> <span class="title class_">InitializingBean</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放多数据源</span></span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="keyword">private</span> Map&lt;Object, Object&gt; targetDataSources;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//没有指定数据源时的默认数据源</span></span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="keyword">private</span> Object defaultTargetDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放多数据源  通过InitializingBean接口来将targetDataSources赋值给resolvedDataSources</span></span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="keyword">private</span> Map&lt;Object, DataSource&gt; resolvedDataSources;</span><br><span class="line">    </span><br><span class="line">    	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">this</span>.targetDataSources == <span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Property &#x27;targetDataSources&#x27; is required&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">this</span>.resolvedDataSources = CollectionUtils.newHashMap(<span class="built_in">this</span>.targetDataSources.size());</span><br><span class="line">		<span class="built_in">this</span>.targetDataSources.forEach((key, value) -&gt; &#123;</span><br><span class="line">			<span class="type">Object</span> <span class="variable">lookupKey</span> <span class="operator">=</span> resolveSpecifiedLookupKey(key);</span><br><span class="line">			<span class="type">DataSource</span> <span class="variable">dataSource</span> <span class="operator">=</span> resolveSpecifiedDataSource(value);</span><br><span class="line">			<span class="built_in">this</span>.resolvedDataSources.put(lookupKey, dataSource);</span><br><span class="line">		&#125;);</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">this</span>.defaultTargetDataSource != <span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.resolvedDefaultDataSource = resolveSpecifiedDataSource(<span class="built_in">this</span>.defaultTargetDataSource);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码如下：</p>
+<h2 id="DynamicDataSource"><a href="#DynamicDataSource" class="headerlink" title="DynamicDataSource"></a>DynamicDataSource</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//指定多数据源的路由方式</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title class_">AbstractRoutingDataSource</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//覆盖该方法，DbContextHolder存放当前线程的数据源名称键值</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Object <span class="title function_">determineCurrentLookupKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> DbContextHolder.getDbType();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="DbContextHolder"><a href="#DbContextHolder" class="headerlink" title="DbContextHolder"></a>DbContextHolder</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//存放当前线程数据源名称  即map中的key</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DbContextHolder</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;String&gt; CONTEXT_HOLDER = <span class="keyword">new</span> <span class="title class_">ThreadLocal</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置数据源</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dbType</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setDbType</span><span class="params">(String dbType)</span> &#123;</span><br><span class="line">        CONTEXT_HOLDER.set(dbType);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 取得当前数据源</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getDbType</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">type</span> <span class="operator">=</span> CONTEXT_HOLDER.get();</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(type)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 清除上下文数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">clearDbType</span><span class="params">()</span> &#123;</span><br><span class="line">        CONTEXT_HOLDER.remove();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<h2 id="DatasourceConfig"><a href="#DatasourceConfig" class="headerlink" title="DatasourceConfig"></a>DatasourceConfig</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//配置多Datasource</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DatasourceConfig</span> <span class="keyword">implements</span> <span class="title class_">EnvironmentAware</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">BASE_PATH</span> <span class="operator">=</span> <span class="string">&quot;spring.datasource.druid.&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Environment environment;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setEnvironment</span><span class="params">(Environment environment)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.environment = environment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean(&quot;dynamicDatasource&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> DynamicDataSource <span class="title function_">dynamicDataSource</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">dbNames</span> <span class="operator">=</span> environment.getProperty(<span class="string">&quot;spring.datasource.names&quot;</span>);</span><br><span class="line">        String[] split = dbNames.split(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">        Map&lt;Object, Object&gt; targetDataSources = <span class="keyword">new</span> <span class="title class_">LinkedHashMap</span>&lt;&gt;(<span class="number">2</span> &lt;&lt; <span class="number">2</span>);</span><br><span class="line">        <span class="type">DynamicDataSource</span> <span class="variable">dynamicDataSource</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DynamicDataSource</span>();</span><br><span class="line">        <span class="keyword">for</span> (String str : split) &#123;</span><br><span class="line">            <span class="type">DruidDataSource</span> <span class="variable">druidDataSource</span> <span class="operator">=</span> initDruidDataSource(str);</span><br><span class="line">            targetDataSources.put(str, druidDataSource);</span><br><span class="line">        &#125;</span><br><span class="line">        dynamicDataSource.setTargetDataSources(targetDataSources);</span><br><span class="line">        dynamicDataSource.setDefaultTargetDataSource(targetDataSources.entrySet().iterator().next().getValue());</span><br><span class="line">        <span class="keyword">return</span> dynamicDataSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> DruidDataSource <span class="title function_">initDruidDataSource</span><span class="params">(String dbName)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">driverClassName</span> <span class="operator">=</span> environment.getProperty(BASE_PATH + dbName + <span class="string">&quot;.driver-class-name&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> environment.getProperty(BASE_PATH + dbName + <span class="string">&quot;.url&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> environment.getProperty(BASE_PATH + dbName + <span class="string">&quot;.username&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">password</span> <span class="operator">=</span> environment.getProperty(BASE_PATH + dbName + <span class="string">&quot;.password&quot;</span>);</span><br><span class="line">        <span class="type">DruidDataSource</span> <span class="variable">druidDataSource</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DruidDataSource</span>();</span><br><span class="line">        druidDataSource.setDriverClassName(driverClassName);</span><br><span class="line">        druidDataSource.setUrl(url);</span><br><span class="line">        druidDataSource.setUsername(username);</span><br><span class="line">        druidDataSource.setPassword(password);</span><br><span class="line">        <span class="keyword">return</span> druidDataSource;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="DS"><a href="#DS" class="headerlink" title="DS"></a>DS</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//自定义注解,指定数据源</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> DS &#123;</span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="DSAspect"><a href="#DSAspect" class="headerlink" title="DSAspect"></a>DSAspect</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过AOP来为DbContextHolder指定数据源名称来动态切换数据源</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DSAspect</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around(value = &quot;@annotation(ds)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">around</span><span class="params">(<span class="keyword">final</span> ProceedingJoinPoint joinPoint, DS ds)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> ds.value();</span><br><span class="line">            DbContextHolder.setDbType(value);</span><br><span class="line">            <span class="type">Object</span> <span class="variable">proceed</span> <span class="operator">=</span> joinPoint.proceed();</span><br><span class="line">            <span class="keyword">return</span> proceed;</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Throwable throwable) &#123;</span><br><span class="line">           <span class="keyword">throw</span> throwable;</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            DbContextHolder.clearDbType();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" rel="tag"># 多数据源</a>
+              <a href="/tags/springBoot/" rel="tag"># springBoot</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/27/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="prev" title="单例模式实现">
+      <i class="fa fa-chevron-left"></i> 单例模式实现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/12/nginx%E5%AE%89%E8%A3%85/" rel="next" title="nginx安装">
+      nginx安装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DynamicDataSource"><span class="nav-number">1.</span> <span class="nav-text">DynamicDataSource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DbContextHolder"><span class="nav-number">2.</span> <span class="nav-text">DbContextHolder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DatasourceConfig"><span class="nav-number">3.</span> <span class="nav-text">DatasourceConfig</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DS"><span class="nav-number">4.</span> <span class="nav-text">DS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DSAspect"><span class="nav-number">5.</span> <span class="nav-text">DSAspect</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wch</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wch</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ce3c704806a6c87a5b71',
+      clientSecret: '1746595e6159dedd47e8f8ed7dbd73a084c01af0',
+      repo        : 'wwwangch.github.io',
+      owner       : 'wwwangch',
+      admin       : ['wwwangch'],
+      id          : 'c3a3862fc398f8232107adf5138ef675',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

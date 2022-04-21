@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="mybatis 官方文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mybatis 官方文档学习1">
+<meta property="og:url" content="http://example.com/2021/10/30/mybatis_%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A01/index.html">
+<meta property="og:site_name" content="wch&#39;s blogs">
+<meta property="og:description" content="mybatis 官方文档">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/ewFNX3kDuvyzZd1.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/5K2xplsjeVUAfq8.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/dqFaQ38tnwuZUEs.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/qWl3RAzGyYs5S7r.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/WG6tbE3HeiZ8KgC.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/4d5Nbp3hTRAVKgw.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/qudpwMiKRaLeUf7.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/6jZSwYrApzc3gdI.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/13/E9npZ4xfhLvaNuI.png">
+<meta property="article:published_time" content="2021-10-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-11T15:08:13.280Z">
+<meta property="article:author" content="wch">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/10/13/ewFNX3kDuvyzZd1.png">
+
+<link rel="canonical" href="http://example.com/2021/10/30/mybatis_%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A01/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>mybatis 官方文档学习1 | wch's blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wch's blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/30/mybatis_%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wch">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wch's blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mybatis 官方文档学习1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-10-30 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-30T00:00:00+08:00">2021-10-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-11 23:08:13" itemprop="dateModified" datetime="2022-04-11T23:08:13+08:00">2022-04-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mybatis/" itemprop="url" rel="index"><span itemprop="name">mybatis</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">mybatis 官方文档</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="MyBatis获取数据库源"><a href="#MyBatis获取数据库源" class="headerlink" title="MyBatis获取数据库源"></a>MyBatis获取数据库源</h2><p><img src="https://i.loli.net/2020/10/13/ewFNX3kDuvyzZd1.png" alt="org. apache. ibatis. session. SqlSessionFacton&#39;Builder. build (java. io. InputStream)  ) org. apache. ibatis. builder. xml. XMLConfigBuilder. parse  ) org. apache. ibatis. bui Ider. xml. XMLConfigBui Ider. parseConfiguration  ) org. apache. ibatis. builder. xml. ULConfigBuilder. environmentsElement  ) org. apache. ibatis. bui Ider. xml. XMLConfigBui Ider. dataSourceEl ement  ) org. apache. ibatis. session. Configuration. "></p>
+<p><img src="https://i.loli.net/2020/10/13/5K2xplsjeVUAfq8.png" alt="SqISessionF actoryBuiIder  build  XMLConfigBuiIder  environmentsEIement  TypeA I i as Reg istry  DataSou actory  OataSource  Environment  Configuration  dataSourceEIement  dataSourceEIement  —resolveCIass  —getDataSource  —dataSource  —setEnvironment "></p>
+<h2 id="XML文件中-properties-加载顺序"><a href="#XML文件中-properties-加载顺序" class="headerlink" title="XML文件中(properties)加载顺序"></a>XML文件中(properties)加载顺序</h2><ul>
+<li>如果一个属性在不只一个地方进行了配置，那么，MyBatis 将按照下面的顺序来加载： </li>
+<li>​     • 首先读取在 properties 元素体内指定的属性。</li>
+<li>​     • 然后根据 properties 元素中的 resource 属性读取类路径下属性文件，或根据 url 属 性指定的路径读取属性文件，并覆盖之前读   取过的同名属性。</li>
+<li>​    • 最后读取作为方法参数传递的属性，并覆盖之前读取过的同名属性。 </li>
+<li>因此，通过方法参数传递的属性具有最高优先级，resource&#x2F;url 属性中指定的配置文件 次之，最低优先级的则是 properties 元素中指定的属性。</li>
+</ul>
+<h2 id="类型处理器（typeHandlers）"><a href="#类型处理器（typeHandlers）" class="headerlink" title="类型处理器（typeHandlers）"></a>类型处理器（typeHandlers）</h2><ul>
+<li>MyBatis 在设置预处理语句（PreparedStatement）中的参数或从结果集中取出一个值 时， 都会用类型处理器将获取到的值以合适的方式转换成 Java 类型。</li>
+</ul>
+<p><img src="https://i.loli.net/2020/10/13/dqFaQ38tnwuZUEs.png" alt="r9SKTVI7yQb3ZL2.png"></p>
+<p><img src="https://i.loli.net/2020/10/13/qWl3RAzGyYs5S7r.png" alt="image-20201013111238067.png"></p>
+<p><img src="https://i.loli.net/2020/10/13/WG6tbE3HeiZ8KgC.png" alt="image-20201013111300649.png"></p>
+<h3 id="创建类型处理器"><a href="#创建类型处理器" class="headerlink" title="创建类型处理器"></a>创建类型处理器</h3><ul>
+<li><p>重写已有的类型处理器或创建你自己的类型处理器来处理不支持的或非标准的类型</p>
+</li>
+<li><ul>
+<li>实现 org.apache.ibatis.type.TypeHandler 接口</li>
+<li>继承一个类 org.apache.ibatis.type.BaseTypeHandler</li>
+</ul>
+</li>
+<li><p>覆盖已有的处理 Java String 类型的属性以及 VARCHAR 类型的参数和结果的类型处理器</p>
+</li>
+<li><p>&#96;&#96;&#96;java<br>@MappedJdbcTypes(value&#x3D;JdbcType.VARCHAR)<br>public class MyTypeHandler extends BaseTypeHandler<String> {<br>@Override<br>public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {<br>    ps.setString(i,parameter);<br>}<br><br>@Override<br>public String getNullableResult(ResultSet rs, String columnName) throws SQLException {<br>    String str&#x3D;rs.getString(columnName);<br>    return str+”test”;<br>}<br><br>@Override<br>public String getNullableResult(ResultSet rs, int columnIndex) throws SQLException {<br>    String str&#x3D;rs.getString(columnIndex);<br>    return str+”test”;<br>}<br><br>@Override<br>public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {<br>    String str&#x3D;cs.getString(columnIndex);<br>    return str+”test”;<br>}<br>}<br>&#x2F;&#x2F;XML配置<br><typeHandlers><br>    <typeHandler handler="com.testmybatis.typehandler.MyTypeHandler" ></typeHandler><br></typeHandlers></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 指定JAVAType</span><br><span class="line"></span><br><span class="line">- 在类型处理器的配置元素（typeHandler 元素）上增加一个 javaType 属性（比如： javaType=&quot;String&quot;）；</span><br><span class="line">- 在类型处理器的类上增加一个 @MappedTypes 注解指定与其关联的 Java 类型列表。 如果在 javaType 属性中也同时指定，则注解上的配置将被忽略。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 指定JDBCType</span><br><span class="line"></span><br><span class="line">-  在类型处理器的配置元素上增加一个 jdbcType 属性（比如：jdbcType=&quot;VARCHAR&quot;）</span><br><span class="line">-  在类型处理器的类上增加一个 @MappedJdbcTypes 注解指定与其关联的 JDBC 类型列 表。 如果在 jdbcType 属性中也同时指定，则注解上的配置将被忽略。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### ResultMap中的类型处理器</span><br><span class="line"></span><br><span class="line">- 当在 ResultMap 中决定使用哪种类型处理器时，此时 Java 类型是已知的（从结果类型中获得），但是 JDBC 类型是未知的。 因此 Mybatis 使用 javaType=[Java 类 型], jdbcType=null 的组合来选择一个类型处理器。</span><br><span class="line"></span><br><span class="line">- 除非显式地设置，否则类型处理器在 ResultMap 中将不会生效。 如果希望能在 ResultMap 中隐 式地使用类型处理器，那么设置 @MappedJdbcTypes 注解</span><br><span class="line"></span><br><span class="line">- ```java</span><br><span class="line">  @MappedJdbcTypes(value=JdbcType.VARCHAR,includeNullJdbcType=true)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="泛型类型处理器"><a href="#泛型类型处理器" class="headerlink" title="泛型类型处理器"></a>泛型类型处理器</h3><ul>
+<li><p>创建能够处理多个类的泛型类型处理器。为了使用泛型类型处理器， 需要增加一 个接受该类的 class 作为参数的构造器，这样 MyBatis 会在构造一个类型处理器实例 的时候传入一个具体的类。</p>
+</li>
+<li><p>&#96;&#96;&#96;java<br>public class MyTypeHandler2<E extends Object> extends BaseTypeHandler <E>{<br>private  Class<E> type;<br>public MyTypeHandler2(Class<E> type){<br>    if (type &#x3D;&#x3D; null)<br>        throw new IllegalArgumentException(“Type argument cannot be null”);<br>    this.type&#x3D;type;<br>}<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## ObjectFactory对象工厂</span><br><span class="line"></span><br><span class="line">- 每次 MyBatis 创建结果对象的新实例时，它都会使用一个对象工厂（ObjectFactory） 实例来完成实例化工作。</span><br><span class="line"></span><br><span class="line">- 默认的对象工厂需要做的仅仅是实例化目标类，要么通过默认 无参构造方法，要么通过存在的参数映射来调用带有参数的构造方法</span><br><span class="line"></span><br><span class="line">- 可以通过创建自己的对象工厂来覆盖对象工厂的默认行为。</span><br><span class="line"></span><br><span class="line">- setProperties 方法可以被用来 配置 ObjectFactory，在初始化ObjectFactory 实例后， objectFactory 元素体中定义的属性会被传递给 setProperties 方法。</span><br><span class="line"></span><br><span class="line">- ```java</span><br><span class="line">  public class MyObjectFactory extends DefaultObjectFactory &#123;</span><br><span class="line">      @Override</span><br><span class="line">      public void setProperties(Properties properties) &#123;</span><br><span class="line">          Set&lt;Object&gt; objects = properties.keySet();</span><br><span class="line">          for(Object o:objects)&#123;</span><br><span class="line">              System.out.println(properties.get(o));</span><br><span class="line">          &#125;</span><br><span class="line">          super.setProperties(properties);</span><br><span class="line">      &#125;</span><br><span class="line">  </span><br><span class="line">      @Override</span><br><span class="line">      public &lt;T&gt; T create(Class&lt;T&gt; type) &#123;</span><br><span class="line">          return super.create(type);</span><br><span class="line">      &#125;</span><br><span class="line">  </span><br><span class="line">      @Override</span><br><span class="line">      public &lt;T&gt; T create(Class&lt;T&gt; type, List&lt;Class&lt;?&gt;&gt; constructorArgTypes, List&lt;Object&gt; constructorArgs) &#123;</span><br><span class="line">          return super.create(type,constructorArgTypes,constructorArgs);</span><br><span class="line">      &#125;</span><br><span class="line">  </span><br><span class="line">      @Override</span><br><span class="line">      public &lt;T&gt; boolean isCollection(Class&lt;T&gt; type) &#123;</span><br><span class="line">          return  Collection.class.isAssignableFrom(type);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  //XML配置</span><br><span class="line">      &lt;objectFactory type=&quot;com.testmybatis.objectfactory.MyObjectFactory&quot;&gt;</span><br><span class="line">          &lt;property name=&quot;test&quot; value=&quot;success&quot;/&gt;</span><br><span class="line">      &lt;/objectFactory&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="插件-plugins-x2F-x2F-待深入"><a href="#插件-plugins-x2F-x2F-待深入" class="headerlink" title="插件(plugins)&#x2F;&#x2F;         待深入"></a>插件(plugins)&#x2F;&#x2F;         待深入</h2><ul>
+<li>MyBatis 允许在映射语句执行过程中的某一点进行拦截调用。默认情况下，MyBatis 允许使用插件来拦截的方法调用包括：</li>
+<li><ul>
+<li>Executor (update, query, flushStatements, commit, rollback, getTransaction, close, isClosed) &#x2F;&#x2F;执行前</li>
+<li>ParameterHandler (getParameterObject, setParameters) &#x2F;&#x2F;参数处理</li>
+<li>ResultSetHandler (handleResultSets, handleOutputParameters) &#x2F;&#x2F;结果集处理</li>
+<li>StatementHandler (prepare, parameterize, batch, update, query)&#x2F;&#x2F;SQL语句</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li>使用插件是非常简单的，只需实现 Interceptor 接口， 并指定想要拦截的方法签名</li>
+</ul>
+<h2 id="环境配置（environments）"><a href="#环境配置（environments）" class="headerlink" title="环境配置（environments）"></a>环境配置（environments）</h2><h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><ul>
+<li>MyBatis中可以配置多个环境，但每个 SqlSessionFactory 实例只能选择一种 环境。</li>
+<li>如果连接多个数据库，就需要创建多个 SqlSessionFactory 实例</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">    <span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">&quot;mysqldb&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- environment 一个环境 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">&quot;mysqldb&quot;</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">                transactionManager 事务管理</span></span><br><span class="line"><span class="comment">                    type=&quot;JDBC&quot; 使用jdbc方式来控制事务</span></span><br><span class="line"><span class="comment">            --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">&quot;JDBC&quot;</span>/&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">                dataSource 数据源配置</span></span><br><span class="line"><span class="comment">                    type=&quot;POOLED&quot; : 使用池化思想</span></span><br><span class="line"><span class="comment">            --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;com.testmybatis.DataSource.DruidDataSourceFactory&quot;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/emp?useUnicode=true&amp;amp;characterEncoding=utf-8&quot;/&gt;--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                &lt;property name=&quot;password&quot; value=&quot;1112&quot;/&gt;--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;driver&#125;&quot;</span>/&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;url&#125;&quot;</span>/&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;username&#125;&quot;</span>/&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;password&#125;&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>关注点</p>
+<ul>
+<li><p>默认使用的环境 ID（比如：default&#x3D;”development”）。</p>
+</li>
+<li><p>每个 environment 元素定义的环境 ID（比如：id&#x3D;”development”）。 </p>
+</li>
+<li><p>事务管理器的配置（比如：type&#x3D;”JDBC”）。</p>
+</li>
+<li><p>数据源的配置（比如：type&#x3D;”POOLED”）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="事务管理器"><a href="#事务管理器" class="headerlink" title="事务管理器"></a>事务管理器</h3><ul>
+<li><p>MyBatis中有两种事务管理器</p>
+<ul>
+<li>JDBC – 这个配置直接使用了 JDBC 的提交和回滚设施，它依赖从数据源获得的连接 来管理事务作用域。</li>
+<li>MANAGED – 这个配置几乎没做什么。它从不提交或回滚一个连接，而是让容器来管 理事务的整个生命周期（比如 JEE 应用服务器的上下文）。</li>
+</ul>
+</li>
+<li><p>自定义 MyBatis 对事务的处理</p>
+<ul>
+<li><p>首先实现 TransactionFactory 接口，用实现类的全限定名或类型别名代替JDBC或MANAGED。</p>
+<ul>
+<li>&#96;&#96;&#96;java<br>public interface TransactionFactory {<br> default void setProperties(Properties props) { &#x2F;&#x2F; 从 3.5.2 开始，该方法为默<br>认方法<br> &#x2F;&#x2F; 空实现<br> }<br> Transaction newTransaction(Connection conn);<br> Transaction newTransaction(DataSource dataSource, TransactionIsolationLev<br>el le<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 在事务管理器实例化后，所有在 XML 中配置的属性将会被传递给 setProperties() 方 法。此时实现还需要创建一个 Transaction 接口的实现类。</span><br><span class="line"></span><br><span class="line">  - ```java</span><br><span class="line">    public interface Transaction &#123;</span><br><span class="line">     Connection getConnection() throws SQLException;</span><br><span class="line">     void commit() throws SQLException;</span><br><span class="line">     void rollback() throws SQLException;</span><br><span class="line">     void close() throws SQLException;</span><br><span class="line">      Integer getTimeout() throws SQLException;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据源-datasource"><a href="#数据源-datasource" class="headerlink" title="数据源(datasource)"></a>数据源(datasource)</h3><ul>
+<li>dataSource 元素使用标准的 JDBC 数据源接口来配置 JDBC 连接对象的资源,包含三种(type&#x3D;”[UNPOOLED|POOLED|JNDI]”)</li>
+</ul>
+<h4 id="UNPOOLED"><a href="#UNPOOLED" class="headerlink" title="UNPOOLED:"></a>UNPOOLED:</h4><ul>
+<li><p>这个数据源的实现会每次请求时打开和关闭连接,适用于对数据库连接可用性要求不高的简单应用程序。。UNPOOLED 类型的数据源仅仅需要配置以下 属性：</p>
+<ul>
+<li><p>driver – 这是 JDBC 驱动的 Java 类全限定名</p>
+</li>
+<li><p>url – 这是数据库的 JDBC URL 地址。</p>
+</li>
+<li><p>username – 登录数据库的用户名。</p>
+</li>
+<li><p>password – 登录数据库的密码。</p>
+</li>
+<li><p>defaultTransactionIsolationLevel– 默认的连接事务隔离级别。</p>
+</li>
+<li><p>defaultNetworkTimeout – 等待数据库操作完成的默认网络超时时间。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="POOLED"><a href="#POOLED" class="headerlink" title="POOLED:"></a>POOLED:</h4><ul>
+<li>POOLED: 这种数据源的实现利用“池”的概念将 JDBC 连接对象组织起来，避免了创 建新的连接实例时所必需的初始化和认证时间。 这种处理方式很流行，能使并发 Web 应用快速响应请求。</li>
+</ul>
+<h4 id="JNDI"><a href="#JNDI" class="headerlink" title="JNDI"></a>JNDI</h4><ul>
+<li>为了能在如 EJB 或应用服务器这类容器中使用，容器可以集 中或在外部配置数据源，然后放置一个 JNDI 上下文的数据源引用。这种数据源配置只 需要两个属性：<ul>
+<li>initial_context – 这个属性用来在 InitialContext 中寻找上下文</li>
+<li>data_source – 这是引用数据源实例位置的上下文路径。</li>
+</ul>
+</li>
+</ul>
+<h2 id="数据库厂商标识（databaseIdProvider）"><a href="#数据库厂商标识（databaseIdProvider）" class="headerlink" title="数据库厂商标识（databaseIdProvider）"></a>数据库厂商标识（databaseIdProvider）</h2><ul>
+<li>databaseIdProvider元素主要是为了支持不同厂商的数据库。基于映射语 句中的 databaseId 属性。 MyBatis 会加载带有匹配当前数据库 databaseId 属性和所 有不带 databaseId 属性的语句。 如果同时找到带有 databaseId 和不 带 databaseId 的相同语句，则后者会被舍弃。</li>
+</ul>
+<p>基本使用</p>
+<ul>
+<li>配置</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    <span class="tag">&lt;<span class="name">databaseIdProvider</span> <span class="attr">type</span>=<span class="string">&quot;DB_VENDOR&quot;</span>&gt;</span>//type为VendorDatabaseIdProvider别名</span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;SQL Server&quot;</span> <span class="attr">value</span>=<span class="string">&quot;sqlserver&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;DB2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;db2&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;Oracle&quot;</span> <span class="attr">value</span>=<span class="string">&quot;oracle&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;MySQL&quot;</span> <span class="attr">value</span>=<span class="string">&quot;mysql&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">databaseIdProvider</span>&gt;</span></span><br><span class="line">//VendorDatabaseIdProvider为一个DatabaseIdProvider实现类</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当SQL语句的databaseId与当前数据库不匹配时</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=<span class="string">&quot;selectAll&quot;</span> resultType=<span class="string">&quot;Emp&quot;</span> databaseId=<span class="string">&quot;d2&quot;</span>&gt;</span><br><span class="line">    select id,name,salary,age</span><br><span class="line">    from emp</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>会产生下列错误：</li>
+</ul>
+<p><img src="https://i.loli.net/2020/10/13/4d5Nbp3hTRAVKgw.png" alt="image-20201013155019696"></p>
+<ul>
+<li>SQL语句的databaseId配置正确后,语句可以正常执行</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=<span class="string">&quot;selectAll&quot;</span> resultType=<span class="string">&quot;Emp&quot;</span> databaseId=<span class="string">&quot;mysql&quot;</span>&gt;</span><br><span class="line">    select id,name,salary,age</span><br><span class="line">    from emp</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="自定义-DatabaseIdProvide"><a href="#自定义-DatabaseIdProvide" class="headerlink" title="自定义 DatabaseIdProvide"></a>自定义 DatabaseIdProvide</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyDatabaseIdProvider</span> <span class="keyword">implements</span> <span class="title class_">DatabaseIdProvider</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DATABASE_MYSQL</span> <span class="operator">=</span> <span class="string">&quot;MySQL&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DATABASE_POSTGRESQL</span> <span class="operator">=</span> <span class="string">&quot;PostgreSQL&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DATABASE_ORACLE</span> <span class="operator">=</span> <span class="string">&quot;Oracle&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DATABASE_DB2</span> <span class="operator">=</span> <span class="string">&quot;DB2&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setProperties</span><span class="params">(Properties p)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;设置properties&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getDatabaseId</span><span class="params">(DataSource dataSource)</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> dataSource.getConnection();</span><br><span class="line">        <span class="type">String</span> <span class="variable">dbName</span> <span class="operator">=</span> conn.getMetaData().getDatabaseProductName();</span><br><span class="line">        System.out.println(dbName);</span><br><span class="line">        <span class="type">String</span> <span class="variable">dbAlias</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">switch</span> (dbName) &#123;</span><br><span class="line">            <span class="keyword">case</span> DATABASE_MYSQL:</span><br><span class="line">                dbAlias = <span class="string">&quot;mysql&quot;</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> DATABASE_POSTGRESQL:</span><br><span class="line">                dbAlias = <span class="string">&quot;pg&quot;</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> DATABASE_ORACLE:</span><br><span class="line">                dbAlias = <span class="string">&quot;oracle&quot;</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> DATABASE_DB2:</span><br><span class="line">                dbAlias = <span class="string">&quot;db2&quot;</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(dbAlias);</span><br><span class="line">        <span class="keyword">return</span> dbAlias;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="映射器（mappers）"><a href="#映射器（mappers）" class="headerlink" title="映射器（mappers）"></a>映射器（mappers）</h2><ul>
+<li><p>mapper映射配置文件的查找顺序： 优先级为 package-&gt;resource-&gt;url-&gt;class    且resource&#x2F;url&#x2F;mapperClass三个值只能有一个值是有值的，</p>
+</li>
+<li><p>&#96;&#96;&#96;java<br>&#x2F;&#x2F;XMLConfigBuilder中的方法<br>private void mapperElement(XNode parent) throws Exception {<br>  if (parent !&#x3D; null) {<br>  &#x2F;&#x2F;遍历解析mappers下的节点<br>  for (XNode child : parent.getChildren()) {<br>  &#x2F;&#x2F;首先解析package节点<br>  if (“package”.equals(child.getName())) {<br>    &#x2F;&#x2F;获取包名<br>    String mapperPackage &#x3D; child.getStringAttribute(“name”);<br>    configuration.addMappers(mapperPackage);<br>  } else {<br>    &#x2F;&#x2F;如果不存在package节点，那么扫描mapper节点<br>    &#x2F;&#x2F;resource&#x2F;url&#x2F;mapperClass三个值只能有一个值是有值的<br>    String resource &#x3D; child.getStringAttribute(“resource”);<br>    String url &#x3D; child.getStringAttribute(“url”);<br>    String mapperClass &#x3D; child.getStringAttribute(“class”);<br>    &#x2F;&#x2F;优先级 resource&gt;url&gt;mapperClass<br>    if (resource !&#x3D; null &amp;&amp; url &#x3D;&#x3D; null &amp;&amp; mapperClass &#x3D;&#x3D; null) {<br>        &#x2F;&#x2F;如果mapper节点中的resource不为空<br>      ErrorContext.instance().resource(resource);<br>       &#x2F;&#x2F;那么直接加载resource指向的XXXMapper.xml文件为字节流<br>      InputStream inputStream &#x3D; Resources.getResourceAsStream(resource);<br>      &#x2F;&#x2F;通过XMLMapperBuilder解析XXXMapper.xml，可以看到这里构建的XMLMapperBuilde还传入了configuration,所以之后肯定是会将mapper封装到configuration对象中去的。<br>      XMLMapperBuilder mapperParser &#x3D; new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());<br>      &#x2F;&#x2F;解析<br>      mapperParser.parse();<br>    } else if (resource &#x3D;&#x3D; null &amp;&amp; url !&#x3D; null &amp;&amp; mapperClass &#x3D;&#x3D; null) {<br>      &#x2F;&#x2F;如果url!&#x3D;null，那么通过url解析<br>      ErrorContext.instance().resource(url);<br>      InputStream inputStream &#x3D; Resources.getUrlAsStream(url);<br>      XMLMapperBuilder mapperParser &#x3D; new XMLMapperBuilder(inputStream, configuration, url, configuration.getSqlFragments());<br>      mapperParser.parse();<br>    } else if (resource &#x3D;&#x3D; null &amp;&amp; url &#x3D;&#x3D; null &amp;&amp; mapperClass !&#x3D; null) {<br>        &#x2F;&#x2F;如果mapperClass!&#x3D;null，那么通过加载类构造Configuration<br>      Class&lt;?&gt; mapperInterface &#x3D; Resources.classForName(mapperClass);<br>      configuration.addMapper(mapperInterface);<br>  } else {<br>        &#x2F;&#x2F;如果都不满足  则直接抛异常  如果配置了两个或三个  直接抛异常<br>      throw new BuilderException(“A mapper element may only specify a url, resource or class, but not more than one.”);<br>    }<br>  }<br>}<br>  }<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## XML映射器</span><br><span class="line"></span><br><span class="line">- SQL映射文件中的顶级元素：</span><br><span class="line">  - cache – 该命名空间的缓存配置</span><br><span class="line">  - cache-ref – 引用其它命名空间的缓存配置。</span><br><span class="line">  - resultMap – 描述如何从数据库结果集中加载对象，是最复杂也是最强大的元素。</span><br><span class="line">  - •sql – 可被其它语句引用的可重用语句块。</span><br><span class="line">  - 以及基本的增删改查</span><br><span class="line"></span><br><span class="line">###  select语句配置</span><br><span class="line"></span><br><span class="line">```xml</span><br><span class="line">&lt;select</span><br><span class="line"> id=&quot;selectPerson&quot;</span><br><span class="line"> parameterType=&quot;int&quot;</span><br><span class="line"> parameterMap=&quot;deprecated&quot;</span><br><span class="line"> resultType=&quot;hashmap&quot;</span><br><span class="line"> resultMap=&quot;personResultMap&quot;</span><br><span class="line"> flushCache=&quot;false&quot;</span><br><span class="line"> useCache=&quot;true&quot;</span><br><span class="line"> timeout=&quot;10&quot;</span><br><span class="line"> fetchSize=&quot;256&quot;</span><br><span class="line"> statementType=&quot;PREPARED&quot;</span><br><span class="line"> resultSetType=&quot;FORWARD_ONLY&quot;&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="https://i.loli.net/2020/10/13/qudpwMiKRaLeUf7.png" alt="image-20201013164359377"></p>
+<p><img src="https://i.loli.net/2020/10/13/6jZSwYrApzc3gdI.png" alt="image-20201013164439647"></p>
+<h3 id="insert-update-和-delete语句配置"><a href="#insert-update-和-delete语句配置" class="headerlink" title="insert, update 和 delete语句配置"></a>insert, update 和 delete语句配置</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">insert</span></span></span><br><span class="line"><span class="tag"> <span class="attr">id</span>=<span class="string">&quot;insertAuthor&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">parameterType</span>=<span class="string">&quot;domain.blog.Author&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">flushCache</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">statementType</span>=<span class="string">&quot;PREPARED&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">keyProperty</span>=<span class="string">&quot;&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">keyColumn</span>=<span class="string">&quot;&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">useGeneratedKeys</span>=<span class="string">&quot;&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">timeout</span>=<span class="string">&quot;20&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">update</span></span></span><br><span class="line"><span class="tag"> <span class="attr">id</span>=<span class="string">&quot;updateAuthor&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">parameterType</span>=<span class="string">&quot;domain.blog.Author&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">flushCache</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">statementType</span>=<span class="string">&quot;PREPARED&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">timeout</span>=<span class="string">&quot;20&quot;</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">delete</span></span></span><br><span class="line"><span class="tag"> <span class="attr">id</span>=<span class="string">&quot;deleteAuthor&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">parameterType</span>=<span class="string">&quot;domain.blog.Author&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">flushCache</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">statementType</span>=<span class="string">&quot;PREPARED&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">timeout</span>=<span class="string">&quot;20&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/10/13/E9npZ4xfhLvaNuI.png" alt="image-20201013165037770"></p>
+<h3 id="主键回填"><a href="#主键回填" class="headerlink" title="主键回填"></a>主键回填</h3><h4 id="通过设置useGeneratedKeys"><a href="#通过设置useGeneratedKeys" class="headerlink" title="通过设置useGeneratedKeys"></a>通过设置useGeneratedKeys</h4><ul>
+<li>通过设置useGeneratedKeys&#x3D;”true”并把keyProperty 设置为目标属性</li>
+<li>当目标属性不是第一列时，需设置KeyColumn</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;insertAuthor&quot;</span> <span class="attr">useGeneratedKeys</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag"> <span class="attr">keyProperty</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span><br><span class="line"> insert into Author (username,password,email,bio)</span><br><span class="line"> values (#&#123;username&#125;,#&#123;password&#125;,#&#123;email&#125;,#&#123;bio&#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>批量插入时也可以传入一个 Author 数组或集合，并返回自动 生成的主键。</p>
+</li>
+<li><p>&#96;&#96;&#96;xml<br><insert id="insertAuthor" useGeneratedKeys="true"
+ keyProperty="id"><br> insert into Author (username, password, email, bio) values</p>
+ <foreach item="item" collection="list" separator=",">
+ (#{item.username}, #{item.password}, #{item.email}, #{item.bio})
+ </foreach>
+</insert>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###  通过selectKey标签</span><br><span class="line"></span><br><span class="line">```xml</span><br><span class="line">    &lt;insert id=&quot;insert&quot; parameterType=&quot;Student&quot;&gt;</span><br><span class="line">        &lt;selectKey order=&quot;BEFORE&quot; keyProperty=&quot;id&quot; resultType=&quot;String&quot;&gt;</span><br><span class="line">            select replace(UUID(),&#x27;-&#x27;,&#x27;&#x27;)</span><br><span class="line">        &lt;/selectKey&gt;</span><br><span class="line">        insert into student values(#&#123;id&#125;,#&#123;name&#125;,#&#123;password&#125;)</span><br><span class="line">    &lt;/insert&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Mapper-xml中语句的参数"><a href="#Mapper-xml中语句的参数" class="headerlink" title="Mapper.xml中语句的参数"></a>Mapper.xml中语句的参数</h2><ul>
+<li><p>java基本类型和String,可以省略掉SQL语句标签中的parameterType</p>
+</li>
+<li><p>传入复杂对象时，应指定参数类型</p>
+</li>
+<li><p>对于复杂参数，可以自定义类型处理方式，指定一个特殊的类型处理器类（或别名）</p>
+<ul>
+<li>&#96;&#96;&#96;xml<br>#{age,javaType&#x3D;int,jdbcType&#x3D;NUMERIC,typeHandler&#x3D;MyTypeHandler}<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 对于数值类型，可以设置 numericScale 指定小数点后保留的位数</span><br><span class="line"></span><br><span class="line">  - ```xml</span><br><span class="line">    #&#123;height,javaType=double,jdbcType=NUMERIC,numericScale=2&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="结果映射-resultmap"><a href="#结果映射-resultmap" class="headerlink" title="结果映射(resultmap)"></a>结果映射(resultmap)</h2><ul>
+<li><strong>id &amp; result</strong>:id 和 result 元素都将一个列的值映射到一个简单数据类型 （String, int, double, Date 等）的属性或字段.唯一不同是，id 元素对应的属性会被标记为对象的标识符，在比较对象实 例时使用。 这样可以提高整体的性能，尤其是进行缓存和嵌套结果映射（也就是连接映射）的时候。</li>
+<li>constructor - 用于在实例化类时，注入结果到构造方法中<ul>
+<li>idArg - ID 参数;标记出作为 ID 的结果可以帮助提高整体性能</li>
+<li>arg - 将被注入到构造方法的一个普通结果</li>
+</ul>
+</li>
+<li>id – 一个 ID 结果;标记出作为 ID 的结果可以帮助提高整体性能</li>
+<li>result – 注入到字段或 JavaBean 属性的普通结果</li>
+<li>association – 一个复杂类型的关联;许多结果将包装成这种类型 嵌套结果映射 – 关联可以指定为一个 resultMap 元素，或者引用一个</li>
+<li>collection – 一个复杂类型的集合嵌套结果映射 – 集合可以指定为一个 resultMap 元素，或者引用一个</li>
+<li>discriminator – 使用结果值来决定使用哪个 resultMap</li>
+<li>case – 基于某些值的结果映射.嵌套结果映射 – 一个 case 也是一个映射它本身的结果,因此可以包含很多相 同的元素，或者它可以参照一个外部的 resultMap</li>
+</ul>
+<h3 id="关联"><a href="#关联" class="headerlink" title="关联"></a>关联</h3><ul>
+<li><p>MyBatis 有两种不同的方式 加载关联：</p>
+<ul>
+<li>嵌套 Select 查询：通过执行另外一个 SQL 映射语句来加载期望的复杂类型。(使用延迟加载可以避免”N+1查询问题”)</li>
+<li>嵌套结果映射：使用嵌套的结果映射来处理连接结果的重复子集。</li>
+</ul>
+</li>
+<li><p>当result中有重复使用的列时，可以用columnPrefix()为一个列起别名</p>
+<ul>
+<li>&#96;&#96;&#96;xml<resultMap id="blogResult" type="Blog">
+ <id property="id" column="blog_id" />
+ <result property="title" column="blog_title"/>
+ <association property="author"
+ resultMap="authorResult" />
+ <association property="coAuthor"
+ resultMap="authorResult"
+ columnPrefix="co_" />
+</resultMap>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    对应的列为：</span><br><span class="line"></span><br><span class="line">    ![image-20201013191722600](https://i.loli.net/2020/10/13/KurawigWVzxQY8v.png)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">- N+1查询问题新的解决方法：</span><br><span class="line"></span><br><span class="line">  - 某些数据库允许存储过程返回多个结果集，或一次性执行多个语句，每个语句返回一个 结果集。 我们可以利用这个特性，在不使用连接的情况下，只访问数据库一次就能获得 相关数据。</span><br><span class="line"></span><br><span class="line">**例：**存储过程中执行下面的查询并返回两个结果集：</span><br><span class="line"></span><br><span class="line">```xml</span><br><span class="line">SELECT * FROM BLOG WHERE ID = #&#123;id&#125;</span><br><span class="line">SELECT * FROM AUTHOR WHERE ID = #&#123;id&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>在映射语句中，必须通过 resultSets 属性为每个结果集指定一个名字，多个名字使用 逗号隔开</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectBlog&quot;</span> <span class="attr">resultSets</span>=<span class="string">&quot;blogs,authors&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;blogResult&quot;</span> <span class="attr">s</span></span></span><br><span class="line"><span class="tag"><span class="attr">tatementType</span>=<span class="string">&quot;CALLABLE&quot;</span>&gt;</span></span><br><span class="line"> &#123;call getBlogsAndAuthors(#&#123;id,jdbcType=INTEGER,mode=IN&#125;)&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;blogResult&quot;</span> <span class="attr">type</span>=<span class="string">&quot;Blog&quot;</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">&quot;id&quot;</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span> /&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;title&quot;</span> <span class="attr">column</span>=<span class="string">&quot;title&quot;</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">&quot;author&quot;</span> <span class="attr">javaType</span>=<span class="string">&quot;Author&quot;</span> <span class="attr">resultSet</span>=<span class="string">&quot;authors&quot;</span> <span class="attr">colum</span></span></span><br><span class="line"><span class="tag"><span class="attr">n</span>=<span class="string">&quot;author_id&quot;</span> <span class="attr">foreignColumn</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">&quot;id&quot;</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;username&quot;</span> <span class="attr">column</span>=<span class="string">&quot;username&quot;</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;password&quot;</span> <span class="attr">column</span>=<span class="string">&quot;password&quot;</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;email&quot;</span> <span class="attr">column</span>=<span class="string">&quot;email&quot;</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;bio&quot;</span> <span class="attr">column</span>=<span class="string">&quot;bio&quot;</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">association</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自动映射"><a href="#自动映射" class="headerlink" title="自动映射"></a>自动映射</h3><ul>
+<li>MyBatis 会获取结果中返回的列名并在 Java 类中查找相同名 字的属性(忽略大小写)</li>
+<li>有三种自动映射等级： <ul>
+<li>NONE - 禁用自动映射。仅对手动映射的属性进行映射。 </li>
+<li>PARTIAL - 对除在内部定义了嵌套结果映射（也就是连接的属性）以外的属性进行映射 •</li>
+<li>FULL - 自动映射所有属性。</li>
+</ul>
+</li>
+</ul>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><ul>
+<li><p>默认情况下，只启用了本地的会话缓存，它仅仅对一个会话中的数据进行缓存。 要启用 全局的二级缓存，需要在你SQL 映射文件中添加一行</p>
+</li>
+<li><p>&#96;&#96;&#96;xml</p>
+<cache/>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  - 该语句的效果如下：</span><br><span class="line">    - 映射语句文件中的所有 select 语句的结果将会被缓存。 </span><br><span class="line">    - 映射语句文件中的所有 insert、update 和 delete 语句会刷新缓存。 </span><br><span class="line">    - 缓存会使用最近最少使用算法（LRU, Least Recently Used）算法来清除不需要的缓 存。 </span><br><span class="line">    - 缓存不会定时进行刷新（也就是说，没有刷新间隔）。 </span><br><span class="line">    - 缓存会保存列表或对象（无论查询方法返回哪种）的 1024 个引用。</span><br><span class="line">    - 缓存会被视为读/写缓存，这意味着获取到的对象并不是共享的，可以安全地被调用者 修改，而不干扰其他调用者或线程所做的潜在修改。</span><br><span class="line"></span><br><span class="line">- 当有调用其他映射文件时，@CacheNamespaceRef 注解指定缓存作用域，将结果缓存到指定作用域，但因此会与另外一个映射文件缓存作用域的缓存产生差别，使数据得到污染，不建议使用二级缓存。</span><br><span class="line"></span><br><span class="line">- 清除策略：</span><br><span class="line"></span><br><span class="line">  - LRU – 最近最少使用：移除最长时间不被使用的对象。//默认</span><br><span class="line">  - FIFO – 先进先出：按对象进入缓存的顺序来移除它们。</span><br><span class="line">  - SOFT – 软引用：基于垃圾回收器状态和软引用规则移除对象。</span><br><span class="line">  - WEAK – 弱引用：更积极地基于垃圾收集器状态和弱引用规则移除对象。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 动态SQL</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">&gt; MyBatis的映射文件中支持在基础SQL上添加一些逻辑操作，并动态拼接成完整的SQL之后再执行，以达到SQL复用、简化编程的效果。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">###  &lt; sql &gt;</span><br><span class="line"></span><br><span class="line">```xml</span><br><span class="line">&lt;mapper namespace=&quot;com.qf.mybatis.part2.dynamic.BookDao&quot;&gt;</span><br><span class="line">    &lt;sql id=&quot;BOOKS_FIELD&quot;&gt; &lt;!-- 定义SQL片段 --&gt;</span><br><span class="line">        SELECT id,name,author,publish,sort</span><br><span class="line">    &lt;/sql&gt;</span><br><span class="line"></span><br><span class="line">    &lt;select id=&quot;selectBookByCondition&quot; resultType=&quot;com.qf.mybatis.part2.dynamic.Book&quot;&gt;</span><br><span class="line">				&lt;include refid=&quot;BOOKS_FIELD&quot; /&gt; &lt;!-- 通过ID引用SQL片段 --&gt;</span><br><span class="line">        FROM t_books</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line">&lt;/mapper&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="lt-where-gt"><a href="#lt-where-gt" class="headerlink" title="&lt; where &gt;"></a>&lt; where &gt;</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectBookByCondition&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.qf.mybatis.part2.dynamic.Book&quot;</span>&gt;</span></span><br><span class="line">    SELECT id , name , author , publish , sort</span><br><span class="line">    FROM t_books</span><br><span class="line">    <span class="tag">&lt;<span class="name">where</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;id != null&quot;</span>&gt;</span> <span class="comment">&lt;!-- WHERE，会自动忽略前后缀（如：and | or） --&gt;</span></span><br><span class="line">            id = #&#123;id&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;name != null&quot;</span>&gt;</span></span><br><span class="line">            and name = #&#123;name&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;author != null&quot;</span>&gt;</span></span><br><span class="line">            and author = #&#123;author&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;publish != null&quot;</span>&gt;</span></span><br><span class="line">            and publish = #&#123;publish&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;sort != null&quot;</span>&gt;</span></span><br><span class="line">            and sort = #&#123;sort&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="lt-set-gt"><a href="#lt-set-gt" class="headerlink" title="&lt; set &gt;"></a>&lt; set &gt;</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;updateBookByCondition&quot;</span>&gt;</span></span><br><span class="line">    UPDATE t_books</span><br><span class="line">    <span class="tag">&lt;<span class="name">set</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;name != null&quot;</span>&gt;</span><span class="comment">&lt;!-- where子句中满足条件的if，会自动忽略后缀（如：,） --&gt;</span></span><br><span class="line">            name = #&#123;name&#125; ,</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;author != null&quot;</span>&gt;</span></span><br><span class="line">            author = #&#123;author&#125; ,</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;publish != null&quot;</span>&gt;</span></span><br><span class="line">            publish = #&#123;publish&#125; ,</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;sort != null&quot;</span>&gt;</span></span><br><span class="line">            sort = #&#123;sort&#125; ,</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br><span class="line">    WHERE id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="lt-trim-gt"><a href="#lt-trim-gt" class="headerlink" title="&lt; trim &gt;"></a>&lt; trim &gt;</h3><blockquote>
+<p>&lt; trim prefix&#x3D;”” suffix&#x3D;”” prefixOverrides&#x3D;”” suffixOverrides&#x3D;”” &gt;代替&lt; where &gt; 、&lt; set &gt;</p>
+<p>prefix 前缀  suffix后缀  prefixOverrides语句前被覆盖的 suffixOverrides语句后被覆盖的</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectBookByCondition&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.qf.mybatis.day2.dynamic.Book&quot;</span>&gt;</span>		SELECT id,name,author,publish,sort    FROM t_books    <span class="tag">&lt;<span class="name">trim</span> <span class="attr">prefix</span>=<span class="string">&quot;WHERE&quot;</span> <span class="attr">prefixOverrides</span>=<span class="string">&quot;AND|OR&quot;</span>&gt;</span> <span class="comment">&lt;!-- 增加WHERE前缀，自动忽略前缀 --&gt;</span>        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;id != null&quot;</span>&gt;</span>            and id = #&#123;id&#125;        <span class="tag">&lt;/<span class="name">if</span>&gt;</span>        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;name != null&quot;</span>&gt;</span>            and name = #&#123;name&#125;        <span class="tag">&lt;/<span class="name">if</span>&gt;</span>        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;author != null&quot;</span>&gt;</span>            and author = #&#123;author&#125;        <span class="tag">&lt;/<span class="name">if</span>&gt;</span>        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;publish != null&quot;</span>&gt;</span>            and publish = #&#123;publish&#125;        <span class="tag">&lt;/<span class="name">if</span>&gt;</span>        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;sort != null&quot;</span>&gt;</span>            and sort = #&#123;sort&#125;        <span class="tag">&lt;/<span class="name">if</span>&gt;</span>		<span class="tag">&lt;/<span class="name">trim</span>&gt;</span><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;updateBookByCondition&quot;</span>&gt;</span>		UPDATE t_books		<span class="tag">&lt;<span class="name">trim</span> <span class="attr">prefix</span>=<span class="string">&quot;SET&quot;</span> <span class="attr">suffixOverrides</span>=<span class="string">&quot;,&quot;</span>&gt;</span> <span class="comment">&lt;!-- 增加SET前缀，自动忽略后缀 --&gt;</span>				<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;name != null&quot;</span>&gt;</span>						name = #&#123;name&#125; ,				<span class="tag">&lt;/<span class="name">if</span>&gt;</span>				<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;author != null&quot;</span>&gt;</span>						author = #&#123;author&#125; ,				<span class="tag">&lt;/<span class="name">if</span>&gt;</span>				<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;publish != null&quot;</span>&gt;</span>						publish = #&#123;publish&#125; ,				<span class="tag">&lt;/<span class="name">if</span>&gt;</span>				<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;sort != null&quot;</span>&gt;</span>						sort = #&#123;sort&#125;				<span class="tag">&lt;/<span class="name">if</span>&gt;</span>    <span class="tag">&lt;/<span class="name">trim</span>&gt;</span>		WHERE id = #&#123;id&#125;<span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="lt-foreach-gt"><a href="#lt-foreach-gt" class="headerlink" title="&lt; foreach &gt;"></a>&lt; foreach &gt;</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">&quot;deleteBookByIds&quot;</span>&gt;</span>		DELETE FROM t_books		WHERE id IN		<span class="tag">&lt;<span class="name">foreach</span> <span class="attr">collection</span>=<span class="string">&quot;list&quot;</span> <span class="attr">open</span>=<span class="string">&quot;(&quot;</span> <span class="attr">separator</span>=<span class="string">&quot;,&quot;</span> <span class="attr">close</span>=<span class="string">&quot;)&quot;</span>  <span class="attr">item</span>=<span class="string">&quot;id&quot;</span> <span class="attr">index</span>=<span class="string">&quot;i&quot;</span>&gt;</span>				#&#123;id&#125;		<span class="tag">&lt;/<span class="name">foreach</span>&gt;</span><span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+<th>取值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>collection</td>
+<td>容器类型</td>
+<td>list、array、map</td>
+</tr>
+<tr>
+<td>open</td>
+<td>起始符</td>
+<td>(</td>
+</tr>
+<tr>
+<td>close</td>
+<td>结束符</td>
+<td>)</td>
+</tr>
+<tr>
+<td>separator</td>
+<td>分隔符</td>
+<td>,</td>
+</tr>
+<tr>
+<td>index</td>
+<td>下标号</td>
+<td>从0开始，依次递增</td>
+</tr>
+<tr>
+<td>item</td>
+<td>当前项</td>
+<td>任意名称（循环中通过 #{任意名称} 表达式访问）</td>
+</tr>
+</tbody></table>
+<h3 id="lt-choose-gt-lt-when-gt-lt-otherwise-gt"><a href="#lt-choose-gt-lt-when-gt-lt-otherwise-gt" class="headerlink" title="&lt; choose &gt; &lt; when &gt; &lt; otherwise &gt;"></a>&lt; choose &gt; &lt; when &gt; &lt; otherwise &gt;</h3><p>​        类似 Java 中的 switch 语句。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findActiveBlogLike&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;Blog&quot;</span>&gt;</span> SELECT * FROM BLOG WHERE state = ‘ACTIVE’ <span class="tag">&lt;<span class="name">choose</span>&gt;</span> <span class="tag">&lt;<span class="name">when</span> <span class="attr">test</span>=<span class="string">&quot;title != null&quot;</span>&gt;</span> AND title like #&#123;title&#125; <span class="tag">&lt;/<span class="name">when</span>&gt;</span> <span class="tag">&lt;<span class="name">when</span> <span class="attr">test</span>=<span class="string">&quot;author != null and author.name != null&quot;</span>&gt;</span> AND author_name like #&#123;author.name&#125; <span class="tag">&lt;/<span class="name">when</span>&gt;</span> <span class="tag">&lt;<span class="name">otherwise</span>&gt;</span> AND featured = 1 <span class="tag">&lt;/<span class="name">otherwise</span>&gt;</span> <span class="tag">&lt;/<span class="name">choose</span>&gt;</span><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="script"><a href="#script" class="headerlink" title="script"></a>script</h3><ul>
+<li><p>要在带注解的映射器接口类中使用动态 SQL，可以使用 script 元素。比如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Update(&#123;&quot;&lt;script&gt;&quot;, &quot;update Author&quot;, &quot; &lt;set&gt;&quot;, &quot; &lt;if test=&#x27;username != null&#x27;&gt;username=#&#123;username&#125;,&lt;/if&gt;&quot;, &quot; &lt;if test=&#x27;password != null&#x27;&gt;password=#&#123;password&#125;,&lt;/if&gt;&quot;, &quot; &lt;if test=&#x27;email != null&#x27;&gt;email=#&#123;email&#125;,&lt;/if&gt;&quot;, &quot; &lt;if test=&#x27;bio != null&#x27;&gt;bio=#&#123;bio&#125;&lt;/if&gt;&quot;, &quot; &lt;/set&gt;&quot;, &quot;where id=#&#123;id&#125;&quot;, &quot;&lt;/script&gt;&quot;&#125;)</span> <span class="keyword">void</span> <span class="title function_">updateAuthorValues</span><span class="params">(Author author)</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h3><ul>
+<li><p>bind 元素允许在 OGNL 表达式以外创建一个变量，并将其绑定到当前的上下文</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectBlogsLike&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;Blog&quot;</span>&gt;</span> <span class="tag">&lt;<span class="name">bind</span> <span class="attr">name</span>=<span class="string">&quot;pattern&quot;</span> <span class="attr">value</span>=<span class="string">&quot;&#x27;%&#x27; + _parameter.getTitle() + &#x27;%&#x27;&quot;</span> /&gt;</span> SELECT * FROM BLOG WHERE title LIKE #&#123;pattern&#125;<span class="tag">&lt;/<span class="name">select</span>&gt;</span>//bind将pattern调用方法获得title并在前拼接_来进行模糊查询</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="SQL语句的多数据库支持"><a href="#SQL语句的多数据库支持" class="headerlink" title="SQL语句的多数据库支持"></a>SQL语句的多数据库支持</h2><ul>
+<li>如果配置了 databaseIdProvider，你就可以在动态代码中使用名为 “_databaseId” 的变 量来为不同的数据库构建特定的语句</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;insert&quot;</span>&gt;</span> <span class="tag">&lt;<span class="name">selectKey</span> <span class="attr">keyProperty</span>=<span class="string">&quot;id&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;int&quot;</span> <span class="attr">order</span>=<span class="string">&quot;BEFORE&quot;</span>&gt;</span> <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;_databaseId == &#x27;oracle&#x27;&quot;</span>&gt;</span> select seq_users.nextval from dual <span class="tag">&lt;/<span class="name">if</span>&gt;</span> <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;_databaseId == &#x27;db2&#x27;&quot;</span>&gt;</span> select nextval for seq_users from sysibm.sysdummy1&quot; <span class="tag">&lt;/<span class="name">if</span>&gt;</span> <span class="tag">&lt;/<span class="name">selectKey</span>&gt;</span> insert into users values (#&#123;id&#125;, #&#123;name&#125;)<span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2011/11/04/Docker%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="docker的安装与使用">
+      <i class="fa fa-chevron-left"></i> docker的安装与使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/30/mybatis_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="mybatis 设计模式">
+      mybatis 设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text">MyBatis获取数据库源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML%E6%96%87%E4%BB%B6%E4%B8%AD-properties-%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">XML文件中(properties)加载顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%A4%84%E7%90%86%E5%99%A8%EF%BC%88typeHandlers%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">类型处理器（typeHandlers）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%9E%8B%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">3.1.</span> <span class="nav-text">创建类型处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E7%B1%BB%E5%9E%8B%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">泛型类型处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6-plugins-x2F-x2F-%E5%BE%85%E6%B7%B1%E5%85%A5"><span class="nav-number">4.</span> <span class="nav-text">插件(plugins)&#x2F;&#x2F;         待深入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%EF%BC%88environments%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">环境配置（environments）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="nav-number">5.1.</span> <span class="nav-text">基本配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-number">5.2.</span> <span class="nav-text">事务管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%90-datasource"><span class="nav-number">5.3.</span> <span class="nav-text">数据源(datasource)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UNPOOLED"><span class="nav-number">5.3.1.</span> <span class="nav-text">UNPOOLED:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#POOLED"><span class="nav-number">5.3.2.</span> <span class="nav-text">POOLED:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JNDI"><span class="nav-number">5.3.3.</span> <span class="nav-text">JNDI</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%82%E5%95%86%E6%A0%87%E8%AF%86%EF%BC%88databaseIdProvider%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">数据库厂商标识（databaseIdProvider）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-DatabaseIdProvide"><span class="nav-number">6.1.</span> <span class="nav-text">自定义 DatabaseIdProvide</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E5%99%A8%EF%BC%88mappers%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">映射器（mappers）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#insert-update-%E5%92%8C-delete%E8%AF%AD%E5%8F%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">7.1.</span> <span class="nav-text">insert, update 和 delete语句配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E9%94%AE%E5%9B%9E%E5%A1%AB"><span class="nav-number">7.2.</span> <span class="nav-text">主键回填</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E8%AE%BE%E7%BD%AEuseGeneratedKeys"><span class="nav-number">7.2.1.</span> <span class="nav-text">通过设置useGeneratedKeys</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapper-xml%E4%B8%AD%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">Mapper.xml中语句的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E6%98%A0%E5%B0%84-resultmap"><span class="nav-number">9.</span> <span class="nav-text">结果映射(resultmap)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94"><span class="nav-number">9.1.</span> <span class="nav-text">关联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E6%98%A0%E5%B0%84"><span class="nav-number">9.2.</span> <span class="nav-text">自动映射</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98"><span class="nav-number">10.</span> <span class="nav-text">缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-where-gt"><span class="nav-number">10.1.</span> <span class="nav-text">&lt; where &gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-set-gt"><span class="nav-number">10.2.</span> <span class="nav-text">&lt; set &gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-trim-gt"><span class="nav-number">10.3.</span> <span class="nav-text">&lt; trim &gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-foreach-gt"><span class="nav-number">10.4.</span> <span class="nav-text">&lt; foreach &gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-choose-gt-lt-when-gt-lt-otherwise-gt"><span class="nav-number">10.5.</span> <span class="nav-text">&lt; choose &gt; &lt; when &gt; &lt; otherwise &gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#script"><span class="nav-number">10.6.</span> <span class="nav-text">script</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bind"><span class="nav-number">10.7.</span> <span class="nav-text">bind</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E6%94%AF%E6%8C%81"><span class="nav-number">11.</span> <span class="nav-text">SQL语句的多数据库支持</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wch</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wch</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ce3c704806a6c87a5b71',
+      clientSecret: '1746595e6159dedd47e8f8ed7dbd73a084c01af0',
+      repo        : 'wwwangch.github.io',
+      owner       : 'wwwangch',
+      admin       : ['wwwangch'],
+      id          : '722260103d411923af109768edecfb18',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
