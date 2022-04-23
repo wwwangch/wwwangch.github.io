@@ -28,7 +28,7 @@
 <meta property="og:description" content="nginx配置文件中location配置及各种配置的优先级">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-20T14:44:56.957Z">
+<meta property="article:modified_time" content="2022-04-23T14:57:18.055Z">
 <meta property="article:author" content="wch">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="nginx">
@@ -185,10 +185,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-04-20 00:00:00 / Modified: 22:44:56" itemprop="dateCreated datePublished" datetime="2022-04-20T00:00:00+08:00">2022-04-20</time>
+              <time title="Created: 2022-04-20 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-20T00:00:00+08:00">2022-04-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-23 22:57:18" itemprop="dateModified" datetime="2022-04-23T22:57:18+08:00">2022-04-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -215,14 +221,14 @@
 <p>优先级关系如下：</p>
 <ul>
 <li>location &#x3D; &#x2F;路径：优先级最高，精准匹配，一旦匹配， 不再去找其他匹配项。</li>
-<li>location ^~ &#x2F;路径：优先级次之，字符串匹配，一旦匹配， 不再去找其他匹配项。</li>
-<li>location ~ 正则表达式：如果有多个location的正则能匹配的话，则使用正则表达式最长的那个。</li>
+<li>location ^~ &#x2F;路径：优先级次之，前缀字符串匹配，一旦匹配， 不再去找其他匹配项。</li>
+<li>location ~ 正则表达式：如果有多个location的正则能匹配的话，则使用正则表达式最长的那个。  正则匹配时proxy_pass只能是ip:port，不能带URI</li>
 <li>location ~* 正则表达式：和location ~ 正则表达式相同，不过当前方式不区分大小写。</li>
 <li>location &#x2F;路径：常规方式，匹配前缀，优先级最低。</li>
 </ul>
 <p>举个栗子：</p>
 </blockquote>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># 直接匹配</span><br><span class="line">location = / <span class="punctuation">&#123;</span></span><br><span class="line">  # 精准匹配，主机名后面不能带任何的字符串</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 常规匹配</span><br><span class="line">location /xxx <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/xxx开头的路径</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 正则匹配</span><br><span class="line">location ~ /xxx <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/xxx开头的路径</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 匹配开头路径</span><br><span class="line">location ^~ /images/ <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/images开头的路径，匹配后，不再删选其他选项</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 正则匹配后缀</span><br><span class="line">location ~* \.(gif|jpg|png)$ <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配以gif或者jpg或者png为结尾的路径</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 全部通配</span><br><span class="line">location / <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配全部路径  </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># 直接匹配</span><br><span class="line">location = / <span class="punctuation">&#123;</span></span><br><span class="line">  # 精准匹配</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 匹配开头路径</span><br><span class="line">location ^~ /images/ <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/images开头的路径，匹配后，不再删选其他选项</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"> </span><br><span class="line"># 正则匹配  </span><br><span class="line">location ~ /xxx <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/xxx开头的路径</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"># 正则匹配后缀</span><br><span class="line">location ~* \.(gif|jpg|png)$ <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配以gif或者jpg或者png为结尾的路径</span><br><span class="line"><span class="punctuation">&#125;</span> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 常规匹配</span><br><span class="line">location /xxx <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/xxx开头的路径</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 全部通配</span><br><span class="line">location / <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配全部路径  </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
 <hr>
 <blockquote>
