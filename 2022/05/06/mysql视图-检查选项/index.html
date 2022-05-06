@@ -20,22 +20,21 @@
     var CONFIG = {"hostname":"www.ahui.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="nginx配置文件中location配置及各种配置的优先级">
+  <meta name="description" content="mysql视图的检查选项">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nginx配置文件中location配置">
-<meta property="og:url" content="http://www.ahui.site/2022/04/20/nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B9%8Blocation%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="mysql视图--检查选项">
+<meta property="og:url" content="http://www.ahui.site/2022/05/06/mysql%E8%A7%86%E5%9B%BE-%E6%A3%80%E6%9F%A5%E9%80%89%E9%A1%B9/index.html">
 <meta property="og:site_name" content="wch&#39;s blogs">
-<meta property="og:description" content="nginx配置文件中location配置及各种配置的优先级">
+<meta property="og:description" content="mysql视图的检查选项">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-04-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-23T14:57:18.055Z">
+<meta property="article:published_time" content="2022-05-06T14:34:40.000Z">
+<meta property="article:modified_time" content="2022-05-06T14:37:59.825Z">
 <meta property="article:author" content="wch">
-<meta property="article:tag" content="linux">
-<meta property="article:tag" content="nginx">
-<meta property="article:tag" content="location">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="视图">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://www.ahui.site/2022/04/20/nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B9%8Blocation%E9%85%8D%E7%BD%AE/">
+<link rel="canonical" href="http://www.ahui.site/2022/05/06/mysql%E8%A7%86%E5%9B%BE-%E6%A3%80%E6%9F%A5%E9%80%89%E9%A1%B9/">
 
 
 <script id="page-configurations">
@@ -48,7 +47,7 @@
   };
 </script>
 
-  <title>nginx配置文件中location配置 | wch's blogs</title>
+  <title>mysql视图--检查选项 | wch's blogs</title>
   
 
 
@@ -191,7 +190,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://www.ahui.site/2022/04/20/nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B9%8Blocation%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="http://www.ahui.site/2022/05/06/mysql%E8%A7%86%E5%9B%BE-%E6%A3%80%E6%9F%A5%E9%80%89%E9%A1%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -204,7 +203,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          nginx配置文件中location配置
+          mysql视图--检查选项
         </h1>
 
         <div class="post-meta">
@@ -213,28 +212,22 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-04-20 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-20T00:00:00+08:00">2022-04-20</time>
+              <time title="Created: 2022-05-06 22:34:40 / Modified: 22:37:59" itemprop="dateCreated datePublished" datetime="2022-05-06T22:34:40+08:00">2022-05-06</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-23 22:57:18" itemprop="dateModified" datetime="2022-04-23T22:57:18+08:00">2022-04-23</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/nginx/" itemprop="url" rel="index"><span itemprop="name">nginx</span></a>
+                  <a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a>
                 </span>
             </span>
 
           
-            <div class="post-description">nginx配置文件中location配置及各种配置的优先级</div>
+            <div class="post-description">mysql视图的检查选项</div>
 
         </div>
       </header>
@@ -245,21 +238,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="关于Nginx的location路径映射"><a href="#关于Nginx的location路径映射" class="headerlink" title="关于Nginx的location路径映射"></a>关于Nginx的location路径映射</h4><blockquote>
-<p>优先级关系如下：</p>
-<ul>
-<li>location &#x3D; &#x2F;路径：优先级最高，精准匹配，一旦匹配， 不再去找其他匹配项。</li>
-<li>location ^~ &#x2F;路径：优先级次之，前缀字符串匹配，一旦匹配， 不再去找其他匹配项。</li>
-<li>location ~ 正则表达式：如果有多个location的正则能匹配的话，则使用正则表达式最长的那个。  正则匹配时proxy_pass只能是ip:port，不能带URI</li>
-<li>location ~* 正则表达式：和location ~ 正则表达式相同，不过当前方式不区分大小写。</li>
-<li>location &#x2F;路径：常规方式，匹配前缀，优先级最低。</li>
-</ul>
-<p>举个栗子：</p>
-</blockquote>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># 直接匹配</span><br><span class="line">location = / <span class="punctuation">&#123;</span></span><br><span class="line">  # 精准匹配</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 匹配开头路径</span><br><span class="line">location ^~ /images/ <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/images开头的路径，匹配后，不再删选其他选项</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"> </span><br><span class="line"># 正则匹配  </span><br><span class="line">location ~ /xxx <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/xxx开头的路径</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"># 正则匹配后缀</span><br><span class="line">location ~* \.(gif|jpg|png)$ <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配以gif或者jpg或者png为结尾的路径</span><br><span class="line"><span class="punctuation">&#125;</span> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 常规匹配</span><br><span class="line">location /xxx <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配所有以/xxx开头的路径</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"># 全部通配</span><br><span class="line">location / <span class="punctuation">&#123;</span></span><br><span class="line">  # 匹配全部路径  </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+        <p>视图的检查选项：当使用WITH CHECK OPTION子句创建视图时，MySQL会通过视图检查正在更改的每个行，例如 插入，更新，删除，以使其符合视图的定义。 MySQL允许基于另一个视图创建视图，它还会检查依赖视图中的规则以保持一致性。为了确定检查的范围，mysql提供了两个选项：CASCADED 和 LOCAL ，默认值为 CASCADED 。</p>
+<h1 id="cascaded"><a href="#cascaded" class="headerlink" title="cascaded"></a>cascaded</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#case1</span><br><span class="line">#创建一个基于students表的视图</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v1 <span class="keyword">as</span> <span class="keyword">select</span> id,name <span class="keyword">from</span> students <span class="keyword">where</span> id<span class="operator">&lt;=</span><span class="number">20</span>;</span><br><span class="line">#由于没有检查选项，所以插入id<span class="operator">&gt;</span><span class="number">20</span>的数据也会插入成功</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> v1 <span class="keyword">values</span>(<span class="number">21</span>,<span class="string">&#x27;john&#x27;</span>);#插入成功</span><br><span class="line"></span><br><span class="line">#case2</span><br><span class="line">#创建一个基于v1的视图，并添加<span class="keyword">cascaded</span>检查选项</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v2 <span class="keyword">as</span> <span class="keyword">select</span> id,name <span class="keyword">from</span> v1 <span class="keyword">where</span> id<span class="operator">&gt;</span><span class="number">10</span> <span class="keyword">with</span> <span class="keyword">cascaded</span> <span class="keyword">check</span> option;</span><br><span class="line"></span><br><span class="line">#添加检查选项后，再插入数据，MySQL就会判断插入数据是否满足条件，</span><br><span class="line">#由于此视图是基于v1的，所以现在可以插入的id值为 <span class="number">10</span><span class="operator">&lt;</span>id<span class="operator">&lt;=</span><span class="number">20</span>。</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> v2 <span class="keyword">values</span>（<span class="number">22</span>，<span class="string">&#x27;lucy&#x27;</span>);#插入失败</span><br><span class="line"></span><br><span class="line">#case3</span><br><span class="line">#创建一个基于v2的视图</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace v3 <span class="keyword">as</span> <span class="keyword">select</span> id,name <span class="keyword">from</span> v2 <span class="keyword">where</span> id<span class="operator">&lt;=</span><span class="number">15</span>;</span><br><span class="line"></span><br><span class="line">#由于v3没有添加检查选项，但v3是基于v2的，所以现在可以插入的id值依然为 <span class="number">10</span><span class="operator">&lt;</span>id<span class="operator">&lt;=</span><span class="number">20</span>。</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> v3 <span class="keyword">values</span>(<span class="number">18</span>,<span class="string">&#x27;Tom&#x27;</span>);#插入成功</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> v3 <span class="keyword">values</span>(<span class="number">24</span>,<span class="string">&#x27;kobe&#x27;</span>);#插入失败</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<hr>
 <blockquote>
+<p>当我们操作当前视图时，cascaded检查选项是，如果当前视图有检查选项，则插入数据要满足包括当前视图条件以及满足当前视图所依赖的视图的条件。如果当前视图没有检查选项，则插入数据要满足当时视图所依赖视图有检查选项及其依赖的视图的条件。</p>
+</blockquote>
+<h1 id="local"><a href="#local" class="headerlink" title="local"></a>local</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#case1</span><br><span class="line">#创建一个基于students表的视图</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v1 <span class="keyword">as</span> <span class="keyword">select</span> id,name <span class="keyword">from</span> students <span class="keyword">where</span> id<span class="operator">&lt;=</span><span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> v1 <span class="keyword">values</span>(<span class="number">21</span>,<span class="string">&#x27;john&#x27;</span>);#插入成功</span><br><span class="line"></span><br><span class="line">#case2</span><br><span class="line">#创建一个基于v1的视图，并添加<span class="keyword">local</span>检查选项</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v2 <span class="keyword">as</span> <span class="keyword">select</span> id,name <span class="keyword">from</span> v1 <span class="keyword">where</span> id<span class="operator">&gt;</span><span class="number">10</span> <span class="keyword">with</span> <span class="keyword">local</span> <span class="keyword">check</span> option;</span><br><span class="line"></span><br><span class="line">#添加检查选项后，再插入数据，MySQL就会判断插入数据是否满足条件，</span><br><span class="line">#由于此视图是基于v1的，v1没有检查选项，所以现在可以插入的id值为 id<span class="operator">&gt;</span><span class="number">10</span>。</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> v2 <span class="keyword">values</span>（<span class="number">22</span>，<span class="string">&#x27;lucy&#x27;</span>);#插入成功</span><br><span class="line"></span><br><span class="line">#case3</span><br><span class="line">#创建一个基于v2的视图</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace v3 <span class="keyword">as</span> <span class="keyword">select</span> id,name <span class="keyword">from</span> v2 <span class="keyword">where</span> id<span class="operator">&lt;=</span><span class="number">15</span>;</span><br><span class="line"></span><br><span class="line">#由于v3没有添加检查选项，但v3是基于v2的，所以现在可以插入的id值依然为 id<span class="operator">&gt;</span><span class="number">10</span>。</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> v3 <span class="keyword">values</span>(<span class="number">18</span>,<span class="string">&#x27;Tom&#x27;</span>);#插入成功</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当我们在操作当前视图时，local检查选项是递归的查找当前视图所依赖的视图是否有检查选项，如果有，则检查；如果没有，就不做检查。</p>
 </blockquote>
 
     </div>
@@ -270,9 +258,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/linux/" rel="tag"># linux</a>
-              <a href="/tags/nginx/" rel="tag"># nginx</a>
-              <a href="/tags/location/" rel="tag"># location</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/%E8%A7%86%E5%9B%BE/" rel="tag"># 视图</a>
           </div>
 
         
@@ -281,13 +268,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/12/nginx%E5%AE%89%E8%A3%85/" rel="prev" title="nginx安装">
-      <i class="fa fa-chevron-left"></i> nginx安装
+    <a href="/2022/05/06/mysql%E4%B9%8Bsql%E4%BC%98%E5%8C%96/" rel="prev" title="mysql之sql优化">
+      <i class="fa fa-chevron-left"></i> mysql之sql优化
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/04/26/linux%E9%80%9A%E8%BF%87%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%AE%89%E8%A3%85Mysql/" rel="next" title="linux通过压缩包安装Mysql">
-      linux通过压缩包安装Mysql <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -347,7 +331,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8ENginx%E7%9A%84location%E8%B7%AF%E5%BE%84%E6%98%A0%E5%B0%84"><span class="nav-number">1.</span> <span class="nav-text">关于Nginx的location路径映射</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cascaded"><span class="nav-number">1.</span> <span class="nav-text">cascaded</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#local"><span class="nav-number">2.</span> <span class="nav-text">local</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -476,7 +460,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'wwwangch.github.io',
       owner       : 'wwwangch',
       admin       : ['wwwangch'],
-      id          : '5eba5f9fed16bfe84ee336234dc4edec',
+      id          : 'c98c2c11d0f9b4a000cc317a98f47fc4',
         language: 'zh-CN',
       distractionFreeMode: true
     });
