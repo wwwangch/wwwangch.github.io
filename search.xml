@@ -3903,4 +3903,21 @@
         <tag>视图</tag>
       </tags>
   </entry>
+  <entry>
+    <title>pdf资料整理</title>
+    <url>/2022/05/06/pdf%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h1 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h1> <div class="pdfobject-container" data-target="pdf/MySQL-基础篇.pdf" data-height="500px"></div>
+
+ <div class="pdfobject-container" data-target="pdf/MySQL-进阶篇.pdf" data-height="500px"></div>
+
+ <div class="pdfobject-container" data-target="pdf/MySQL-运维篇.pdf" data-height="500px"></div>
+
+<h1 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h1> <div class="pdfobject-container" data-target="pdf/nginx配置与优化.pdf" data-height="500px"></div>
+
+<h1 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h1> <div class="pdfobject-container" data-target="pdf/Redis命令参考手册完整版.pdf" data-height="500px"></div>
+]]></content>
+      <categories>
+        <category>资料</category>
+      </categories>
+  </entry>
 </search>
