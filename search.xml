@@ -3916,4 +3916,913 @@
         <category>资料</category>
       </categories>
   </entry>
+  <entry>
+    <title>mysql常用函数</title>
+    <url>/2022/05/07/mysql%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><ul>
+<li>字符串函数</li>
+<li>数值函数</li>
+<li>日期函数</li>
+<li>流程函数</li>
+</ul>
+<h3 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h3><p>常用函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CONCAT(s1, s2, …, sn)</td>
+<td>字符串拼接，将s1, s2, …, sn拼接成一个字符串</td>
+</tr>
+<tr>
+<td>LOWER(str)</td>
+<td>将字符串全部转为小写</td>
+</tr>
+<tr>
+<td>UPPER(str)</td>
+<td>将字符串全部转为大写</td>
+</tr>
+<tr>
+<td>LPAD(str, n, pad)</td>
+<td>左填充，用字符串pad对str的左边进行填充，达到n个字符串长度</td>
+</tr>
+<tr>
+<td>RPAD(str, n, pad)</td>
+<td>右填充，用字符串pad对str的右边进行填充，达到n个字符串长度</td>
+</tr>
+<tr>
+<td>TRIM(str)</td>
+<td>去掉字符串头部和尾部的空格</td>
+</tr>
+<tr>
+<td>SUBSTRING(str, start, len)</td>
+<td>返回从字符串str从start位置起的len个长度的字符串</td>
+</tr>
+</tbody></table>
+<p>使用示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 拼接</span><br><span class="line">SELECT CONCAT(&#x27;Hello&#x27;, &#x27;World&#x27;);</span><br><span class="line">-- 小写</span><br><span class="line">SELECT LOWER(&#x27;Hello&#x27;);</span><br><span class="line">-- 大写</span><br><span class="line">SELECT UPPER(&#x27;Hello&#x27;);</span><br><span class="line">-- 左填充</span><br><span class="line">SELECT LPAD(&#x27;01&#x27;, 5, &#x27;-&#x27;);</span><br><span class="line">-- 右填充</span><br><span class="line">SELECT RPAD(&#x27;01&#x27;, 5, &#x27;-&#x27;);</span><br><span class="line">-- 去除空格</span><br><span class="line">SELECT TRIM(&#x27; Hello World &#x27;);</span><br><span class="line">-- 切片（起始索引为1）</span><br><span class="line">SELECT SUBSTRING(&#x27;Hello World&#x27;, 1, 5);</span><br></pre></td></tr></table></figure>
+
+<h3 id="数值函数"><a href="#数值函数" class="headerlink" title="数值函数"></a>数值函数</h3><p>常见函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CEIL(x)</td>
+<td>向上取整</td>
+</tr>
+<tr>
+<td>FLOOR(x)</td>
+<td>向下取整</td>
+</tr>
+<tr>
+<td>MOD(x, y)</td>
+<td>返回x&#x2F;y的模</td>
+</tr>
+<tr>
+<td>RAND()</td>
+<td>返回0~1内的随机数</td>
+</tr>
+<tr>
+<td>ROUND(x, y)</td>
+<td>求参数x的四舍五入值，保留y位小数</td>
+</tr>
+</tbody></table>
+<h3 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h3><p>常用函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CURDATE()</td>
+<td>返回当前日期</td>
+</tr>
+<tr>
+<td>CURTIME()</td>
+<td>返回当前时间</td>
+</tr>
+<tr>
+<td>NOW()</td>
+<td>返回当前日期和时间</td>
+</tr>
+<tr>
+<td>YEAR(date)</td>
+<td>获取指定date的年份</td>
+</tr>
+<tr>
+<td>MONTH(date)</td>
+<td>获取指定date的月份</td>
+</tr>
+<tr>
+<td>DAY(date)</td>
+<td>获取指定date的日期</td>
+</tr>
+<tr>
+<td>DATE_ADD(date, INTERVAL expr type)</td>
+<td>返回一个日期&#x2F;时间值加上一个时间间隔expr后的时间值</td>
+</tr>
+<tr>
+<td>DATEDIFF(date1, date2)</td>
+<td>返回起始时间date1和结束时间date2之间的天数</td>
+</tr>
+</tbody></table>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- DATE_ADD</span><br><span class="line">SELECT DATE_ADD(NOW(), INTERVAL 70 YEAR);</span><br></pre></td></tr></table></figure>
+
+<h3 id="流程函数"><a href="#流程函数" class="headerlink" title="流程函数"></a>流程函数</h3><p>常用函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IF(value, t, f)</td>
+<td>如果value为true，则返回t，否则返回f</td>
+</tr>
+<tr>
+<td>IFNULL(value1, value2)</td>
+<td>如果value1不为空，返回value1，否则返回value2</td>
+</tr>
+<tr>
+<td>CASE WHEN [ val1 ] THEN [ res1 ] … ELSE [ default ] END</td>
+<td>如果val1为true，返回res1，… 否则返回default默认值</td>
+</tr>
+<tr>
+<td>CASE [ expr ] WHEN [ val1 ] THEN [ res1 ] … ELSE [ default ] END</td>
+<td>如果expr的值等于val1，返回res1，… 否则返回default默认值</td>
+</tr>
+</tbody></table>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select</span><br><span class="line">	name,</span><br><span class="line">	(case when age &gt; 30 then &#x27;中年&#x27; else &#x27;青年&#x27; end)</span><br><span class="line">from employee;</span><br><span class="line">select</span><br><span class="line">	name,</span><br><span class="line">	(case workaddress when &#x27;北京市&#x27; then &#x27;一线城市&#x27; when &#x27;上海市&#x27; then &#x27;一线城市&#x27; else &#x27;二线城市&#x27; end) as &#x27;工作地址&#x27;</span><br><span class="line">from employee;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mysql常用引擎</title>
+    <url>/2022/05/07/mysql%E5%B8%B8%E7%94%A8%E5%BC%95%E6%93%8E/</url>
+    <content><![CDATA[<h1 id="MySQL体系结构："><a href="#MySQL体系结构：" class="headerlink" title="MySQL体系结构："></a>MySQL体系结构：</h1><p><img src="https://s2.loli.net/2022/05/07/xSbOtfpEiHyLjQX.png" alt="image-20220507104933643"></p>
+<p><img src="https://s2.loli.net/2022/05/07/KZwMXhHJoY7EtDx.png" alt="image-20220507105014351"></p>
+<p>存储引擎就是存储数据、建立索引、更新&#x2F;查询数据等技术的实现方式。存储引擎是基于表而不是基于库的，所以存储引擎也可以被称为表引擎。<br>默认存储引擎是InnoDB。</p>
+<p>相关操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 查询建表语句</span><br><span class="line">show create table account;</span><br><span class="line">-- 建表时指定存储引擎</span><br><span class="line">CREATE TABLE 表名(</span><br><span class="line">	...</span><br><span class="line">) ENGINE=INNODB;</span><br><span class="line">-- 查看当前数据库支持的存储引擎</span><br><span class="line">show engines;</span><br></pre></td></tr></table></figure>
+
+<h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><p>InnoDB 是一种兼顾高可靠性和高性能的通用存储引擎，在 MySQL 5.5 之后，InnoDB 是默认的 MySQL 引擎。</p>
+<p>特点：</p>
+<ul>
+<li>DML 操作遵循 ACID 模型，支持<strong>事务</strong></li>
+<li><strong>行级锁</strong>，提高并发访问性能</li>
+<li>支持<strong>外键</strong>约束，保证数据的完整性和正确性</li>
+</ul>
+<p>文件：</p>
+<ul>
+<li>xxx.ibd: xxx代表表名，InnoDB 引擎的每张表都会对应这样一个表空间文件，存储该表的表结构（frm、sdi）、数据和索引。</li>
+</ul>
+<p>参数：innodb_file_per_table，决定多张表共享一个表空间还是每张表对应一个表空间</p>
+<p>知识点：</p>
+<p>查看 Mysql 变量：<br><code>show variables like &#39;innodb_file_per_table&#39;;</code></p>
+<p>从idb文件提取表结构数据：<br>（在cmd运行）<br><code>ibd2sdi xxx.ibd</code></p>
+<p>InnoDB 逻辑存储结构：<br><img src="https://dhc.pythonanywhere.com/media/editor/%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84_20220316030616590001.png" alt="InnoDB逻辑存储结构" title="InnoDB逻辑存储结构"></p>
+<h1 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h1><p>MyISAM 是 MySQL 早期的默认存储引擎。</p>
+<p>特点：</p>
+<ul>
+<li>不支持事务，不支持外键</li>
+<li>支持表锁，不支持行锁</li>
+<li>访问速度快</li>
+</ul>
+<p>文件：</p>
+<ul>
+<li>xxx.sdi: 存储表结构信息</li>
+<li>xxx.MYD: 存储数据</li>
+<li>xxx.MYI: 存储索引</li>
+</ul>
+<h1 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h1><p>Memory 引擎的表数据是存储在内存中的，受硬件问题、断电问题的影响，只能将这些表作为临时表或缓存使用。</p>
+<p>特点：</p>
+<ul>
+<li>存放在内存中，速度快</li>
+<li>hash索引（默认）</li>
+</ul>
+<p>文件：</p>
+<ul>
+<li>xxx.sdi: 存储表结构信息</li>
+</ul>
+<h1 id="存储引擎特点"><a href="#存储引擎特点" class="headerlink" title="存储引擎特点"></a>存储引擎特点</h1><table>
+<thead>
+<tr>
+<th>特点</th>
+<th>InnoDB</th>
+<th>MyISAM</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储限制</td>
+<td>64TB</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>事务安全</td>
+<td>支持</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>锁机制</td>
+<td>行锁</td>
+<td>表锁</td>
+<td>表锁</td>
+</tr>
+<tr>
+<td>B+tree索引</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>Hash索引</td>
+<td>-</td>
+<td>-</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>支持（5.6版本之后）</td>
+<td>支持</td>
+<td>-</td>
+</tr>
+<tr>
+<td>空间使用</td>
+<td>高</td>
+<td>低</td>
+<td>N&#x2F;A</td>
+</tr>
+<tr>
+<td>内存使用</td>
+<td>高</td>
+<td>低</td>
+<td>中等</td>
+</tr>
+<tr>
+<td>批量插入速度</td>
+<td>低</td>
+<td>高</td>
+<td>高</td>
+</tr>
+<tr>
+<td>支持外键</td>
+<td>支持</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h1 id="存储引擎的选择"><a href="#存储引擎的选择" class="headerlink" title="存储引擎的选择"></a>存储引擎的选择</h1><p>在选择存储引擎时，应该根据应用系统的特点选择合适的存储引擎。对于复杂的应用系统，还可以根据实际情况选择多种存储引擎进行组合。</p>
+<ul>
+<li>InnoDB: 如果应用对事物的完整性有比较高的要求，在并发条件下要求数据的一致性，数据操作除了插入和查询之外，还包含很多的更新、删除操作，则 InnoDB 是比较合适的选择</li>
+<li>MyISAM: 如果应用是以读操作和插入操作为主，只有很少的更新和删除操作，并且对事务的完整性、并发性要求不高，那这个存储引擎是非常合适的。</li>
+<li>Memory: 将所有数据保存在内存中，访问速度快，通常用于临时表及缓存。Memory 的缺陷是对表的大小有限制，太大的表无法缓存在内存中，而且无法保障数据的安全性</li>
+</ul>
+<p>电商中的足迹和评论适合使用 MyISAM 引擎，缓存适合使用 Memory 引擎</p>
+]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>引擎</tag>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mysql性能分析方法</title>
+    <url>/2022/05/07/mysql%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="查看执行频次"><a href="#查看执行频次" class="headerlink" title="查看执行频次"></a>查看执行频次</h1><p>查看当前数据库的 INSERT, UPDATE, DELETE, SELECT 访问频次：<br><code>SHOW GLOBAL STATUS LIKE &#39;Com_______&#39;;</code> 或者 <code>SHOW SESSION STATUS LIKE &#39;Com_______&#39;;</code><br>例：<code>show global status like &#39;Com_______&#39;</code></p>
+<h1 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h1><p>慢查询日志记录了所有执行时间超过指定参数（long_query_time，单位：秒，默认10秒）的所有SQL语句的日志。<br>MySQL的慢查询日志默认没有开启，需要在MySQL的配置文件（&#x2F;etc&#x2F;my.cnf）中配置如下信息：<br>    # 开启慢查询日志开关<br>    slow_query_log&#x3D;1<br>    # 设置慢查询日志的时间为2秒，SQL语句执行时间超过2秒，就会视为慢查询，记录慢查询日志<br>    long_query_time&#x3D;2<br>更改后记得重启MySQL服务，日志文件位置：&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
+<p>查看慢查询日志开关状态：<br><code>show variables like &#39;slow_query_log&#39;;</code></p>
+<h1 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h1><p>show profile 能在做SQL优化时帮我们了解时间都耗费在哪里。通过 have_profiling 参数，能看到当前 MySQL 是否支持 profile 操作：<br><code>SELECT @@have_profiling;</code><br>profiling 默认关闭，可以通过set语句在session&#x2F;global级别开启 profiling：<br><code>SET profiling = 1;</code><br>查看所有语句的耗时：<br><code>show profiles;</code><br>查看指定query_id的SQL语句各个阶段的耗时：<br><code>show profile for query query_id;</code><br>查看指定query_id的SQL语句CPU的使用情况<br><code>show profile cpu for query query_id;</code></p>
+<h1 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h1><p>EXPLAIN 或者 DESC 命令获取 MySQL 如何执行 SELECT 语句的信息，包括在 SELECT 语句执行过程中表如何连接和连接的顺序。<br>语法：<br>    # 直接在select语句之前加上关键字 explain &#x2F; desc<br>    EXPLAIN SELECT 字段列表 FROM 表名 HWERE 条件;</p>
+<p>EXPLAIN 各字段含义：</p>
+<ul>
+<li>id：select 查询的序列号，表示查询中执行 select 子句或者操作表的顺序（id相同，执行顺序从上到下；id不同，值越大越先执行）</li>
+<li>select_type：表示 SELECT 的类型，常见取值有 SIMPLE（简单表，即不适用表连接或者子查询）、PRIMARY（主查询，即外层的查询）、UNION（UNION中的第二个或者后面的查询语句）、SUBQUERY（SELECT&#x2F;WHERE之后包含了子查询）等</li>
+<li>type：表示连接类型，性能由好到差的连接类型为 NULL、system、const、eq_ref、ref、range、index、all</li>
+</ul>
+<blockquote>
+<p>NULL:查询不存在的表时一般为NULL</p>
+<p>system:查询系统表数据时一般为system</p>
+<p>const : 主键索引或唯一索引数据</p>
+<p>eq_ref,ref:非唯一索引查询</p>
+</blockquote>
+<ul>
+<li>possible_key：可能应用在这张表上的索引，一个或多个</li>
+<li>Key：实际使用的索引，如果为 NULL，则没有使用索引</li>
+<li>Key_len：表示索引中使用的字节数，该值为索引字段最大可能长度，并非实际使用长度，在不损失精确性的前提下，长度越短越好</li>
+<li>rows：MySQL认为必须要执行的行数，在InnoDB引擎的表中，是一个估计值，可能并不总是准确的</li>
+<li>filtered：表示返回结果的行数占需读取行数的百分比，filtered的值越大越好</li>
+</ul>
+]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>性能分析</tag>
+        <tag>explain</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sql通用语法及分类</title>
+    <url>/2022/05/07/sql%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95%E5%8F%8A%E5%88%86%E7%B1%BB/</url>
+    <content><![CDATA[<h2 id="通用语法及分类"><a href="#通用语法及分类" class="headerlink" title="通用语法及分类"></a>通用语法及分类</h2><ul>
+<li>DDL: 数据定义语言，用来定义数据库对象（数据库、表、字段）</li>
+<li>DML: 数据操作语言，用来对数据库表中的数据进行增删改</li>
+<li>DQL: 数据查询语言，用来查询数据库中表的记录</li>
+<li>DCL: 数据控制语言，用来创建数据库用户、控制数据库的控制权限</li>
+</ul>
+<h3 id="DDL（数据定义语言）"><a href="#DDL（数据定义语言）" class="headerlink" title="DDL（数据定义语言）"></a>DDL（数据定义语言）</h3><p>数据定义语言</p>
+<h4 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h4><p>查询所有数据库：<br><code>SHOW DATABASES;</code><br>查询当前数据库：<br><code>SELECT DATABASE();</code><br>创建数据库：<br><code>CREATE DATABASE [ IF NOT EXISTS ] 数据库名 [ DEFAULT CHARSET 字符集] [COLLATE 排序规则 ];</code><br>删除数据库：<br><code>DROP DATABASE [ IF EXISTS ] 数据库名;</code><br>使用数据库：<br><code>USE 数据库名;</code></p>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>UTF8字符集长度为3字节，有些符号占4字节，所以推荐用utf8mb4字符集</li>
+</ul>
+<h4 id="表操作"><a href="#表操作" class="headerlink" title="表操作"></a>表操作</h4><p>查询当前数据库所有表：<br><code>SHOW TABLES;</code><br>查询表结构：<br><code>DESC 表名;</code><br>查询指定表的建表语句：<br><code>SHOW CREATE TABLE 表名;</code></p>
+<p>创建表：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE 表名(</span><br><span class="line">	字段1 字段1类型 [COMMENT 字段1注释],</span><br><span class="line">	字段2 字段2类型 [COMMENT 字段2注释],</span><br><span class="line">	字段3 字段3类型 [COMMENT 字段3注释],</span><br><span class="line">	...</span><br><span class="line">	字段n 字段n类型 [COMMENT 字段n注释]</span><br><span class="line">)[ COMMENT 表注释 ];</span><br></pre></td></tr></table></figure>
+
+<p><strong>最后一个字段后面没有逗号</strong></p>
+<p>添加字段：<br><code>ALTER TABLE 表名 ADD 字段名 类型(长度) [COMMENT 注释] [约束];</code><br>例：<code>ALTER TABLE emp ADD nickname varchar(20) COMMENT &#39;昵称&#39;;</code></p>
+<p>修改数据类型：<br><code>ALTER TABLE 表名 MODIFY 字段名 新数据类型(长度);</code><br>修改字段名和字段类型：<br><code>ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型(长度) [COMMENT 注释] [约束];</code><br>例：将emp表的nickname字段修改为username，类型为varchar(30)<br><code>ALTER TABLE emp CHANGE nickname username varchar(30) COMMENT &#39;昵称&#39;;</code></p>
+<p>删除字段：<br><code>ALTER TABLE 表名 DROP 字段名;</code></p>
+<p>修改表名：<br><code>ALTER TABLE 表名 RENAME TO 新表名</code></p>
+<p>删除表：<br><code>DROP TABLE [IF EXISTS] 表名;</code><br>删除表，并重新创建该表：<br><code>TRUNCATE TABLE 表名;</code></p>
+<h3 id="DML（数据操作语言）"><a href="#DML（数据操作语言）" class="headerlink" title="DML（数据操作语言）"></a>DML（数据操作语言）</h3><h4 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h4><p>指定字段：<br><code>INSERT INTO 表名 (字段名1, 字段名2, ...) VALUES (值1, 值2, ...);</code><br>全部字段：<br><code>INSERT INTO 表名 VALUES (值1, 值2, ...);</code></p>
+<p>批量添加数据：<br><code>INSERT INTO 表名 (字段名1, 字段名2, ...) VALUES (值1, 值2, ...), (值1, 值2, ...), (值1, 值2, ...);</code><br><code>INSERT INTO 表名 VALUES (值1, 值2, ...), (值1, 值2, ...), (值1, 值2, ...);</code></p>
+<h5 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>字符串和日期类型数据应该包含在引号中</li>
+<li>插入的数据大小应该在字段的规定范围内</li>
+</ul>
+<h4 id="更新和删除数据"><a href="#更新和删除数据" class="headerlink" title="更新和删除数据"></a>更新和删除数据</h4><p>修改数据：<br><code>UPDATE 表名 SET 字段名1 = 值1, 字段名2 = 值2, ... [ WHERE 条件 ];</code><br>例：<br><code>UPDATE emp SET name = &#39;Jack&#39; WHERE id = 1;</code></p>
+<p>删除数据：<br><code>DELETE FROM 表名 [ WHERE 条件 ];</code></p>
+<h3 id="DQL（数据查询语言）"><a href="#DQL（数据查询语言）" class="headerlink" title="DQL（数据查询语言）"></a>DQL（数据查询语言）</h3><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	字段列表</span><br><span class="line">FROM</span><br><span class="line">	表名字段</span><br><span class="line">WHERE</span><br><span class="line">	条件列表</span><br><span class="line">GROUP BY</span><br><span class="line">	分组字段列表</span><br><span class="line">HAVING</span><br><span class="line">	分组后的条件列表</span><br><span class="line">ORDER BY</span><br><span class="line">	排序字段列表</span><br><span class="line">LIMIT</span><br><span class="line">	分页参数</span><br></pre></td></tr></table></figure>
+
+<h4 id="基础查询"><a href="#基础查询" class="headerlink" title="基础查询"></a>基础查询</h4><p>查询多个字段：<br><code>SELECT 字段1, 字段2, 字段3, ... FROM 表名;</code><br><code>SELECT * FROM 表名;</code></p>
+<p>设置别名：<br><code>SELECT 字段1 [ AS 别名1 ], 字段2 [ AS 别名2 ], 字段3 [ AS 别名3 ], ... FROM 表名;</code><br><code>SELECT 字段1 [ 别名1 ], 字段2 [ 别名2 ], 字段3 [ 别名3 ], ... FROM 表名;</code></p>
+<p>去除重复记录：<br><code>SELECT DISTINCT 字段列表 FROM 表名;</code></p>
+<p>转义：<br><code>SELECT * FROM 表名 WHERE name LIKE &#39;/_张三&#39; ESCAPE &#39;/&#39;</code><br>&#x2F; 之后的_不作为通配符</p>
+<h4 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h4><p>语法：<br><code>SELECT 字段列表 FROM 表名 WHERE 条件列表;</code></p>
+<p>条件：</p>
+<table>
+<thead>
+<tr>
+<th>比较运算符</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>&gt;&#x3D;</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&lt;&#x3D;</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>&#x3D;</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>&lt;&gt; 或 !&#x3D;</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>BETWEEN … AND …</td>
+<td>在某个范围内（含最小、最大值）</td>
+</tr>
+<tr>
+<td>IN(…)</td>
+<td>在in之后的列表中的值，多选一</td>
+</tr>
+<tr>
+<td>LIKE 占位符</td>
+<td>模糊匹配（_匹配单个字符，%匹配任意个字符）</td>
+</tr>
+<tr>
+<td>IS NULL</td>
+<td>是NULL</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>逻辑运算符</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AND 或 &amp;&amp;</td>
+<td>并且（多个条件同时成立）</td>
+</tr>
+<tr>
+<td>OR 或 &amp;#124;&amp;#124;</td>
+<td>或者（多个条件任意一个成立）</td>
+</tr>
+<tr>
+<td>NOT 或 !</td>
+<td>非，不是</td>
+</tr>
+</tbody></table>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 年龄等于30</span><br><span class="line">select * from employee where age = 30;</span><br><span class="line">-- 年龄小于30</span><br><span class="line">select * from employee where age &lt; 30;</span><br><span class="line">-- 小于等于</span><br><span class="line">select * from employee where age &lt;= 30;</span><br><span class="line">-- 没有身份证</span><br><span class="line">select * from employee where idcard is null or idcard = &#x27;&#x27;;</span><br><span class="line">-- 有身份证</span><br><span class="line">select * from employee where idcard;</span><br><span class="line">select * from employee where idcard is not null;</span><br><span class="line">-- 不等于</span><br><span class="line">select * from employee where age != 30;</span><br><span class="line">-- 年龄在20到30之间</span><br><span class="line">select * from employee where age between 20 and 30;</span><br><span class="line">select * from employee where age &gt;= 20 and age &lt;= 30;</span><br><span class="line">-- 下面语句不报错，但查不到任何信息</span><br><span class="line">select * from employee where age between 30 and 20;</span><br><span class="line">-- 性别为女且年龄小于30</span><br><span class="line">select * from employee where age &lt; 30 and gender = &#x27;女&#x27;;</span><br><span class="line">-- 年龄等于25或30或35</span><br><span class="line">select * from employee where age = 25 or age = 30 or age = 35;</span><br><span class="line">select * from employee where age in (25, 30, 35);</span><br><span class="line">-- 姓名为两个字</span><br><span class="line">select * from employee where name like &#x27;__&#x27;;</span><br><span class="line">-- 身份证最后为X</span><br><span class="line">select * from employee where idcard like &#x27;%X&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="聚合查询（聚合函数）"><a href="#聚合查询（聚合函数）" class="headerlink" title="聚合查询（聚合函数）"></a>聚合查询（聚合函数）</h4><p>常见聚合函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>count</td>
+<td>统计数量</td>
+</tr>
+<tr>
+<td>max</td>
+<td>最大值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>最小值</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>平均值</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>求和</td>
+</tr>
+</tbody></table>
+<p>语法：<br><code>SELECT 聚合函数(字段列表) FROM 表名;</code><br>例：<br><code>SELECT count(id) from employee where workaddress = &quot;广东省&quot;;</code></p>
+<h4 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h4><p>语法：<br><code>SELECT 字段列表 FROM 表名 [ WHERE 条件 ] GROUP BY 分组字段名 [ HAVING 分组后的过滤条件 ];</code></p>
+<p>where 和 having 的区别：</p>
+<ul>
+<li>执行时机不同：where是分组之前进行过滤，不满足where条件不参与分组；having是分组后对结果进行过滤。</li>
+<li>判断条件不同：where不能对聚合函数进行判断，而having可以。</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 根据性别分组，统计男性和女性数量（只显示分组数量，不显示哪个是男哪个是女）</span><br><span class="line">select count(*) from employee group by gender;</span><br><span class="line">-- 根据性别分组，统计男性和女性数量</span><br><span class="line">select gender, count(*) from employee group by gender;</span><br><span class="line">-- 根据性别分组，统计男性和女性的平均年龄</span><br><span class="line">select gender, avg(age) from employee group by gender;</span><br><span class="line">-- 年龄小于45，并根据工作地址分组</span><br><span class="line">select workaddress, count(*) from employee where age &lt; 45 group by workaddress;</span><br><span class="line">-- 年龄小于45，并根据工作地址分组，获取员工数量大于等于3的工作地址</span><br><span class="line">select workaddress, count(*) address_count from employee where age &lt; 45 group by workaddress having address_count &gt;= 3;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项-2"><a href="#注意事项-2" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>执行顺序：where &gt; 聚合函数 &gt; having</li>
+<li>分组之后，查询的字段一般为聚合函数和分组字段，查询其他字段无任何意义</li>
+</ul>
+<h4 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h4><p>语法：<br><code>SELECT 字段列表 FROM 表名 ORDER BY 字段1 排序方式1, 字段2 排序方式2;</code></p>
+<p>排序方式：</p>
+<ul>
+<li>ASC: 升序（默认）</li>
+<li>DESC: 降序</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 根据年龄升序排序</span><br><span class="line">SELECT * FROM employee ORDER BY age ASC;</span><br><span class="line">SELECT * FROM employee ORDER BY age;</span><br><span class="line">-- 两字段排序，根据年龄升序排序，入职时间降序排序</span><br><span class="line">SELECT * FROM employee ORDER BY age ASC, entrydate DESC;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项-3"><a href="#注意事项-3" class="headerlink" title="注意事项"></a>注意事项</h5><p>如果是多字段排序，当第一个字段值相同时，才会根据第二个字段进行排序</p>
+<h4 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h4><p>语法：<br><code>SELECT 字段列表 FROM 表名 LIMIT 起始索引, 查询记录数;</code></p>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 查询第一页数据，展示10条</span><br><span class="line">SELECT * FROM employee LIMIT 0, 10;</span><br><span class="line">-- 查询第二页</span><br><span class="line">SELECT * FROM employee LIMIT 10, 10;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项-4"><a href="#注意事项-4" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>起始索引从0开始，起始索引 &#x3D; （查询页码 - 1） * 每页显示记录数</li>
+<li>分页查询是数据库的方言，不同数据库有不同实现，MySQL是LIMIT</li>
+<li>如果查询的是第一页数据，起始索引可以省略，直接简写 LIMIT 10</li>
+</ul>
+<h4 id="DQL执行顺序"><a href="#DQL执行顺序" class="headerlink" title="DQL执行顺序"></a>DQL执行顺序</h4><p>FROM -&gt; WHERE -&gt; GROUP BY -&gt; SELECT -&gt; ORDER BY -&gt; LIMIT</p>
+<h3 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h3><h4 id="管理用户"><a href="#管理用户" class="headerlink" title="管理用户"></a>管理用户</h4><p>查询用户：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">USER mysql;</span><br><span class="line">SELECT * FROM user;</span><br></pre></td></tr></table></figure>
+
+<p>创建用户:<br><code>CREATE USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED BY &#39;密码&#39;;</code></p>
+<p>修改用户密码：<br><code>ALTER USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED WITH mysql_native_password BY &#39;新密码&#39;;</code></p>
+<p>删除用户：<br><code>DROP USER &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 创建用户test，只能在当前主机localhost访问</span><br><span class="line">create user &#x27;test&#x27;@&#x27;localhost&#x27; identified by &#x27;123456&#x27;;</span><br><span class="line">-- 创建用户test，能在任意主机访问</span><br><span class="line">create user &#x27;test&#x27;@&#x27;%&#x27; identified by &#x27;123456&#x27;;</span><br><span class="line">create user &#x27;test&#x27; identified by &#x27;123456&#x27;;</span><br><span class="line">-- 修改密码</span><br><span class="line">alter user &#x27;test&#x27;@&#x27;localhost&#x27; identified with mysql_native_password by &#x27;1234&#x27;;</span><br><span class="line">-- 删除用户</span><br><span class="line">drop user &#x27;test&#x27;@&#x27;localhost&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项-5"><a href="#注意事项-5" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>主机名可以使用 % 通配</li>
+</ul>
+<h4 id="权限控制"><a href="#权限控制" class="headerlink" title="权限控制"></a>权限控制</h4><p>常用权限：</p>
+<table>
+<thead>
+<tr>
+<th>权限</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ALL, ALL PRIVILEGES</td>
+<td>所有权限</td>
+</tr>
+<tr>
+<td>SELECT</td>
+<td>查询数据</td>
+</tr>
+<tr>
+<td>INSERT</td>
+<td>插入数据</td>
+</tr>
+<tr>
+<td>UPDATE</td>
+<td>修改数据</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除数据</td>
+</tr>
+<tr>
+<td>ALTER</td>
+<td>修改表</td>
+</tr>
+<tr>
+<td>DROP</td>
+<td>删除数据库&#x2F;表&#x2F;视图</td>
+</tr>
+<tr>
+<td>CREATE</td>
+<td>创建数据库&#x2F;表</td>
+</tr>
+</tbody></table>
+<p>更多权限请看<a href="#%E6%9D%83%E9%99%90%E4%B8%80%E8%A7%88%E8%A1%A8" title="权限一览表">权限一览表</a></p>
+<p>查询权限：<br><code>SHOW GRANTS FOR &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+<p>授予权限：<br><code>GRANT 权限列表 ON 数据库名.表名 TO &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+<p>撤销权限：<br><code>REVOKE 权限列表 ON 数据库名.表名 FROM &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+<h5 id="注意事项-6"><a href="#注意事项-6" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>多个权限用逗号分隔</li>
+<li>授权时，数据库名和表名可以用 * 进行通配，代表所有</li>
+</ul>
+<h1 id="权限一览表"><a href="#权限一览表" class="headerlink" title="权限一览表"></a>权限一览表</h1><blockquote>
+<p>具体权限的作用详见<a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html" title="官方文档">官方文档</a></p>
+</blockquote>
+<p>GRANT 和 REVOKE 允许的静态权限</p>
+<table>
+<thead>
+<tr>
+<th align="left">Privilege</th>
+<th align="left">Grant Table Column</th>
+<th align="left">Context</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_all"><code>ALL [PRIVILEGES]</code></a></td>
+<td align="left">Synonym for “all privileges”</td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_alter"><code>ALTER</code></a></td>
+<td align="left"><code>Alter_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_alter-routine"><code>ALTER ROUTINE</code></a></td>
+<td align="left"><code>Alter_routine_priv</code></td>
+<td align="left">Stored routines</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create"><code>CREATE</code></a></td>
+<td align="left"><code>Create_priv</code></td>
+<td align="left">Databases, tables, or indexes</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-role"><code>CREATE ROLE</code></a></td>
+<td align="left"><code>Create_role_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-routine"><code>CREATE ROUTINE</code></a></td>
+<td align="left"><code>Create_routine_priv</code></td>
+<td align="left">Stored routines</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-tablespace"><code>CREATE TABLESPACE</code></a></td>
+<td align="left"><code>Create_tablespace_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-temporary-tables"><code>CREATE TEMPORARY TABLES</code></a></td>
+<td align="left"><code>Create_tmp_table_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-user"><code>CREATE USER</code></a></td>
+<td align="left"><code>Create_user_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-view"><code>CREATE VIEW</code></a></td>
+<td align="left"><code>Create_view_priv</code></td>
+<td align="left">Views</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_delete"><code>DELETE</code></a></td>
+<td align="left"><code>Delete_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_drop"><code>DROP</code></a></td>
+<td align="left"><code>Drop_priv</code></td>
+<td align="left">Databases, tables, or views</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_drop-role"><code>DROP ROLE</code></a></td>
+<td align="left"><code>Drop_role_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_event"><code>EVENT</code></a></td>
+<td align="left"><code>Event_priv</code></td>
+<td align="left">Databases</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_execute"><code>EXECUTE</code></a></td>
+<td align="left"><code>Execute_priv</code></td>
+<td align="left">Stored routines</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_file"><code>FILE</code></a></td>
+<td align="left"><code>File_priv</code></td>
+<td align="left">File access on server host</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_grant-option"><code>GRANT OPTION</code></a></td>
+<td align="left"><code>Grant_priv</code></td>
+<td align="left">Databases, tables, or stored routines</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_index"><code>INDEX</code></a></td>
+<td align="left"><code>Index_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_insert"><code>INSERT</code></a></td>
+<td align="left"><code>Insert_priv</code></td>
+<td align="left">Tables or columns</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_lock-tables"><code>LOCK TABLES</code></a></td>
+<td align="left"><code>Lock_tables_priv</code></td>
+<td align="left">Databases</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process"><code>PROCESS</code></a></td>
+<td align="left"><code>Process_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_proxy"><code>PROXY</code></a></td>
+<td align="left">See <code>proxies_priv</code> table</td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_references"><code>REFERENCES</code></a></td>
+<td align="left"><code>References_priv</code></td>
+<td align="left">Databases or tables</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_reload"><code>RELOAD</code></a></td>
+<td align="left"><code>Reload_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_replication-client"><code>REPLICATION CLIENT</code></a></td>
+<td align="left"><code>Repl_client_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_replication-slave"><code>REPLICATION SLAVE</code></a></td>
+<td align="left"><code>Repl_slave_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_select"><code>SELECT</code></a></td>
+<td align="left"><code>Select_priv</code></td>
+<td align="left">Tables or columns</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_show-databases"><code>SHOW DATABASES</code></a></td>
+<td align="left"><code>Show_db_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_show-view"><code>SHOW VIEW</code></a></td>
+<td align="left"><code>Show_view_priv</code></td>
+<td align="left">Views</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_shutdown"><code>SHUTDOWN</code></a></td>
+<td align="left"><code>Shutdown_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_super"><code>SUPER</code></a></td>
+<td align="left"><code>Super_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_trigger"><code>TRIGGER</code></a></td>
+<td align="left"><code>Trigger_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_update"><code>UPDATE</code></a></td>
+<td align="left"><code>Update_priv</code></td>
+<td align="left">Tables or columns</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_usage"><code>USAGE</code></a></td>
+<td align="left">Synonym for “no privileges”</td>
+<td align="left">Server administration</td>
+</tr>
+</tbody></table>
+<p>GRANT 和 REVOKE 允许的动态权限</p>
+<table>
+<thead>
+<tr>
+<th align="left">Privilege</th>
+<th align="left">Context</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_application-password-admin"><code>APPLICATION_PASSWORD_ADMIN</code></a></td>
+<td align="left">Dual password administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_audit-abort-exempt"><code>AUDIT_ABORT_EXEMPT</code></a></td>
+<td align="left">Allow queries blocked by audit log filter</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_audit-admin"><code>AUDIT_ADMIN</code></a></td>
+<td align="left">Audit log administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_authentication-policy-admin"><code>AUTHENTICATION_POLICY_ADMIN</code></a></td>
+<td align="left">Authentication administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_backup-admin"><code>BACKUP_ADMIN</code></a></td>
+<td align="left">Backup administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_binlog-admin"><code>BINLOG_ADMIN</code></a></td>
+<td align="left">Backup and Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_binlog-encryption-admin"><code>BINLOG_ENCRYPTION_ADMIN</code></a></td>
+<td align="left">Backup and Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_clone-admin"><code>CLONE_ADMIN</code></a></td>
+<td align="left">Clone administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_connection-admin"><code>CONNECTION_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_encryption-key-admin"><code>ENCRYPTION_KEY_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_firewall-admin"><code>FIREWALL_ADMIN</code></a></td>
+<td align="left">Firewall administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_firewall-exempt"><code>FIREWALL_EXEMPT</code></a></td>
+<td align="left">Firewall administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_firewall-user"><code>FIREWALL_USER</code></a></td>
+<td align="left">Firewall administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_flush-optimizer-costs"><code>FLUSH_OPTIMIZER_COSTS</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_flush-status"><code>FLUSH_STATUS</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_flush-tables"><code>FLUSH_TABLES</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_flush-user-resources"><code>FLUSH_USER_RESOURCES</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_group-replication-admin"><code>GROUP_REPLICATION_ADMIN</code></a></td>
+<td align="left">Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_group-replication-stream"><code>GROUP_REPLICATION_STREAM</code></a></td>
+<td align="left">Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_innodb-redo-log-archive"><code>INNODB_REDO_LOG_ARCHIVE</code></a></td>
+<td align="left">Redo log archiving administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_ndb-stored-user"><code>NDB_STORED_USER</code></a></td>
+<td align="left">NDB Cluster</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_passwordless-user-admin"><code>PASSWORDLESS_USER_ADMIN</code></a></td>
+<td align="left">Authentication administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_persist-ro-variables-admin"><code>PERSIST_RO_VARIABLES_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_replication-applier"><code>REPLICATION_APPLIER</code></a></td>
+<td align="left"><code>PRIVILEGE_CHECKS_USER</code> for a replication channel</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_replication-slave-admin"><code>REPLICATION_SLAVE_ADMIN</code></a></td>
+<td align="left">Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_resource-group-admin"><code>RESOURCE_GROUP_ADMIN</code></a></td>
+<td align="left">Resource group administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_resource-group-user"><code>RESOURCE_GROUP_USER</code></a></td>
+<td align="left">Resource group administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_role-admin"><code>ROLE_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_session-variables-admin"><code>SESSION_VARIABLES_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_set-user-id"><code>SET_USER_ID</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_show-routine"><code>SHOW_ROUTINE</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_system-user"><code>SYSTEM_USER</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_system-variables-admin"><code>SYSTEM_VARIABLES_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_table-encryption-admin"><code>TABLE_ENCRYPTION_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_version-token-admin"><code>VERSION_TOKEN_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_xa-recover-admin"><code>XA_RECOVER_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
 </search>

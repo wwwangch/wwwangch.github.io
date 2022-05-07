@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ahui.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="sql通用语法及分类,包括DDL、DML、DQL、DCL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql通用语法及分类">
+<meta property="og:url" content="https://www.ahui.site/2022/05/07/sql%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95%E5%8F%8A%E5%88%86%E7%B1%BB/index.html">
+<meta property="og:site_name" content="wch&#39;s blogs">
+<meta property="og:description" content="sql通用语法及分类,包括DDL、DML、DQL、DCL">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-05-07T02:31:40.000Z">
+<meta property="article:modified_time" content="2022-05-07T02:33:37.843Z">
+<meta property="article:author" content="wch">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.ahui.site/2022/05/07/sql%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95%E5%8F%8A%E5%88%86%E7%B1%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>sql通用语法及分类 | wch's blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wch's blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://www.ahui.site/2022/05/07/sql%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95%E5%8F%8A%E5%88%86%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wch">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wch's blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sql通用语法及分类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-07 10:31:40 / Modified: 10:33:37" itemprop="dateCreated datePublished" datetime="2022-05-07T10:31:40+08:00">2022-05-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">sql通用语法及分类,包括DDL、DML、DQL、DCL</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="通用语法及分类"><a href="#通用语法及分类" class="headerlink" title="通用语法及分类"></a>通用语法及分类</h2><ul>
+<li>DDL: 数据定义语言，用来定义数据库对象（数据库、表、字段）</li>
+<li>DML: 数据操作语言，用来对数据库表中的数据进行增删改</li>
+<li>DQL: 数据查询语言，用来查询数据库中表的记录</li>
+<li>DCL: 数据控制语言，用来创建数据库用户、控制数据库的控制权限</li>
+</ul>
+<h3 id="DDL（数据定义语言）"><a href="#DDL（数据定义语言）" class="headerlink" title="DDL（数据定义语言）"></a>DDL（数据定义语言）</h3><p>数据定义语言</p>
+<h4 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h4><p>查询所有数据库：<br><code>SHOW DATABASES;</code><br>查询当前数据库：<br><code>SELECT DATABASE();</code><br>创建数据库：<br><code>CREATE DATABASE [ IF NOT EXISTS ] 数据库名 [ DEFAULT CHARSET 字符集] [COLLATE 排序规则 ];</code><br>删除数据库：<br><code>DROP DATABASE [ IF EXISTS ] 数据库名;</code><br>使用数据库：<br><code>USE 数据库名;</code></p>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>UTF8字符集长度为3字节，有些符号占4字节，所以推荐用utf8mb4字符集</li>
+</ul>
+<h4 id="表操作"><a href="#表操作" class="headerlink" title="表操作"></a>表操作</h4><p>查询当前数据库所有表：<br><code>SHOW TABLES;</code><br>查询表结构：<br><code>DESC 表名;</code><br>查询指定表的建表语句：<br><code>SHOW CREATE TABLE 表名;</code></p>
+<p>创建表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE 表名(</span><br><span class="line">	字段1 字段1类型 [COMMENT 字段1注释],</span><br><span class="line">	字段2 字段2类型 [COMMENT 字段2注释],</span><br><span class="line">	字段3 字段3类型 [COMMENT 字段3注释],</span><br><span class="line">	...</span><br><span class="line">	字段n 字段n类型 [COMMENT 字段n注释]</span><br><span class="line">)[ COMMENT 表注释 ];</span><br></pre></td></tr></table></figure>
+
+<p><strong>最后一个字段后面没有逗号</strong></p>
+<p>添加字段：<br><code>ALTER TABLE 表名 ADD 字段名 类型(长度) [COMMENT 注释] [约束];</code><br>例：<code>ALTER TABLE emp ADD nickname varchar(20) COMMENT &#39;昵称&#39;;</code></p>
+<p>修改数据类型：<br><code>ALTER TABLE 表名 MODIFY 字段名 新数据类型(长度);</code><br>修改字段名和字段类型：<br><code>ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型(长度) [COMMENT 注释] [约束];</code><br>例：将emp表的nickname字段修改为username，类型为varchar(30)<br><code>ALTER TABLE emp CHANGE nickname username varchar(30) COMMENT &#39;昵称&#39;;</code></p>
+<p>删除字段：<br><code>ALTER TABLE 表名 DROP 字段名;</code></p>
+<p>修改表名：<br><code>ALTER TABLE 表名 RENAME TO 新表名</code></p>
+<p>删除表：<br><code>DROP TABLE [IF EXISTS] 表名;</code><br>删除表，并重新创建该表：<br><code>TRUNCATE TABLE 表名;</code></p>
+<h3 id="DML（数据操作语言）"><a href="#DML（数据操作语言）" class="headerlink" title="DML（数据操作语言）"></a>DML（数据操作语言）</h3><h4 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h4><p>指定字段：<br><code>INSERT INTO 表名 (字段名1, 字段名2, ...) VALUES (值1, 值2, ...);</code><br>全部字段：<br><code>INSERT INTO 表名 VALUES (值1, 值2, ...);</code></p>
+<p>批量添加数据：<br><code>INSERT INTO 表名 (字段名1, 字段名2, ...) VALUES (值1, 值2, ...), (值1, 值2, ...), (值1, 值2, ...);</code><br><code>INSERT INTO 表名 VALUES (值1, 值2, ...), (值1, 值2, ...), (值1, 值2, ...);</code></p>
+<h5 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>字符串和日期类型数据应该包含在引号中</li>
+<li>插入的数据大小应该在字段的规定范围内</li>
+</ul>
+<h4 id="更新和删除数据"><a href="#更新和删除数据" class="headerlink" title="更新和删除数据"></a>更新和删除数据</h4><p>修改数据：<br><code>UPDATE 表名 SET 字段名1 = 值1, 字段名2 = 值2, ... [ WHERE 条件 ];</code><br>例：<br><code>UPDATE emp SET name = &#39;Jack&#39; WHERE id = 1;</code></p>
+<p>删除数据：<br><code>DELETE FROM 表名 [ WHERE 条件 ];</code></p>
+<h3 id="DQL（数据查询语言）"><a href="#DQL（数据查询语言）" class="headerlink" title="DQL（数据查询语言）"></a>DQL（数据查询语言）</h3><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	字段列表</span><br><span class="line">FROM</span><br><span class="line">	表名字段</span><br><span class="line">WHERE</span><br><span class="line">	条件列表</span><br><span class="line">GROUP BY</span><br><span class="line">	分组字段列表</span><br><span class="line">HAVING</span><br><span class="line">	分组后的条件列表</span><br><span class="line">ORDER BY</span><br><span class="line">	排序字段列表</span><br><span class="line">LIMIT</span><br><span class="line">	分页参数</span><br></pre></td></tr></table></figure>
+
+<h4 id="基础查询"><a href="#基础查询" class="headerlink" title="基础查询"></a>基础查询</h4><p>查询多个字段：<br><code>SELECT 字段1, 字段2, 字段3, ... FROM 表名;</code><br><code>SELECT * FROM 表名;</code></p>
+<p>设置别名：<br><code>SELECT 字段1 [ AS 别名1 ], 字段2 [ AS 别名2 ], 字段3 [ AS 别名3 ], ... FROM 表名;</code><br><code>SELECT 字段1 [ 别名1 ], 字段2 [ 别名2 ], 字段3 [ 别名3 ], ... FROM 表名;</code></p>
+<p>去除重复记录：<br><code>SELECT DISTINCT 字段列表 FROM 表名;</code></p>
+<p>转义：<br><code>SELECT * FROM 表名 WHERE name LIKE &#39;/_张三&#39; ESCAPE &#39;/&#39;</code><br>&#x2F; 之后的_不作为通配符</p>
+<h4 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h4><p>语法：<br><code>SELECT 字段列表 FROM 表名 WHERE 条件列表;</code></p>
+<p>条件：</p>
+<table>
+<thead>
+<tr>
+<th>比较运算符</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>&gt;&#x3D;</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&lt;&#x3D;</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>&#x3D;</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>&lt;&gt; 或 !&#x3D;</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>BETWEEN … AND …</td>
+<td>在某个范围内（含最小、最大值）</td>
+</tr>
+<tr>
+<td>IN(…)</td>
+<td>在in之后的列表中的值，多选一</td>
+</tr>
+<tr>
+<td>LIKE 占位符</td>
+<td>模糊匹配（_匹配单个字符，%匹配任意个字符）</td>
+</tr>
+<tr>
+<td>IS NULL</td>
+<td>是NULL</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>逻辑运算符</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AND 或 &amp;&amp;</td>
+<td>并且（多个条件同时成立）</td>
+</tr>
+<tr>
+<td>OR 或 &amp;#124;&amp;#124;</td>
+<td>或者（多个条件任意一个成立）</td>
+</tr>
+<tr>
+<td>NOT 或 !</td>
+<td>非，不是</td>
+</tr>
+</tbody></table>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">-- 年龄等于30</span><br><span class="line">select * from employee where age = 30;</span><br><span class="line">-- 年龄小于30</span><br><span class="line">select * from employee where age &lt; 30;</span><br><span class="line">-- 小于等于</span><br><span class="line">select * from employee where age &lt;= 30;</span><br><span class="line">-- 没有身份证</span><br><span class="line">select * from employee where idcard is null or idcard = &#x27;&#x27;;</span><br><span class="line">-- 有身份证</span><br><span class="line">select * from employee where idcard;</span><br><span class="line">select * from employee where idcard is not null;</span><br><span class="line">-- 不等于</span><br><span class="line">select * from employee where age != 30;</span><br><span class="line">-- 年龄在20到30之间</span><br><span class="line">select * from employee where age between 20 and 30;</span><br><span class="line">select * from employee where age &gt;= 20 and age &lt;= 30;</span><br><span class="line">-- 下面语句不报错，但查不到任何信息</span><br><span class="line">select * from employee where age between 30 and 20;</span><br><span class="line">-- 性别为女且年龄小于30</span><br><span class="line">select * from employee where age &lt; 30 and gender = &#x27;女&#x27;;</span><br><span class="line">-- 年龄等于25或30或35</span><br><span class="line">select * from employee where age = 25 or age = 30 or age = 35;</span><br><span class="line">select * from employee where age in (25, 30, 35);</span><br><span class="line">-- 姓名为两个字</span><br><span class="line">select * from employee where name like &#x27;__&#x27;;</span><br><span class="line">-- 身份证最后为X</span><br><span class="line">select * from employee where idcard like &#x27;%X&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="聚合查询（聚合函数）"><a href="#聚合查询（聚合函数）" class="headerlink" title="聚合查询（聚合函数）"></a>聚合查询（聚合函数）</h4><p>常见聚合函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>count</td>
+<td>统计数量</td>
+</tr>
+<tr>
+<td>max</td>
+<td>最大值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>最小值</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>平均值</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>求和</td>
+</tr>
+</tbody></table>
+<p>语法：<br><code>SELECT 聚合函数(字段列表) FROM 表名;</code><br>例：<br><code>SELECT count(id) from employee where workaddress = &quot;广东省&quot;;</code></p>
+<h4 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h4><p>语法：<br><code>SELECT 字段列表 FROM 表名 [ WHERE 条件 ] GROUP BY 分组字段名 [ HAVING 分组后的过滤条件 ];</code></p>
+<p>where 和 having 的区别：</p>
+<ul>
+<li>执行时机不同：where是分组之前进行过滤，不满足where条件不参与分组；having是分组后对结果进行过滤。</li>
+<li>判断条件不同：where不能对聚合函数进行判断，而having可以。</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-- 根据性别分组，统计男性和女性数量（只显示分组数量，不显示哪个是男哪个是女）</span><br><span class="line">select count(*) from employee group by gender;</span><br><span class="line">-- 根据性别分组，统计男性和女性数量</span><br><span class="line">select gender, count(*) from employee group by gender;</span><br><span class="line">-- 根据性别分组，统计男性和女性的平均年龄</span><br><span class="line">select gender, avg(age) from employee group by gender;</span><br><span class="line">-- 年龄小于45，并根据工作地址分组</span><br><span class="line">select workaddress, count(*) from employee where age &lt; 45 group by workaddress;</span><br><span class="line">-- 年龄小于45，并根据工作地址分组，获取员工数量大于等于3的工作地址</span><br><span class="line">select workaddress, count(*) address_count from employee where age &lt; 45 group by workaddress having address_count &gt;= 3;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项-2"><a href="#注意事项-2" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>执行顺序：where &gt; 聚合函数 &gt; having</li>
+<li>分组之后，查询的字段一般为聚合函数和分组字段，查询其他字段无任何意义</li>
+</ul>
+<h4 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h4><p>语法：<br><code>SELECT 字段列表 FROM 表名 ORDER BY 字段1 排序方式1, 字段2 排序方式2;</code></p>
+<p>排序方式：</p>
+<ul>
+<li>ASC: 升序（默认）</li>
+<li>DESC: 降序</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- 根据年龄升序排序</span><br><span class="line">SELECT * FROM employee ORDER BY age ASC;</span><br><span class="line">SELECT * FROM employee ORDER BY age;</span><br><span class="line">-- 两字段排序，根据年龄升序排序，入职时间降序排序</span><br><span class="line">SELECT * FROM employee ORDER BY age ASC, entrydate DESC;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项-3"><a href="#注意事项-3" class="headerlink" title="注意事项"></a>注意事项</h5><p>如果是多字段排序，当第一个字段值相同时，才会根据第二个字段进行排序</p>
+<h4 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h4><p>语法：<br><code>SELECT 字段列表 FROM 表名 LIMIT 起始索引, 查询记录数;</code></p>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 查询第一页数据，展示10条</span><br><span class="line">SELECT * FROM employee LIMIT 0, 10;</span><br><span class="line">-- 查询第二页</span><br><span class="line">SELECT * FROM employee LIMIT 10, 10;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项-4"><a href="#注意事项-4" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>起始索引从0开始，起始索引 &#x3D; （查询页码 - 1） * 每页显示记录数</li>
+<li>分页查询是数据库的方言，不同数据库有不同实现，MySQL是LIMIT</li>
+<li>如果查询的是第一页数据，起始索引可以省略，直接简写 LIMIT 10</li>
+</ul>
+<h4 id="DQL执行顺序"><a href="#DQL执行顺序" class="headerlink" title="DQL执行顺序"></a>DQL执行顺序</h4><p>FROM -&gt; WHERE -&gt; GROUP BY -&gt; SELECT -&gt; ORDER BY -&gt; LIMIT</p>
+<h3 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h3><h4 id="管理用户"><a href="#管理用户" class="headerlink" title="管理用户"></a>管理用户</h4><p>查询用户：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">USER mysql;</span><br><span class="line">SELECT * FROM user;</span><br></pre></td></tr></table></figure>
+
+<p>创建用户:<br><code>CREATE USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED BY &#39;密码&#39;;</code></p>
+<p>修改用户密码：<br><code>ALTER USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED WITH mysql_native_password BY &#39;新密码&#39;;</code></p>
+<p>删除用户：<br><code>DROP USER &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-- 创建用户test，只能在当前主机localhost访问</span><br><span class="line">create user &#x27;test&#x27;@&#x27;localhost&#x27; identified by &#x27;123456&#x27;;</span><br><span class="line">-- 创建用户test，能在任意主机访问</span><br><span class="line">create user &#x27;test&#x27;@&#x27;%&#x27; identified by &#x27;123456&#x27;;</span><br><span class="line">create user &#x27;test&#x27; identified by &#x27;123456&#x27;;</span><br><span class="line">-- 修改密码</span><br><span class="line">alter user &#x27;test&#x27;@&#x27;localhost&#x27; identified with mysql_native_password by &#x27;1234&#x27;;</span><br><span class="line">-- 删除用户</span><br><span class="line">drop user &#x27;test&#x27;@&#x27;localhost&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项-5"><a href="#注意事项-5" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>主机名可以使用 % 通配</li>
+</ul>
+<h4 id="权限控制"><a href="#权限控制" class="headerlink" title="权限控制"></a>权限控制</h4><p>常用权限：</p>
+<table>
+<thead>
+<tr>
+<th>权限</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ALL, ALL PRIVILEGES</td>
+<td>所有权限</td>
+</tr>
+<tr>
+<td>SELECT</td>
+<td>查询数据</td>
+</tr>
+<tr>
+<td>INSERT</td>
+<td>插入数据</td>
+</tr>
+<tr>
+<td>UPDATE</td>
+<td>修改数据</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除数据</td>
+</tr>
+<tr>
+<td>ALTER</td>
+<td>修改表</td>
+</tr>
+<tr>
+<td>DROP</td>
+<td>删除数据库&#x2F;表&#x2F;视图</td>
+</tr>
+<tr>
+<td>CREATE</td>
+<td>创建数据库&#x2F;表</td>
+</tr>
+</tbody></table>
+<p>更多权限请看<a href="#%E6%9D%83%E9%99%90%E4%B8%80%E8%A7%88%E8%A1%A8" title="权限一览表">权限一览表</a></p>
+<p>查询权限：<br><code>SHOW GRANTS FOR &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+<p>授予权限：<br><code>GRANT 权限列表 ON 数据库名.表名 TO &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+<p>撤销权限：<br><code>REVOKE 权限列表 ON 数据库名.表名 FROM &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+<h5 id="注意事项-6"><a href="#注意事项-6" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>多个权限用逗号分隔</li>
+<li>授权时，数据库名和表名可以用 * 进行通配，代表所有</li>
+</ul>
+<h1 id="权限一览表"><a href="#权限一览表" class="headerlink" title="权限一览表"></a>权限一览表</h1><blockquote>
+<p>具体权限的作用详见<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html" title="官方文档">官方文档</a></p>
+</blockquote>
+<p>GRANT 和 REVOKE 允许的静态权限</p>
+<table>
+<thead>
+<tr>
+<th align="left">Privilege</th>
+<th align="left">Grant Table Column</th>
+<th align="left">Context</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_all"><code>ALL [PRIVILEGES]</code></a></td>
+<td align="left">Synonym for “all privileges”</td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_alter"><code>ALTER</code></a></td>
+<td align="left"><code>Alter_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_alter-routine"><code>ALTER ROUTINE</code></a></td>
+<td align="left"><code>Alter_routine_priv</code></td>
+<td align="left">Stored routines</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create"><code>CREATE</code></a></td>
+<td align="left"><code>Create_priv</code></td>
+<td align="left">Databases, tables, or indexes</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-role"><code>CREATE ROLE</code></a></td>
+<td align="left"><code>Create_role_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-routine"><code>CREATE ROUTINE</code></a></td>
+<td align="left"><code>Create_routine_priv</code></td>
+<td align="left">Stored routines</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-tablespace"><code>CREATE TABLESPACE</code></a></td>
+<td align="left"><code>Create_tablespace_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-temporary-tables"><code>CREATE TEMPORARY TABLES</code></a></td>
+<td align="left"><code>Create_tmp_table_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-user"><code>CREATE USER</code></a></td>
+<td align="left"><code>Create_user_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_create-view"><code>CREATE VIEW</code></a></td>
+<td align="left"><code>Create_view_priv</code></td>
+<td align="left">Views</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_delete"><code>DELETE</code></a></td>
+<td align="left"><code>Delete_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_drop"><code>DROP</code></a></td>
+<td align="left"><code>Drop_priv</code></td>
+<td align="left">Databases, tables, or views</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_drop-role"><code>DROP ROLE</code></a></td>
+<td align="left"><code>Drop_role_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_event"><code>EVENT</code></a></td>
+<td align="left"><code>Event_priv</code></td>
+<td align="left">Databases</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_execute"><code>EXECUTE</code></a></td>
+<td align="left"><code>Execute_priv</code></td>
+<td align="left">Stored routines</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_file"><code>FILE</code></a></td>
+<td align="left"><code>File_priv</code></td>
+<td align="left">File access on server host</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_grant-option"><code>GRANT OPTION</code></a></td>
+<td align="left"><code>Grant_priv</code></td>
+<td align="left">Databases, tables, or stored routines</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_index"><code>INDEX</code></a></td>
+<td align="left"><code>Index_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_insert"><code>INSERT</code></a></td>
+<td align="left"><code>Insert_priv</code></td>
+<td align="left">Tables or columns</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_lock-tables"><code>LOCK TABLES</code></a></td>
+<td align="left"><code>Lock_tables_priv</code></td>
+<td align="left">Databases</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process"><code>PROCESS</code></a></td>
+<td align="left"><code>Process_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_proxy"><code>PROXY</code></a></td>
+<td align="left">See <code>proxies_priv</code> table</td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_references"><code>REFERENCES</code></a></td>
+<td align="left"><code>References_priv</code></td>
+<td align="left">Databases or tables</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_reload"><code>RELOAD</code></a></td>
+<td align="left"><code>Reload_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_replication-client"><code>REPLICATION CLIENT</code></a></td>
+<td align="left"><code>Repl_client_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_replication-slave"><code>REPLICATION SLAVE</code></a></td>
+<td align="left"><code>Repl_slave_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_select"><code>SELECT</code></a></td>
+<td align="left"><code>Select_priv</code></td>
+<td align="left">Tables or columns</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_show-databases"><code>SHOW DATABASES</code></a></td>
+<td align="left"><code>Show_db_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_show-view"><code>SHOW VIEW</code></a></td>
+<td align="left"><code>Show_view_priv</code></td>
+<td align="left">Views</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_shutdown"><code>SHUTDOWN</code></a></td>
+<td align="left"><code>Shutdown_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_super"><code>SUPER</code></a></td>
+<td align="left"><code>Super_priv</code></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_trigger"><code>TRIGGER</code></a></td>
+<td align="left"><code>Trigger_priv</code></td>
+<td align="left">Tables</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_update"><code>UPDATE</code></a></td>
+<td align="left"><code>Update_priv</code></td>
+<td align="left">Tables or columns</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_usage"><code>USAGE</code></a></td>
+<td align="left">Synonym for “no privileges”</td>
+<td align="left">Server administration</td>
+</tr>
+</tbody></table>
+<p>GRANT 和 REVOKE 允许的动态权限</p>
+<table>
+<thead>
+<tr>
+<th align="left">Privilege</th>
+<th align="left">Context</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_application-password-admin"><code>APPLICATION_PASSWORD_ADMIN</code></a></td>
+<td align="left">Dual password administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_audit-abort-exempt"><code>AUDIT_ABORT_EXEMPT</code></a></td>
+<td align="left">Allow queries blocked by audit log filter</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_audit-admin"><code>AUDIT_ADMIN</code></a></td>
+<td align="left">Audit log administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_authentication-policy-admin"><code>AUTHENTICATION_POLICY_ADMIN</code></a></td>
+<td align="left">Authentication administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_backup-admin"><code>BACKUP_ADMIN</code></a></td>
+<td align="left">Backup administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_binlog-admin"><code>BINLOG_ADMIN</code></a></td>
+<td align="left">Backup and Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_binlog-encryption-admin"><code>BINLOG_ENCRYPTION_ADMIN</code></a></td>
+<td align="left">Backup and Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_clone-admin"><code>CLONE_ADMIN</code></a></td>
+<td align="left">Clone administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_connection-admin"><code>CONNECTION_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_encryption-key-admin"><code>ENCRYPTION_KEY_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_firewall-admin"><code>FIREWALL_ADMIN</code></a></td>
+<td align="left">Firewall administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_firewall-exempt"><code>FIREWALL_EXEMPT</code></a></td>
+<td align="left">Firewall administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_firewall-user"><code>FIREWALL_USER</code></a></td>
+<td align="left">Firewall administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_flush-optimizer-costs"><code>FLUSH_OPTIMIZER_COSTS</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_flush-status"><code>FLUSH_STATUS</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_flush-tables"><code>FLUSH_TABLES</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_flush-user-resources"><code>FLUSH_USER_RESOURCES</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_group-replication-admin"><code>GROUP_REPLICATION_ADMIN</code></a></td>
+<td align="left">Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_group-replication-stream"><code>GROUP_REPLICATION_STREAM</code></a></td>
+<td align="left">Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_innodb-redo-log-archive"><code>INNODB_REDO_LOG_ARCHIVE</code></a></td>
+<td align="left">Redo log archiving administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_ndb-stored-user"><code>NDB_STORED_USER</code></a></td>
+<td align="left">NDB Cluster</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_passwordless-user-admin"><code>PASSWORDLESS_USER_ADMIN</code></a></td>
+<td align="left">Authentication administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_persist-ro-variables-admin"><code>PERSIST_RO_VARIABLES_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_replication-applier"><code>REPLICATION_APPLIER</code></a></td>
+<td align="left"><code>PRIVILEGE_CHECKS_USER</code> for a replication channel</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_replication-slave-admin"><code>REPLICATION_SLAVE_ADMIN</code></a></td>
+<td align="left">Replication administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_resource-group-admin"><code>RESOURCE_GROUP_ADMIN</code></a></td>
+<td align="left">Resource group administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_resource-group-user"><code>RESOURCE_GROUP_USER</code></a></td>
+<td align="left">Resource group administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_role-admin"><code>ROLE_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_session-variables-admin"><code>SESSION_VARIABLES_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_set-user-id"><code>SET_USER_ID</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_show-routine"><code>SHOW_ROUTINE</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_system-user"><code>SYSTEM_USER</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_system-variables-admin"><code>SYSTEM_VARIABLES_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_table-encryption-admin"><code>TABLE_ENCRYPTION_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_version-token-admin"><code>VERSION_TOKEN_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_xa-recover-admin"><code>XA_RECOVER_ADMIN</code></a></td>
+<td align="left">Server administration</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/06/pdf%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/" rel="prev" title="pdf资料整理">
+      <i class="fa fa-chevron-left"></i> pdf资料整理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/07/mysql%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" rel="next" title="mysql常用函数">
+      mysql常用函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95%E5%8F%8A%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">通用语法及分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DDL%EF%BC%88%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">DDL（数据定义语言）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.1.</span> <span class="nav-text">数据库操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.2.</span> <span class="nav-text">表操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DML%EF%BC%88%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E8%AF%AD%E8%A8%80%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">DML（数据操作语言）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.1.</span> <span class="nav-text">添加数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-1"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E5%92%8C%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">更新和删除数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DQL%EF%BC%88%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">DQL（数据查询语言）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.3.1.</span> <span class="nav-text">基础查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.3.2.</span> <span class="nav-text">条件查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%9A%E5%90%88%E6%9F%A5%E8%AF%A2%EF%BC%88%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%EF%BC%89"><span class="nav-number">1.3.3.</span> <span class="nav-text">聚合查询（聚合函数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.3.4.</span> <span class="nav-text">分组查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-2"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.3.5.</span> <span class="nav-text">排序查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-3"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.3.6.</span> <span class="nav-text">分页查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-4"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DQL%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.3.7.</span> <span class="nav-text">DQL执行顺序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL"><span class="nav-number">1.4.</span> <span class="nav-text">DCL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7"><span class="nav-number">1.4.1.</span> <span class="nav-text">管理用户</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-5"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="nav-number">1.4.2.</span> <span class="nav-text">权限控制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-6"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">注意事项</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E4%B8%80%E8%A7%88%E8%A1%A8"><span class="nav-number"></span> <span class="nav-text">权限一览表</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wch</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wch</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ce3c704806a6c87a5b71',
+      clientSecret: '1746595e6159dedd47e8f8ed7dbd73a084c01af0',
+      repo        : 'wwwangch.github.io',
+      owner       : 'wwwangch',
+      admin       : ['wwwangch'],
+      id          : '363fc77d946c11506df18a723b58c5c4',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
