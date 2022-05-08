@@ -20,22 +20,21 @@
     var CONFIG = {"hostname":"www.ahui.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="mysql性能分析方法">
+  <meta name="description" content="mysql触发器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql性能分析方法">
-<meta property="og:url" content="https://www.ahui.site/2022/05/07/mysql%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:title" content="mysql触发器">
+<meta property="og:url" content="https://www.ahui.site/2022/05/08/mysql%E8%A7%A6%E5%8F%91%E5%99%A8/index.html">
 <meta property="og:site_name" content="wch&#39;s blogs">
-<meta property="og:description" content="mysql性能分析方法">
+<meta property="og:description" content="mysql触发器">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-05-07T02:51:53.000Z">
-<meta property="article:modified_time" content="2022-05-07T02:52:54.060Z">
+<meta property="article:published_time" content="2022-05-08T14:46:45.000Z">
+<meta property="article:modified_time" content="2022-05-08T14:51:57.354Z">
 <meta property="article:author" content="wch">
 <meta property="article:tag" content="mysql">
-<meta property="article:tag" content="性能分析">
-<meta property="article:tag" content="explain">
+<meta property="article:tag" content="触发器">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.ahui.site/2022/05/07/mysql%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95/">
+<link rel="canonical" href="https://www.ahui.site/2022/05/08/mysql%E8%A7%A6%E5%8F%91%E5%99%A8/">
 
 
 <script id="page-configurations">
@@ -48,7 +47,7 @@
   };
 </script>
 
-  <title>mysql性能分析方法 | wch's blogs</title>
+  <title>mysql触发器 | wch's blogs</title>
   
 
 
@@ -191,7 +190,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://www.ahui.site/2022/05/07/mysql%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://www.ahui.site/2022/05/08/mysql%E8%A7%A6%E5%8F%91%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -204,7 +203,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          mysql性能分析方法
+          mysql触发器
         </h1>
 
         <div class="post-meta">
@@ -215,7 +214,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-05-07 10:51:53 / Modified: 10:52:54" itemprop="dateCreated datePublished" datetime="2022-05-07T10:51:53+08:00">2022-05-07</time>
+              <time title="Created: 2022-05-08 22:46:45 / Modified: 22:51:57" itemprop="dateCreated datePublished" datetime="2022-05-08T22:46:45+08:00">2022-05-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,7 +227,7 @@
             </span>
 
           
-            <div class="post-description">mysql性能分析方法</div>
+            <div class="post-description">mysql触发器</div>
 
         </div>
       </header>
@@ -239,30 +238,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="查看执行频次"><a href="#查看执行频次" class="headerlink" title="查看执行频次"></a>查看执行频次</h1><p>查看当前数据库的 INSERT, UPDATE, DELETE, SELECT 访问频次：<br><code>SHOW GLOBAL STATUS LIKE &#39;Com_______&#39;;</code> 或者 <code>SHOW SESSION STATUS LIKE &#39;Com_______&#39;;</code><br>例：<code>show global status like &#39;Com_______&#39;</code></p>
-<h1 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h1><p>慢查询日志记录了所有执行时间超过指定参数（long_query_time，单位：秒，默认10秒）的所有SQL语句的日志。<br>MySQL的慢查询日志默认没有开启，需要在MySQL的配置文件（&#x2F;etc&#x2F;my.cnf）中配置如下信息：<br>    # 开启慢查询日志开关<br>    slow_query_log&#x3D;1<br>    # 设置慢查询日志的时间为2秒，SQL语句执行时间超过2秒，就会视为慢查询，记录慢查询日志<br>    long_query_time&#x3D;2<br>更改后记得重启MySQL服务，日志文件位置：&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
-<p>查看慢查询日志开关状态：<br><code>show variables like &#39;slow_query_log&#39;;</code></p>
-<h1 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h1><p>show profile 能在做SQL优化时帮我们了解时间都耗费在哪里。通过 have_profiling 参数，能看到当前 MySQL 是否支持 profile 操作：<br><code>SELECT @@have_profiling;</code><br>profiling 默认关闭，可以通过set语句在session&#x2F;global级别开启 profiling：<br><code>SET profiling = 1;</code><br>查看所有语句的耗时：<br><code>show profiles;</code><br>查看指定query_id的SQL语句各个阶段的耗时：<br><code>show profile for query query_id;</code><br>查看指定query_id的SQL语句CPU的使用情况<br><code>show profile cpu for query query_id;</code></p>
-<h1 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h1><p>EXPLAIN 或者 DESC 命令获取 MySQL 如何执行 SELECT 语句的信息，包括在 SELECT 语句执行过程中表如何连接和连接的顺序。<br>语法：<br>    # 直接在select语句之前加上关键字 explain &#x2F; desc<br>    EXPLAIN SELECT 字段列表 FROM 表名 HWERE 条件;</p>
-<p>EXPLAIN 各字段含义：</p>
-<ul>
-<li>id：select 查询的序列号，表示查询中执行 select 子句或者操作表的顺序（id相同，执行顺序从上到下；id不同，值越大越先执行）</li>
-<li>select_type：表示 SELECT 的类型，常见取值有 SIMPLE（简单表，即不适用表连接或者子查询）、PRIMARY（主查询，即外层的查询）、UNION（UNION中的第二个或者后面的查询语句）、SUBQUERY（SELECT&#x2F;WHERE之后包含了子查询）等</li>
-<li>type：表示连接类型，性能由好到差的连接类型为 NULL、system、const、eq_ref、ref、range、index、all</li>
-</ul>
-<blockquote>
-<p>NULL:查询不存在的表时一般为NULL</p>
-<p>system:查询系统表数据时一般为system</p>
-<p>const : 主键索引或唯一索引数据</p>
-<p>eq_ref,ref:非唯一索引查询</p>
-</blockquote>
-<ul>
-<li>possible_key：可能应用在这张表上的索引，一个或多个</li>
-<li>Key：实际使用的索引，如果为 NULL，则没有使用索引</li>
-<li>Key_len：表示索引中使用的字节数，该值为索引字段最大可能长度，并非实际使用长度，在不损失精确性的前提下，长度越短越好</li>
-<li>rows：MySQL认为必须要执行的行数，在InnoDB引擎的表中，是一个估计值，可能并不总是准确的</li>
-<li>filtered：表示返回结果的行数占需读取行数的百分比，filtered的值越大越好</li>
-</ul>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>触发器是与表有关的数据库对象，指在<strong>insert&#x2F;update&#x2F;delete</strong>之前(<strong>BEFORE</strong>)或之后(<strong>AFTER</strong>)，触 发并执行触发器中定义的SQL语句集合。触发器的这种特性可以协助应用在数据库端确保数据的完整性 , 日志记录 , 数据校验等操作 。 使用别名<strong>OLD</strong>和<strong>NEW</strong>来引用触发器中发生变化的记录内容，这与其他的数据库是相似的。现在触发器还 只支持行级触发，不支持语句级触发</p>
+<table>
+<thead>
+<tr>
+<th>触发器类型</th>
+<th>NEW和OLD</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INSERT 型触发器</td>
+<td>NEW 表示将要或者已经新增的数据</td>
+</tr>
+<tr>
+<td>UPDATE 型触发器</td>
+<td>OLD 表示修改之前的数据 , NEW 表示将要或已经修改后的数据</td>
+</tr>
+<tr>
+<td>DELETE 型触发器</td>
+<td>OLD 表示将要或者已经删除的数据</td>
+</tr>
+</tbody></table>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trigger_name</span><br><span class="line">BEFORE<span class="operator">/</span>AFTER <span class="keyword">INSERT</span><span class="operator">/</span><span class="keyword">UPDATE</span><span class="operator">/</span><span class="keyword">DELETE</span></span><br><span class="line"><span class="keyword">ON</span> tbl_name <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span> <span class="comment">-- 行级触发器</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">trigger_stmt ;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> TRIGGERS ;</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> [schema_name.]trigger_name ; <span class="comment">-- 如果没有指定 schema_name，默认为当前数</span></span><br><span class="line">据库 。</span><br></pre></td></tr></table></figure>
+
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>通过触发器记录 tb_user 表的数据变更日志，将变更日志插入到日志表user_logs中, 包含增加, 修改 , 删除 ;</p>
+<h2 id="表结构准备"><a href="#表结构准备" class="headerlink" title="表结构准备:"></a>表结构准备:</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 准备工作 : 日志表 user_logs</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> user_logs(</span><br><span class="line">id <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="keyword">null</span> auto_increment,</span><br><span class="line">operation <span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="keyword">null</span> comment <span class="string">&#x27;操作类型, insert/update/delete&#x27;</span>,</span><br><span class="line">operate_time datetime <span class="keyword">not</span> <span class="keyword">null</span> comment <span class="string">&#x27;操作时间&#x27;</span>,</span><br><span class="line">operate_id <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="keyword">null</span> comment <span class="string">&#x27;操作的ID&#x27;</span>,</span><br><span class="line">operate_params <span class="type">varchar</span>(<span class="number">500</span>) comment <span class="string">&#x27;操作参数&#x27;</span>,</span><br><span class="line"><span class="keyword">primary</span> key(`id`)</span><br><span class="line">)engine<span class="operator">=</span>innodb <span class="keyword">default</span> charset<span class="operator">=</span>utf8;</span><br></pre></td></tr></table></figure>
+
+<h2 id="插入触发器"><a href="#插入触发器" class="headerlink" title="插入触发器"></a>插入触发器</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> tb_user_insert_trigger</span><br><span class="line">after <span class="keyword">insert</span> <span class="keyword">on</span> tb_user <span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> user_logs(id, operation, operate_time, operate_id, operate_params)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">(<span class="keyword">null</span>, <span class="string">&#x27;insert&#x27;</span>, now(), new.id, concat(<span class="string">&#x27;插入的数据内容为:</span></span><br><span class="line"><span class="string">id=&#x27;</span>,new.id,<span class="string">&#x27;,name=&#x27;</span>,new.name, <span class="string">&#x27;, phone=&#x27;</span>, NEW.phone, <span class="string">&#x27;, email=&#x27;</span>, NEW.email, <span class="string">&#x27;,</span></span><br><span class="line"><span class="string">profession=&#x27;</span>, NEW.profession));</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -273,8 +280,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/mysql/" rel="tag"># mysql</a>
-              <a href="/tags/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" rel="tag"># 性能分析</a>
-              <a href="/tags/explain/" rel="tag"># explain</a>
+              <a href="/tags/%E8%A7%A6%E5%8F%91%E5%99%A8/" rel="tag"># 触发器</a>
           </div>
 
         
@@ -283,13 +289,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/05/07/mysql%E5%B8%B8%E7%94%A8%E5%BC%95%E6%93%8E/" rel="prev" title="mysql常用引擎">
-      <i class="fa fa-chevron-left"></i> mysql常用引擎
+    <a href="/2022/05/07/mysql%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" rel="prev" title="mysql存储过程">
+      <i class="fa fa-chevron-left"></i> mysql存储过程
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/05/07/mysql%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" rel="next" title="mysql存储过程">
-      mysql存储过程 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -349,7 +352,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%A7%E8%A1%8C%E9%A2%91%E6%AC%A1"><span class="nav-number">1.</span> <span class="nav-text">查看执行频次</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">2.</span> <span class="nav-text">慢查询日志</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#profile"><span class="nav-number">3.</span> <span class="nav-text">profile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#explain"><span class="nav-number">4.</span> <span class="nav-text">explain</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-number">2.1.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B"><span class="nav-number">2.2.</span> <span class="nav-text">查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-number">2.3.</span> <span class="nav-text">删除</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">案例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%BB%93%E6%9E%84%E5%87%86%E5%A4%87"><span class="nav-number">3.1.</span> <span class="nav-text">表结构准备:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">插入触发器</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -478,7 +481,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'wwwangch.github.io',
       owner       : 'wwwangch',
       admin       : ['wwwangch'],
-      id          : '4dbbb41ec1b6c743193e9abbd6b8435b',
+      id          : '03b63fab9975b3b950b2c02f07fb1328',
         language: 'zh-CN',
       distractionFreeMode: true
     });
