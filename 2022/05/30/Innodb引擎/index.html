@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ahui.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Innodb引擎的存储结构和内存硬盘结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Innodb引擎">
+<meta property="og:url" content="https://www.ahui.site/2022/05/30/Innodb%E5%BC%95%E6%93%8E/index.html">
+<meta property="og:site_name" content="wch&#39;s blogs">
+<meta property="og:description" content="Innodb引擎的存储结构和内存硬盘结构">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2022/05/30/7XyZMbiWr5f9IGH.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/30/XBgSFoCIErWUVTj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/30/7uYXPeZWpbsBthf.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/30/ZpVMWd1b2H3o4kD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/31/hsaEx1w4NqVXRiC.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/31/6IEezoy2Z7AnbQ4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/31/Y4oHnZbc28C16Di.png">
+<meta property="article:published_time" content="2022-05-30T14:42:02.000Z">
+<meta property="article:modified_time" content="2022-05-31T14:22:41.522Z">
+<meta property="article:author" content="wch">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="innodb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/05/30/7XyZMbiWr5f9IGH.png">
+
+<link rel="canonical" href="https://www.ahui.site/2022/05/30/Innodb%E5%BC%95%E6%93%8E/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Innodb引擎 | wch's blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wch's blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://www.ahui.site/2022/05/30/Innodb%E5%BC%95%E6%93%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wch">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wch's blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Innodb引擎
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-30 22:42:02" itemprop="dateCreated datePublished" datetime="2022-05-30T22:42:02+08:00">2022-05-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-31 22:22:41" itemprop="dateModified" datetime="2022-05-31T22:22:41+08:00">2022-05-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Innodb引擎的存储结构和内存硬盘结构</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="逻辑存储结构"><a href="#逻辑存储结构" class="headerlink" title="逻辑存储结构"></a>逻辑存储结构</h1><p>InnoDB的逻辑存储结构如下图所示:</p>
+<p><img src="https://s2.loli.net/2022/05/30/7XyZMbiWr5f9IGH.png" alt="image-20220530224357954"></p>
+<h2 id="表空间"><a href="#表空间" class="headerlink" title="表空间"></a>表空间</h2><p>表空间是InnoDB存储引擎逻辑结构的最高层， 如果用户启用了参数 innodb_file_per_table(在 8.0版本中默认开启) ，则每张表都会有一个表空间（xxx.ibd），一个mysql实例可以对应多个表空 间，用于存储记录、索引等数据。</p>
+<h2 id="段"><a href="#段" class="headerlink" title="段"></a>段</h2><p>段，分为数据段（Leaf node segment）、索引段（Non-leaf node segment）、回滚段 （Rollback segment），InnoDB是索引组织表，数据段就是B+树的叶子节点， 索引段即为B+树的 非叶子节点。段用来管理多个Extent（区）。</p>
+<h2 id="区"><a href="#区" class="headerlink" title="区"></a>区</h2><p>区，表空间的单元结构，每个区的大小为1M。 默认情况下， InnoDB存储引擎页大小为16K， 即一 个区中一共有64个连续的页。</p>
+<h2 id="页"><a href="#页" class="headerlink" title="页"></a>页</h2><p>页，是InnoDB 存储引擎磁盘管理的最小单元，每个页的大小默认为 16KB。为了保证页的连续性， InnoDB 存储引擎每次从磁盘申请 4-5 个区。</p>
+<h2 id="行"><a href="#行" class="headerlink" title="行"></a>行</h2><p>行，InnoDB 存储引擎数据是按行进行存放的。 在行中，默认有两个隐藏字段： Trx_id：每次对某条记录进行改动时，都会把对应的事务id赋值给trx_id隐藏列。 Roll_pointer：每次对某条引记录进行改动时，都会把旧的版本写入到undo日志中，然后这个 隐藏列就相当于一个指针，可以通过它来找到该记录修改前的信息。</p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>MySQL5.5 版本开始，默认使用InnoDB存储引擎，它擅长事务处理，具有崩溃恢复特性。左侧为内存结构，右侧为磁盘结构。</p>
+<p><img src="https://s2.loli.net/2022/05/30/XBgSFoCIErWUVTj.png" alt="image-20220530225021892"></p>
+<h2 id="内存架构"><a href="#内存架构" class="headerlink" title="内存架构"></a>内存架构</h2><p><img src="https://s2.loli.net/2022/05/30/7uYXPeZWpbsBthf.png" alt="image-20220530225040348"></p>
+<h3 id="Buffer-Pool"><a href="#Buffer-Pool" class="headerlink" title="Buffer Pool"></a>Buffer Pool</h3><p>InnoDB存储引擎基于磁盘文件存储，访问物理硬盘和在内存中进行访问，速度相差很大，为了尽可能 弥补这两者之间的I&#x2F;O效率的差值，就需要把经常使用的数据加载到缓冲池中，避免每次访问都进行磁 盘I&#x2F;O。</p>
+<p> 在InnoDB的缓冲池中不仅缓存了索引页和数据页，还包含了undo页、插入缓存、自适应哈希索引以及 InnoDB的锁信息等等。</p>
+<p> 缓冲池 Buffer Pool，是主内存中的一个区域，里面可以缓存磁盘上经常操作的真实数据，在执行增 删改查操作时，先操作缓冲池中的数据（若缓冲池没有数据，则从磁盘加载并缓存），然后再以一定频 率刷新到磁盘，从而减少磁盘IO，加快处理速度。</p>
+<p> 缓冲池以Page页为单位，底层采用链表数据结构管理Page。根据状态，将Page分为三种类型：</p>
+<ul>
+<li>free page：空闲page，未被使用。 </li>
+<li>clean page：被使用page，数据没有被修改过。 </li>
+<li>dirty page：脏页，被使用page，数据被修改过，也中数据与磁盘的数据产生了不一致。</li>
+</ul>
+<p>在专用服务器上，通常将多达80％的物理内存分配给缓冲池 。参数设置： <strong>show variables like ‘innodb_buffer_pool_size’</strong>; </p>
+<h3 id="Change-Buffer"><a href="#Change-Buffer" class="headerlink" title="Change Buffer"></a>Change Buffer</h3><p>Change Buffer，更改缓冲区（针对于非唯一二级索引页），在执行DML语句时，如果这些数据Page 没有在Buffer Pool中，不会直接操作磁盘，而会将数据变更存在更改缓冲区 Change Buffer 中，在未来数据被读取时，再将数据合并恢复到Buffer Pool中，再将合并后的数据刷新到磁盘中。</p>
+<p>Change Buffer的意义是什么呢? 先来看一幅图，这个是二级索引的结构图</p>
+<p><img src="https://s2.loli.net/2022/05/30/ZpVMWd1b2H3o4kD.png" alt="image-20220530230334650"></p>
+<p>与聚集索引不同，二级索引通常是非唯一的，并且以相对随机的顺序插入二级索引。同样，删除和更新 可能会影响索引树中不相邻的二级索引页，如果每一次都操作磁盘，会造成大量的磁盘IO。有了 ChangeBuffer之后，我们可以在缓冲池中进行合并处理，减少磁盘IO。</p>
+<h3 id="Adaptive-Hash-Index"><a href="#Adaptive-Hash-Index" class="headerlink" title="Adaptive Hash Index"></a>Adaptive Hash Index</h3><p>自适应hash索引，用于优化对Buffer Pool数据的查询。MySQL的innoDB引擎中虽然没有直接支持 hash索引，但是给我们提供了一个功能就是这个自适应hash索引。，hash索引在 进行等值匹配时，一般性能是要高于B+树的，因为hash索引一般只需要一次IO即可，而B+树，可能需 要几次匹配，所以hash索引的效率要高，但是hash索引又不适合做范围查询、模糊匹配等。 </p>
+<p>InnoDB存储引擎会监控对表上各索引页的查询，如果观察到在特定的条件下hash索引可以提升速度， 则建立hash索引，称之为自适应hash索引。 自适应哈希索引，无需人工干预，是系统根据情况自动完成。 参数： adaptive_hash_index</p>
+<h3 id="Log-Buffer"><a href="#Log-Buffer" class="headerlink" title="Log Buffer"></a>Log Buffer</h3><p>Log Buffer：日志缓冲区，用来保存要写入到磁盘中的log日志数据（redo log 、undo log）， 默认大小为 16MB，日志缓冲区的日志会定期刷新到磁盘中。如果需要更新、插入或删除许多行的事 务，增加日志缓冲区的大小可以节省磁盘 I&#x2F;O</p>
+<p>参数：</p>
+<p>innodb_log_buffer_size：缓冲区大小</p>
+<p>innodb_flush_log_at_trx_commit：日志刷新到磁盘时机，取值主要包含以下三个：</p>
+<ul>
+<li><p>0: 每秒将日志写入并刷新到磁盘一次。 </p>
+</li>
+<li><p>1: 日志在每次事务提交时写入并刷新到磁盘，默认值。 </p>
+</li>
+<li><p>2: 日志在每次事务提交后写入，并每秒刷新到磁盘一次。</p>
+</li>
+</ul>
+<h2 id="硬盘架构"><a href="#硬盘架构" class="headerlink" title="硬盘架构"></a>硬盘架构</h2><p><img src="https://s2.loli.net/2022/05/31/hsaEx1w4NqVXRiC.png" alt="image-20220531221149598"></p>
+<h3 id="System-Tablespace"><a href="#System-Tablespace" class="headerlink" title="System Tablespace"></a>System Tablespace</h3><p>系统表空间是更改缓冲区的存储区域。如果表是在系统表空间而不是每个表文件或通用表空间中创建 的，它也可能包含表和索引数据。(在MySQL5.x版本中还包含InnoDB数据字典、undolog等)</p>
+<p>参数：innodb_data_file_path</p>
+<h3 id="File-Per-Table-Tablespaces"><a href="#File-Per-Table-Tablespaces" class="headerlink" title="File-Per-Table Tablespaces"></a>File-Per-Table Tablespaces</h3><p>如果开启了innodb_file_per_table开关 ，则每个表的文件表空间包含单个InnoDB表的数据和索 引 ，并存储在文件系统上的单个数据文件中。 开关参数：innodb_file_per_table ，该参数默认开启。</p>
+<h3 id="General-Tablespaces"><a href="#General-Tablespaces" class="headerlink" title="General Tablespaces"></a>General Tablespaces</h3><p>通用表空间，需要通过 CREATE TABLESPACE 语法创建通用表空间，在创建表时，可以指定该表空 间。</p>
+<h4 id="创建表空间"><a href="#创建表空间" class="headerlink" title="创建表空间"></a>创建表空间</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span>SPACE ts_name <span class="keyword">ADD</span> DATAFILE <span class="string">&#x27;file_name&#x27;</span> ENGINE <span class="operator">=</span> engine_name;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建表时指定表空间"><a href="#创建表时指定表空间" class="headerlink" title="创建表时指定表空间"></a>创建表时指定表空间</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> xxx ... TABLESPACE ts_name;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Undo-Tablespaces"><a href="#Undo-Tablespaces" class="headerlink" title="Undo Tablespaces"></a>Undo Tablespaces</h3><p>撤销表空间，MySQL实例在初始化时会自动创建两个默认的undo表空间（初始大小16M），用于存储 undo log日志。</p>
+<h3 id="Temporary-Tablespaces"><a href="#Temporary-Tablespaces" class="headerlink" title="Temporary Tablespaces"></a>Temporary Tablespaces</h3><p>InnoDB 使用会话临时表空间和全局临时表空间。存储用户创建的临时表等数据。</p>
+<h3 id="Doublewrite-Buffer-Files"><a href="#Doublewrite-Buffer-Files" class="headerlink" title="Doublewrite Buffer Files"></a>Doublewrite Buffer Files</h3><p>双写缓冲区，innoDB引擎将数据页从Buffer Pool刷新到磁盘前，先将数据页写入双写缓冲区文件 中，便于系统异常时恢复数据。</p>
+<h3 id="Redo-Log"><a href="#Redo-Log" class="headerlink" title="Redo Log"></a>Redo Log</h3><p>重做日志，是用来实现事务的持久性。该日志文件由两部分组成：重做日志缓冲（redo log buffer）以及重做日志文件（redo log）,前者是在内存中，后者在磁盘中。当事务提交之后会把所 有修改信息都会存到该日志中, 用于在刷新脏页到磁盘时,发生错误时, 进行数据恢复使用。 以循环方式写入重做日志文件，涉及两个文件：</p>
+<p><img src="https://s2.loli.net/2022/05/31/6IEezoy2Z7AnbQ4.png" alt="image-20220531221923254"></p>
+<h2 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h2><p><img src="https://s2.loli.net/2022/05/31/Y4oHnZbc28C16Di.png" alt="image-20220531222015142"></p>
+<p>在InnoDB的后台线程中，分为4类，分别是：Master Thread 、IO Thread、Purge Thread、 Page Cleaner Thread。</p>
+<h3 id="Master-Thread"><a href="#Master-Thread" class="headerlink" title="Master Thread"></a>Master Thread</h3><p>核心后台线程，负责调度其他线程，还负责将缓冲池中的数据异步刷新到磁盘中, 保持数据的一致性， 还包括脏页的刷新、合并插入缓存、undo页的回收 。</p>
+<h3 id="IO-Thread"><a href="#IO-Thread" class="headerlink" title="IO Thread"></a>IO Thread</h3><p>在InnoDB存储引擎中大量使用了AIO来处理IO请求, 这样可以极大地提高数据库的性能，而IO Thread主要负责这些IO请求的回调。</p>
+<table>
+<thead>
+<tr>
+<th align="center">线程类型</th>
+<th align="center">默认个数</th>
+<th align="center">职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Read thread</td>
+<td align="center">4</td>
+<td align="center">负责读操作</td>
+</tr>
+<tr>
+<td align="center">Write thread</td>
+<td align="center">4</td>
+<td align="center">负责写操作</td>
+</tr>
+<tr>
+<td align="center">Log thread</td>
+<td align="center">1</td>
+<td align="center">负责将日志缓冲区刷新到磁盘</td>
+</tr>
+<tr>
+<td align="center">Insert buffer thread</td>
+<td align="center">1</td>
+<td align="center">负责将写缓冲区内容刷新到磁盘</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> engine innodb status \G;</span><br></pre></td></tr></table></figure>
+
+<p>通过这条指令，查看到InnoDB的状态信息，其中就包含IO Thread信息。</p>
+<h3 id="Purge-Thread"><a href="#Purge-Thread" class="headerlink" title="Purge Thread"></a>Purge Thread</h3><p>主要用于回收事务已经提交了的undo log，在事务提交之后，undo log可能不用了，就用它来回收。</p>
+<h3 id="Page-Cleaner-Thread"><a href="#Page-Cleaner-Thread" class="headerlink" title="Page Cleaner Thread"></a>Page Cleaner Thread</h3><p>协助 Master Thread 刷新脏页到磁盘的线程，它可以减轻 Master Thread 的工作压力，减少阻塞。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/innodb/" rel="tag"># innodb</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/15/mysql%E9%94%81/" rel="prev" title="mysql锁">
+      <i class="fa fa-chevron-left"></i> mysql锁
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">逻辑存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">1.1.</span> <span class="nav-text">表空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AE%B5"><span class="nav-number">1.2.</span> <span class="nav-text">段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA"><span class="nav-number">1.3.</span> <span class="nav-text">区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5"><span class="nav-number">1.4.</span> <span class="nav-text">页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C"><span class="nav-number">1.5.</span> <span class="nav-text">行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">内存架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer-Pool"><span class="nav-number">2.1.1.</span> <span class="nav-text">Buffer Pool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Change-Buffer"><span class="nav-number">2.1.2.</span> <span class="nav-text">Change Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adaptive-Hash-Index"><span class="nav-number">2.1.3.</span> <span class="nav-text">Adaptive Hash Index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Log-Buffer"><span class="nav-number">2.1.4.</span> <span class="nav-text">Log Buffer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E7%9B%98%E6%9E%B6%E6%9E%84"><span class="nav-number">2.2.</span> <span class="nav-text">硬盘架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#System-Tablespace"><span class="nav-number">2.2.1.</span> <span class="nav-text">System Tablespace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#File-Per-Table-Tablespaces"><span class="nav-number">2.2.2.</span> <span class="nav-text">File-Per-Table Tablespaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#General-Tablespaces"><span class="nav-number">2.2.3.</span> <span class="nav-text">General Tablespaces</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">创建表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%97%B6%E6%8C%87%E5%AE%9A%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">创建表时指定表空间</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Undo-Tablespaces"><span class="nav-number">2.2.4.</span> <span class="nav-text">Undo Tablespaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Temporary-Tablespaces"><span class="nav-number">2.2.5.</span> <span class="nav-text">Temporary Tablespaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Doublewrite-Buffer-Files"><span class="nav-number">2.2.6.</span> <span class="nav-text">Doublewrite Buffer Files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redo-Log"><span class="nav-number">2.2.7.</span> <span class="nav-text">Redo Log</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">后台线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Master-Thread"><span class="nav-number">2.3.1.</span> <span class="nav-text">Master Thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO-Thread"><span class="nav-number">2.3.2.</span> <span class="nav-text">IO Thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Purge-Thread"><span class="nav-number">2.3.3.</span> <span class="nav-text">Purge Thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Page-Cleaner-Thread"><span class="nav-number">2.3.4.</span> <span class="nav-text">Page Cleaner Thread</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wch</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wch</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ce3c704806a6c87a5b71',
+      clientSecret: '1746595e6159dedd47e8f8ed7dbd73a084c01af0',
+      repo        : 'wwwangch.github.io',
+      owner       : 'wwwangch',
+      admin       : ['wwwangch'],
+      id          : '6bbc374f9d5574138a313f7a880c5a06',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
