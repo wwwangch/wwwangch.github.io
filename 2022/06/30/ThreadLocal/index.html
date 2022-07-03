@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ahui.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="java中ThreadLocal的简介与使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ThreadLocal">
+<meta property="og:url" content="https://ahui.site/2022/06/30/ThreadLocal/index.html">
+<meta property="og:site_name" content="wch&#39;s blogs">
+<meta property="og:description" content="java中ThreadLocal的简介与使用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2022/06/30/BCjkryQENVcXd7I.jpg">
+<meta property="article:published_time" content="2022-06-30T02:23:51.000Z">
+<meta property="article:modified_time" content="2022-07-03T14:49:16.818Z">
+<meta property="article:author" content="wch">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="threadlocal">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/06/30/BCjkryQENVcXd7I.jpg">
+
+<link rel="canonical" href="https://ahui.site/2022/06/30/ThreadLocal/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>ThreadLocal | wch's blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wch's blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://ahui.site/2022/06/30/ThreadLocal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wch">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wch's blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ThreadLocal
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-30 10:23:51" itemprop="dateCreated datePublished" datetime="2022-06-30T10:23:51+08:00">2022-06-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-03 22:49:16" itemprop="dateModified" datetime="2022-07-03T22:49:16+08:00">2022-07-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">java中ThreadLocal的简介与使用</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>ThreadLocal是线程局部变量。这些变量不同于它们的正常对应变量，因为每个访问一个（通过它的 get 或 set 方法）的线程都有它自己的、独立初始化的变量副本。</p>
+<p>只要线程处于活动状态并且 ThreadLocal 实例可访问，每个线程都持有对其线程局部变量副本的隐式引用；在线程消失后，它的所有线程本地实例副本都将受到垃圾回收（除非存在对这些副本的其他引用）</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>ThreadLocal的实现原理，每一个Thread维护一个ThreadLocalMap，key为使用<strong>弱引用</strong>的ThreadLocal实例，value为线程变量的副本</p>
+<p>ThreadLocal内部有一个内部类，名为ThreadlocalMap,ThreadlocalMap中又有一个内部类名为Entry,Entry类定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Entry</span> <span class="keyword">extends</span> <span class="title class_">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; &#123;</span><br><span class="line">    <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">    Object value;</span><br><span class="line"></span><br><span class="line">    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">        <span class="built_in">super</span>(k);</span><br><span class="line">        value = v;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Entry继承WeakReference类，通过ThreadLocal&lt;?&gt;来当key值，</p>
+<p>ThreadlocalMap中包含Entry数组，实现了Map的功能，Threadlocal中的threadLocalHashCode和数组容量减一的与运算来获得当前Threadlocal在Entry中下标。关于threadLocalHashCode如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*ThreadLocal对象们依赖于附加到每个线程（Thread.threadLocals 和inheritableThreadLocals）的每线程线性探针哈希映射。 </span></span><br><span class="line"><span class="comment">*ThreadLocal 对象充当键，通过 threadLocalHashCode 进行搜索。这是一个自定义哈希码（仅在 ThreadLocalMaps 中有用），</span></span><br><span class="line"><span class="comment">*它消除了在相同线程使用连续构造的 ThreadLocals 的常见情况下的冲突，同时在不太常见的情况下保持良好行为</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">threadLocalHashCode</span> <span class="operator">=</span> nextHashCode();</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"><span class="comment">//下一个要给出的哈希码。原子更新。从零开始。</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">AtomicInteger</span> <span class="variable">nextHashCode</span> <span class="operator">=</span></span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 连续生成的哈希码之间的差异 - 将隐式顺序线程本地 ID 转换为接近最佳传播的乘法哈希值，用于二次幂大小的表</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">HASH_INCREMENT</span> <span class="operator">=</span> <span class="number">0x61c88647</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Returns the next hash code.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">nextHashCode</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> nextHashCode.getAndAdd(HASH_INCREMENT);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>每个线程内部都有一个ThreadLocalMap的局部变量，用于保存自己线程中的Threadlocal变量，定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal.<span class="type">ThreadLocalMap</span> <span class="variable">threadLocals</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="set流程"><a href="#set流程" class="headerlink" title="set流程"></a>set流程</h1><p>当我们新建了Threadlocal对象，并进行set时,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">set</span><span class="params">(T value)</span> &#123;</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">    <span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">        map.set(<span class="built_in">this</span>, value);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        createMap(t, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先获得当前线程的threadLocals对象即ThreadLocalMap，如果map为空则新建，否则直接进行set</p>
+<p>map初始化如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">createMap</span><span class="params">(Thread t, T firstValue)</span> &#123;</span><br><span class="line">    t.threadLocals = <span class="keyword">new</span> <span class="title class_">ThreadLocalMap</span>(<span class="built_in">this</span>, firstValue);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ThreadLocalMap(ThreadLocal&lt;?&gt; firstKey, Object firstValue) &#123;</span><br><span class="line">    	<span class="comment">//INITIAL_CAPACITY默认大小为16</span></span><br><span class="line">       table = <span class="keyword">new</span> <span class="title class_">Entry</span>[INITIAL_CAPACITY];</span><br><span class="line">    	<span class="comment">//当前threadlocal的哈希码与Entry数组大小进行与运算获得应该存储的下标</span></span><br><span class="line">       <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> firstKey.threadLocalHashCode &amp; (INITIAL_CAPACITY - <span class="number">1</span>);</span><br><span class="line">       table[i] = <span class="keyword">new</span> <span class="title class_">Entry</span>(firstKey, firstValue);</span><br><span class="line">       size = <span class="number">1</span>;</span><br><span class="line">       setThreshold(INITIAL_CAPACITY);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h1><h2 id="内存泄露"><a href="#内存泄露" class="headerlink" title="内存泄露"></a>内存泄露</h2><p>内存泄露为程序在申请内存后，无法释放已申请的内存空间，一次内存泄露危害可以忽略，但内存泄露堆积后果很严重，无论多少内存,迟早会被占光，</p>
+<p>广义并通俗的说，就是：不再会被使用的对象或者变量占用的内存不能被回收，就是内存泄露。</p>
+<h2 id="强引用与弱引用"><a href="#强引用与弱引用" class="headerlink" title="强引用与弱引用"></a>强引用与弱引用</h2><p><strong>强引用</strong>，使用最普遍的引用，一个对象具有强引用，不会被垃圾回收器回收。当内存空间不足，Java虚拟机宁愿抛出OutOfMemoryError错误，使程序异常终止，也不回收这种对象。</p>
+<p><strong>如果想取消强引用和某个对象之间的关联，可以显式地将引用赋值为null，这样可以使JVM在合适的时间就会回收该对象。</strong></p>
+<p><strong>弱引用</strong>，JVM进行垃圾回收时，无论内存是否充足，都会回收被弱引用关联的对象。在java中，用java.lang.ref.WeakReference类来表示。可以在缓存中使用弱引用。</p>
+<p><img src="https://s2.loli.net/2022/06/30/BCjkryQENVcXd7I.jpg" alt="ThreadLocal的内存泄露？什么原因？如何避免？"></p>
+<h2 id="ThreadLocal-内存泄漏的原因"><a href="#ThreadLocal-内存泄漏的原因" class="headerlink" title="ThreadLocal 内存泄漏的原因"></a>ThreadLocal 内存泄漏的原因</h2><p>从上图中可以看出，hreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal不存在外部<strong>强引用</strong>时，Key(ThreadLocal)势必会被GC回收，这样就会导致ThreadLocalMap中key为null， 而value还存在着强引用，只有thead线程退出以后,value的强引用链条才会断掉。</p>
+<p>但如果当前线程再迟迟不结束的话，这些key为null的Entry的value就会一直存在一条强引用链：</p>
+<blockquote>
+<p>Thread Ref -&gt; Thread -&gt; ThreaLocalMap -&gt; Entry -&gt; value</p>
+</blockquote>
+<p>永远无法回收，造成内存泄漏。</p>
+<h2 id="为什么使用弱引用而不是强引用？？"><a href="#为什么使用弱引用而不是强引用？？" class="headerlink" title="为什么使用弱引用而不是强引用？？"></a>为什么使用弱引用而不是强引用？？</h2><h3 id="key-使用强引用"><a href="#key-使用强引用" class="headerlink" title="key 使用强引用"></a>key 使用强引用</h3><p>当hreadLocalMap的key为强引用回收ThreadLocal时，因为ThreadLocalMap还持有ThreadLocal的强引用，如果没有手动删除，ThreadLocal不会被回收，导致Entry内存泄漏。</p>
+<h3 id="key-使用弱引用"><a href="#key-使用弱引用" class="headerlink" title="key 使用弱引用"></a>key 使用弱引用</h3><p>当ThreadLocalMap的key为弱引用回收ThreadLocal时，由于ThreadLocalMap持有ThreadLocal的弱引用，即使没有手动删除，ThreadLocal也会被回收。当key为null，在下一次ThreadLocalMap调用set(),get()，remove()方法的时候会被清除value值。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>由于Thread中包含变量ThreadLocalMap，因此ThreadLocalMap与Thread的生命周期是一样长，如果都没有手动删除对应key，都会导致内存泄漏。</p>
+<p>但是使用<strong>弱引用</strong>可以多一层保障：弱引用ThreadLocal不会内存泄漏，对应的value在下一次ThreadLocalMap调用set(),get(),remove()的时候会被清除。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/threadlocal/" rel="tag"># threadlocal</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/28/SystemEnvironment%E5%92%8CSystemProperties/" rel="prev" title="System Environment 和 System Properties">
+      <i class="fa fa-chevron-left"></i> System Environment 和 System Properties
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#set%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">set流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">内存泄漏</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2"><span class="nav-number">4.1.</span> <span class="nav-text">内存泄露</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%BC%95%E7%94%A8%E4%B8%8E%E5%BC%B1%E5%BC%95%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">强引用与弱引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadLocal-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">4.3.</span> <span class="nav-text">ThreadLocal 内存泄漏的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%BC%B1%E5%BC%95%E7%94%A8%E8%80%8C%E4%B8%8D%E6%98%AF%E5%BC%BA%E5%BC%95%E7%94%A8%EF%BC%9F%EF%BC%9F"><span class="nav-number">4.4.</span> <span class="nav-text">为什么使用弱引用而不是强引用？？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#key-%E4%BD%BF%E7%94%A8%E5%BC%BA%E5%BC%95%E7%94%A8"><span class="nav-number">4.4.1.</span> <span class="nav-text">key 使用强引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#key-%E4%BD%BF%E7%94%A8%E5%BC%B1%E5%BC%95%E7%94%A8"><span class="nav-number">4.4.2.</span> <span class="nav-text">key 使用弱引用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wch</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wch</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ce3c704806a6c87a5b71',
+      clientSecret: '1746595e6159dedd47e8f8ed7dbd73a084c01af0',
+      repo        : 'wwwangch.github.io',
+      owner       : 'wwwangch',
+      admin       : ['wwwangch'],
+      id          : '07c01850d51a15ff7c79ccf9ec049149',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
