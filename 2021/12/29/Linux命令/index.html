@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/wwwangch/wwwangch.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/wwwangch/wwwangch.github.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/wwwangch/wwwangch.github.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/wwwangch/wwwangch.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/wwwangch/wwwangch.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/wwwangch/wwwangch.github.io/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/wwwangch/wwwangch.github.io/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="linux系统的一些实用命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux基础命令">
+<meta property="og:url" content="https://github.com/wwwangch/wwwangch.github.io/2021/12/29/Linux%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="wch&#39;s blogs">
+<meta property="og:description" content="linux系统的一些实用命令">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2021/12/30/KZzDiCAdGapmVSo.jpg">
+<meta property="article:published_time" content="2021-12-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-11T14:59:30.017Z">
+<meta property="article:author" content="wch">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="命令">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/30/KZzDiCAdGapmVSo.jpg">
+
+<link rel="canonical" href="https://github.com/wwwangch/wwwangch.github.io/2021/12/29/Linux%E5%91%BD%E4%BB%A4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>linux基础命令 | wch's blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/wwwangch/wwwangch.github.io/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wch's blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/wwwangch/wwwangch.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/wwwangch/wwwangch.github.io/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/wwwangch/wwwangch.github.io/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/wwwangch/wwwangch.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/wwwangch/wwwangch.github.io/2021/12/29/Linux%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/wwwangch/wwwangch.github.io/images/avatar.gif">
+      <meta itemprop="name" content="wch">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wch's blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux基础命令
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-29 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-29T00:00:00+08:00">2021-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-11 22:59:30" itemprop="dateModified" datetime="2022-04-11T22:59:30+08:00">2022-04-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/wwwangch/wwwangch.github.io/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">linux系统的一些实用命令</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-用户操作"><a href="#1-用户操作" class="headerlink" title="1. 用户操作"></a>1. 用户操作</h1><h2 id="useradd"><a href="#useradd" class="headerlink" title="useradd"></a>useradd</h2><blockquote>
+<p>添加一个用户</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useradd [-mMnr][-c &lt;备注&gt;][-d &lt;登入目录&gt;][-e &lt;有效期限&gt;][-f &lt;缓冲天数&gt;][-g &lt;群组&gt;][-G &lt;群组&gt;][-s &lt;shell&gt;][-u &lt;uid&gt;][用户帐号]</span></span><br></pre></td></tr></table></figure>
+
+<p>参数说明</p>
+<ul>
+<li>-c&lt;备注&gt; 　加上备注文字。备注文字会保存在passwd的备注栏位中。</li>
+<li>-d&lt;登入目录&gt; 　指定用户登入时的起始目录。</li>
+<li>-D 　变更预设值．</li>
+<li>-e&lt;有效期限&gt; 　指定帐号的有效期限。</li>
+<li>-f&lt;缓冲天数&gt; 　指定在密码过期后多少天即关闭该帐号。</li>
+<li>-g&lt;群组&gt; 　指定用户所属的群组。</li>
+<li>-G&lt;群组&gt; 　指定用户所属的附加群组。</li>
+<li>-m 　自动建立用户的登入目录。</li>
+<li>-M 　不要自动建立用户的登入目录。</li>
+<li>-n 　取消建立以用户名称为名的群组．</li>
+<li>-r 　建立系统帐号。</li>
+<li>-s<shell>　 　指定用户登入后所使用的shell。</li>
+<li>-u<uid> 　指定用户ID。</li>
+</ul>
+<h2 id="userdel"><a href="#userdel" class="headerlink" title="userdel"></a>userdel</h2><blockquote>
+<p>删除一个用户</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># userdel temp</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="passwd"><a href="#passwd" class="headerlink" title="passwd"></a>passwd</h2><blockquote>
+<p>通过passwd命令可以修改当前用户的密码</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ passwd</span><br><span class="line">Changing password <span class="keyword">for</span> amrood</span><br><span class="line">(current) Linux password:******</span><br><span class="line">New Linux password:*******</span><br><span class="line">Retype new Linux password:*******</span><br><span class="line">passwd: all authentication tokens updated  successfully</span><br></pre></td></tr></table></figure>
+
+<h2 id="whoami"><a href="#whoami" class="headerlink" title="whoami"></a>whoami</h2><blockquote>
+<p>通过whoami查看当前用户名称</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 shell_test]# whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+<h2 id="users-who-w"><a href="#users-who-w" class="headerlink" title="users|who|w"></a>users|who|w</h2><blockquote>
+<p>查看当前在线用户信息</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 shell_test]# users</span><br><span class="line">root root root</span><br><span class="line">[root@node1 shell_test]# who</span><br><span class="line">root     pts/0        2021-12-28 20:03 (192.168.88.1)</span><br><span class="line">root     pts/1        2021-12-29 03:15 (192.168.88.1)</span><br><span class="line">root     pts/2        2021-12-29 03:15 (192.168.88.1)</span><br><span class="line">[root@node1 shell_test]# w</span><br><span class="line"> 03:15:30 up  7:12,  3 users,  load average: 0.00, 0.01, 0.05</span><br><span class="line">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line">root     pts/0    192.168.88.1     20:03    2.00s  0.07s  0.01s w</span><br><span class="line">root     pts/1    192.168.88.1     03:15   24.00s  0.00s  0.00s -bash</span><br><span class="line">root     pts/2    192.168.88.1     03:15   21.00s  0.00s  0.00s -bash</span><br></pre></td></tr></table></figure>
+
+<h2 id="logout"><a href="#logout" class="headerlink" title="logout"></a>logout</h2><blockquote>
+<p>通过logout可以退出当前登录用户</p>
+</blockquote>
+<h1 id="2-系统操作"><a href="#2-系统操作" class="headerlink" title="2. 系统操作"></a>2. 系统操作</h1><h2 id="2-1-关机"><a href="#2-1-关机" class="headerlink" title="2.1 关机"></a>2.1 关机</h2><h3 id="halt"><a href="#halt" class="headerlink" title="halt"></a>halt</h3><blockquote>
+<p>直接关闭系统</p>
+</blockquote>
+<h3 id="init-0"><a href="#init-0" class="headerlink" title="init 0"></a>init 0</h3><blockquote>
+<p>使用预先定义的脚本关闭系统，关闭前可以清理和更新有关信息</p>
+</blockquote>
+<h3 id="poweroff"><a href="#poweroff" class="headerlink" title="poweroff"></a>poweroff</h3><blockquote>
+<p>通过断电关闭系统</p>
+</blockquote>
+<h3 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h3><blockquote>
+<p>安全关闭系统</p>
+</blockquote>
+<h2 id="2-2-重启"><a href="#2-2-重启" class="headerlink" title="2.2 重启"></a>2.2 重启</h2><h3 id="init-6"><a href="#init-6" class="headerlink" title="init 6"></a>init 6</h3><blockquote>
+<p>重新启动系统</p>
+</blockquote>
+<h3 id="reboot"><a href="#reboot" class="headerlink" title="reboot"></a>reboot</h3><blockquote>
+<p>重新启动系统</p>
+</blockquote>
+<h1 id="3-目录操作"><a href="#3-目录操作" class="headerlink" title="3. 目录操作"></a>3. 目录操作</h1><h2 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h2><blockquote>
+<p>查看指定目录下的内容，默认查看当前目录下内容</p>
+<p><a href="">Linux中的隐藏文件是以.开头的，当前目录使用.表示，上一级目录使用..表示</a></p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> [-ald] [目录名]</span><br><span class="line"><span class="comment"># 目录名不填写，默认为当前目录。</span></span><br><span class="line"><span class="comment"># -a：列出的全部的文件，包括隐藏文件</span></span><br><span class="line"><span class="comment"># -l：列举出全部的信息      也可以使用简写方式【ll】,这个不是一定可以用</span></span><br><span class="line"><span class="comment"># -d：仅查看目录本身</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h2><blockquote>
+<p>实现目录间切换，使用绝对路径、相对路径、特殊符号</p>
+<p>绝对路径：以&#x2F;开头的</p>
+<p>相对路径：不以&#x2F;开头的</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 具体路径 | 特殊符号</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>特殊符号</th>
+<th>表达的路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.</td>
+<td>当前目录</td>
+</tr>
+<tr>
+<td>..</td>
+<td>上一级目录</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>根目录</td>
+</tr>
+<tr>
+<td>~</td>
+<td>当前登录用户的HOME目录</td>
+</tr>
+<tr>
+<td>-</td>
+<td>返回</td>
+</tr>
+</tbody></table>
+<h2 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h2><blockquote>
+<p>创建目录，以及创建多级目录方式</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> [-p] 目录名</span><br><span class="line"><span class="comment"># -p：代表创建多级目录时，使用</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="rmdir"><a href="#rmdir" class="headerlink" title="rmdir"></a>rmdir</h2><blockquote>
+<p>删除非空目录或包含内容的目录</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只能删除空目录</span></span><br><span class="line"><span class="built_in">rmdir</span> 目录名</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除非空目录</span></span><br><span class="line"><span class="built_in">rm</span> [-rf] 目录名</span><br><span class="line"><span class="comment"># -r：代表递归删除目录下的全部内容</span></span><br><span class="line"><span class="comment"># -f：不询问，直接删除</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><blockquote>
+<p>复制目录下的全部内容</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> -r 来源目录 目标目录</span><br><span class="line"><span class="comment"># -r：递归复制全部内容，必填项</span></span><br><span class="line"><span class="comment"># 把文件复制到同一个目录下，需要改名字</span></span><br><span class="line"><span class="comment"># 把文件复制到不同目录下，可以不改名字</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h2><blockquote>
+<p>移动、重命名目录，会根据第二个参数指定具体操作逻辑</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> 目录名 新目录名 | 路径</span><br><span class="line"><span class="comment"># mv 目录名 新目录名   代表在当前目录下对目录进行重命名</span></span><br><span class="line"><span class="comment"># mv 目录名 路径    代表把目录移动到指定路径下</span></span><br><span class="line"><span class="comment"># mv 目录名 路径/新目录名    代表把目录移动到指定路径下，并且重命名【新目录名不存在】</span></span><br><span class="line"><span class="comment"># 如果第二个参数指定的路径不存在，就是重命名，如果第二个参数的路径存在，就是移动</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4-文件管理"><a href="#4-文件管理" class="headerlink" title="4. 文件管理"></a>4. 文件管理</h1><h2 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h2><blockquote>
+<p>cat（英文全拼：concatenate）命令用于连接文件并打印到标准输出设备上。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> [-AbeEnstTuv] [--<span class="built_in">help</span>] [--version] fileName</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><p><strong>-n 或 –number</strong>：由 1 开始对所有输出的行数编号。</p>
+</li>
+<li><p><strong>-b 或 –number-nonblank</strong>：和 -n 相似，只不过对于空白行不编号。</p>
+</li>
+<li><p><strong>-s 或 –squeeze-blank</strong>：当遇到有连续两行以上的空白行，就代换为一行的空白行。</p>
+</li>
+<li><p><strong>-v 或 –show-nonprinting</strong>：使用 ^ 和 M- 符号，除了 LFD 和 TAB 之外。</p>
+</li>
+<li><p><strong>-E 或 –show-ends</strong> : 在每行结束处显示 $。</p>
+</li>
+<li><p><strong>-T 或 –show-tabs</strong>: 将 TAB 字符显示为 ^I。</p>
+</li>
+<li><p><strong>-A, –show-all</strong>：等价于 -vET。</p>
+</li>
+<li><p><strong>-e：</strong>等价于”-vE”选项；</p>
+</li>
+<li><p><strong>-t：</strong>等价于”-vT”选项；</p>
+</li>
+</ul>
+<h2 id="chattr"><a href="#chattr" class="headerlink" title="chattr"></a>chattr</h2><blockquote>
+<p>Linux chattr命令用于改变文件属性。</p>
+<p>这项指令可改变存放在ext2文件系统上的文件或目录属性，这些属性共有以下8种模式：</p>
+<p>a：让文件或目录仅供附加用途。如果对文件设置a属性，那么只能在文件中增加数据，但是不能删除也不能修改数据；如果对目录设置a属性，那么只允许在目录中建立和修改文件，但是不允许删除文件。</p>
+<p>b：不更新文件或目录的最后存取时间。</p>
+<p>c：将文件或目录压缩后存放。</p>
+<p>d：将文件或目录排除在倾倒操作之外。</p>
+<p>i：不得任意更动文件或目录。如果对文件设置i属性，那么不允许对文件进行删除、改名，也不能添加和修改数据；如果对目录设置i属性，那么只能修改目录下文件的数据，但不允许建立和删除文件。</p>
+<p>s：保密性删除文件或目录。</p>
+<p>S：即时更新文件或目录。</p>
+<p>u：预防意外删除。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chattr [-RV][-v&lt;版本编号&gt;][+/-/=&lt;属性&gt;][文件或目录...]</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="lsattr"><a href="#lsattr" class="headerlink" title="lsattr"></a>lsattr</h2><blockquote>
+<p>Linux lsattr命令用于显示文件属性。</p>
+<p>用chattr执行改变文件或目录的属性，可执行lsattr指令查询其属性。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsattr [-adlRvV][文件或目录...]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数</strong>：</p>
+<ul>
+<li>-a 　显示所有文件和目录，包括以”.”为名称开头字符的额外内建，现行目录”.”与上层目录”..”。</li>
+<li>-d 　显示，目录名称，而非其内容。</li>
+<li>-l 　此参数目前没有任何作用。</li>
+<li>-R 　递归处理，将指定目录下的所有文件及子目录一并处理。</li>
+<li>-v 　显示文件或目录版本。</li>
+<li>-V 　显示版本信息。</li>
+</ul>
+<h2 id="chgrp"><a href="#chgrp" class="headerlink" title="chgrp"></a>chgrp</h2><blockquote>
+<p>Linux chgrp（英文全拼：change group）命令用于变更文件或目录的所属群组。</p>
+<p>与 <a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-comm-chown.html">chown</a> 命令不同，chgrp 允许普通用户改变文件所属的组，只要该用户是该组的一员。</p>
+<p>在 UNIX 系统家族里，文件或目录权限的掌控以拥有者及所属群组来管理。您可以使用 chgrp 指令去变更文件与目录的所属群组，设置方式采用群组名称或群组识别码皆可。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chgrp</span> [-cfhRv][--<span class="built_in">help</span>][--version][所属群组][文件或目录...] 或 </span><br><span class="line"><span class="built_in">chgrp</span> [-cfhRv][--<span class="built_in">help</span>][--reference=&lt;参考文件或目录&gt;][--version][文件或目录...]</span><br></pre></td></tr></table></figure>
+
+<p>参数说明</p>
+<ul>
+<li><strong>-c 或 –changes</strong>：效果类似”-v”参数，但仅回报更改的部分。 </li>
+<li><strong>-f 或 –quiet 或 –silent</strong>： 　不显示错误信息。</li>
+<li><strong>-h 或 –no-dereference</strong>： 　只对符号连接的文件作修改，而不改动其他任何相关文件。</li>
+<li><strong>-R 或 –recursive</strong>： 　递归处理，将指定目录下的所有文件及子目录一并处理。</li>
+<li><strong>-v 或 –verbose</strong>： 　显示指令执行过程。</li>
+<li><strong>–help</strong>： 　在线帮助。</li>
+<li>**–reference&#x3D;&lt;参考文件或目录&gt;**： 　把指定文件或目录的所属群组全部设成和参考文件或目录的所属群组相同。</li>
+<li><strong>–version</strong>： 　显示版本信息。</li>
+</ul>
+<h2 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h2><blockquote>
+<p>Linux chmod（英文全拼：change mode）命令是控制用户对文件的权限的命令</p>
+<p>Linux&#x2F;Unix 的文件调用权限分为三级 : 文件所有者（Owner）、用户组（Group）、其它用户（Other Users）。</p>
+<p><img src="https://s2.loli.net/2021/12/30/KZzDiCAdGapmVSo.jpg" alt="img"></p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> [-cfvR] [--<span class="built_in">help</span>] [--version] mode file...</span><br></pre></td></tr></table></figure>
+
+<p>参数说明</p>
+<p>mode : 权限设定字串，格式如下 :</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ugoa...][[+-=][rwxX]...][,...]</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li>u 表示该文件的拥有者，g 表示与该文件的拥有者属于同一个群体(group)者，o 表示其他以外的人，a 表示这三者皆是。表示更改某个用户的权限</li>
+<li>+ 表示增加权限、- 表示取消权限、&#x3D; 表示唯一设定权限。</li>
+<li>r 表示可读取，w 表示可写入，x 表示可执行，X 表示只有当该文件是个子目录或者该文件已经被设定过为可执行。</li>
+</ul>
+<p>其他参数说明：</p>
+<ul>
+<li>-c : 若该文件权限确实已经更改，才显示其更改动作</li>
+<li>-f : 若该文件权限无法被更改也不要显示错误讯息</li>
+<li>-v : 显示权限变更的详细资料</li>
+<li>-R : 对目前目录下的所有文件与子目录进行相同的权限变更(即以递归的方式逐个变更)</li>
+<li>–help : 显示辅助说明</li>
+<li>–version : 显示版本</li>
+</ul>
+<h2 id="chown"><a href="#chown" class="headerlink" title="chown"></a>chown</h2><blockquote>
+<p>Linux chown（英文全拼：<strong>change owner</strong>）命令用于设置文件所有者和文件关联组的命令。</p>
+<p>Linux&#x2F;Unix 是多人多工操作系统，所有的文件皆有拥有者。利用 chown 将指定文件的拥有者改为指定的用户或组，用户可以是用户名或者用户 ID，组可以是组名或者组 ID，文件是以空格分开的要改变权限的文件列表，支持通配符。 。</p>
+<p>chown 需要超级用户 <strong>root</strong> 的权限才能执行此命令。</p>
+<p>只有超级用户和属于组的文件所有者才能变更文件关联组。非超级用户如需要设置关联组可能需要使用 <a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-comm-chgrp.html">chgrp</a> 命令。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chown</span> [-cfhvR] [--<span class="built_in">help</span>] [--version] user[:group] file...</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数</strong> :</p>
+<ul>
+<li>user : 新的文件拥有者的使用者 ID</li>
+<li>group : 新的文件拥有者的使用者组(group)</li>
+<li>-c : 显示更改的部分的信息</li>
+<li>-f : 忽略错误信息</li>
+<li>-h :修复符号链接</li>
+<li>-v : 显示详细的处理信息</li>
+<li>-R : 处理指定目录以及其子目录下的所有文件</li>
+<li>–help : 显示辅助说明</li>
+<li>–version : 显示版本</li>
+</ul>
+<h2 id="cmp"><a href="#cmp" class="headerlink" title="cmp"></a>cmp</h2><blockquote>
+<p>Linux cmp命令用于比较两个文件是否有差异。</p>
+<p>当相互比较的两个文件完全一样时，则该指令不会显示任何信息。若发现有所差异，预设会标示出第一个不同之处的字符和列数编号。若不指定任何文件名称或是所给予的文件名为”-“，则cmp指令会从标准输入设备读取数据。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmp [-clsv][-i &lt;字符数目&gt;][--<span class="built_in">help</span>][第一个文件][第二个文件]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数</strong>：</p>
+<ul>
+<li>-c或–print-chars 　除了标明差异处的十进制字码之外，一并显示该字符所对应字符。</li>
+<li>-i&lt;字符数目&gt;或–ignore-initial&#x3D;&lt;字符数目&gt; 　指定一个数目。</li>
+<li>-l或–verbose 　标示出所有不一样的地方。</li>
+<li>-s或–quiet或–silent 　不显示错误信息。</li>
+<li>-v或–version 　显示版本信息。</li>
+<li>–help 　在线帮助。</li>
+</ul>
+<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><blockquote>
+<p>Linux diff 命令用于比较文件的差异。</p>
+<p>diff 以逐行的方式，比较文本文件的异同处。如果指定要比较目录，则 diff 会比较目录中相同文件名的文件，但不会比较其中子目录。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff [-abBcdefHilnNpPqrstTuvwy][-&lt;行数&gt;][-C &lt;行数&gt;][-D &lt;巨集名称&gt;][-I &lt;字符或字符串&gt;][-S &lt;文件&gt;][-W &lt;宽度&gt;][-x &lt;文件或目录&gt;][-X &lt;文件&gt;][--<span class="built_in">help</span>][--left-column][--suppress-common-line][文件或目录1][文件或目录2]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数</strong>：</p>
+<ul>
+<li>-&lt;行数&gt; 　指定要显示多少行的文本。此参数必须与-c或-u参数一并使用。</li>
+<li>-a或–text 　diff预设只会逐行比较文本文件。</li>
+<li>-b或–ignore-space-change 　不检查空格字符的不同。</li>
+<li>-B或–ignore-blank-lines 　不检查空白行。</li>
+<li>-c 　显示全部内文，并标出不同之处。</li>
+<li>-C&lt;行数&gt;或–context&lt;行数&gt; 　与执行”-c-&lt;行数&gt;”指令相同。</li>
+<li>-d或–minimal 　使用不同的演算法，以较小的单位来做比较。</li>
+<li>-D&lt;巨集名称&gt;或ifdef&lt;巨集名称&gt; 　此参数的输出格式可用于前置处理器巨集。</li>
+<li>-e或–ed 　此参数的输出格式可用于ed的script文件。</li>
+<li>-f或-forward-ed 　输出的格式类似ed的script文件，但按照原来文件的顺序来显示不同处。</li>
+<li>-H或–speed-large-files 　比较大文件时，可加快速度。</li>
+<li>-I&lt;字符或字符串&gt;或–ignore-matching-lines&lt;字符或字符串&gt; 　若两个文件在某几行有所不同，而这几行同时都包含了选项中指定的字符或字符串，则不显示这两个文件的差异。</li>
+<li>-i或–ignore-case 　不检查大小写的不同。</li>
+<li>-l或–paginate 　将结果交由pr程序来分页。</li>
+<li>-n或–rcs 　将比较结果以RCS的格式来显示。</li>
+<li>-N或–new-file 　在比较目录时，若文件A仅出现在某个目录中，预设会显示：</li>
+<li>Only in目录：文件A若使用-N参数，则diff会将文件A与一个空白的文件比较。</li>
+<li>-p 　若比较的文件为C语言的程序码文件时，显示差异所在的函数名称。</li>
+<li>-P或–unidirectional-new-file 　与-N类似，但只有当第二个目录包含了一个第一个目录所没有的文件时，才会将这个文件与空白的文件做比较。</li>
+<li>-q或–brief 　仅显示有无差异，不显示详细的信息。</li>
+<li>-r或–recursive 　比较子目录中的文件。</li>
+<li>-s或–report-identical-files 　若没有发现任何差异，仍然显示信息。</li>
+<li>-S&lt;文件&gt;或–starting-file&lt;文件&gt; 　在比较目录时，从指定的文件开始比较。</li>
+<li>-t或–expand-tabs 　在输出时，将tab字符展开。</li>
+<li>-T或–initial-tab 　在每行前面加上tab字符以便对齐。</li>
+<li>-u,-U&lt;列数&gt;或–unified&#x3D;&lt;列数&gt; 　以合并的方式来显示文件内容的不同。</li>
+<li>-v或–version 　显示版本信息。</li>
+<li>-w或–ignore-all-space 　忽略全部的空格字符。</li>
+<li>-W&lt;宽度&gt;或–width&lt;宽度&gt; 　在使用-y参数时，指定栏宽。</li>
+<li>-x&lt;文件名或目录&gt;或–exclude&lt;文件名或目录&gt; 　不比较选项中所指定的文件或目录。</li>
+<li>-X&lt;文件&gt;或–exclude-from&lt;文件&gt; 　您可以将文件或目录类型存成文本文件，然后在&#x3D;&lt;文件&gt;中指定此文本文件。</li>
+<li>-y或–side-by-side 　以并列的方式显示文件的异同之处。</li>
+<li>–help 　显示帮助。</li>
+<li>–left-column 　在使用-y参数时，若两个文件某一行内容相同，则仅在左侧的栏位显示该行内容。</li>
+<li>–suppress-common-lines 　在使用-y参数时，仅显示不同之处。</li>
+</ul>
+<p><strong>说明：</strong></p>
+<ul>
+<li>“|”表示前后2个文件内容有不同</li>
+<li>“&lt;”表示后面文件比前面文件少了1行内容</li>
+<li>“&gt;”表示后面文件比前面文件多了1行内容</li>
+</ul>
+<h2 id="diffstat"><a href="#diffstat" class="headerlink" title="diffstat"></a>diffstat</h2><blockquote>
+<p>Linux diffstat命令根据diff的比较结果，显示统计数字。</p>
+<p>diffstat读取diff的输出结果，然后统计各文件的插入，删除，修改等差异计量。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff [-wV][-n &lt;文件名长度&gt;][-p &lt;文件名长度&gt;]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数</strong>：</p>
+<ul>
+<li>-n&lt;文件名长度&gt; 　指定文件名长度，指定的长度必须大于或等于所有文件中最长的文件名。</li>
+<li>-p&lt;文件名长度&gt; 　与-n参数相同，但此处的&lt;文件名长度&gt;包括了文件的路径。</li>
+<li>-w 　指定输出时栏位的宽度。</li>
+<li>-V 　显示版本信息。</li>
+</ul>
+<h2 id="file"><a href="#file" class="headerlink" title="file"></a>file</h2><blockquote>
+<p>Linux file命令用于辨识文件类型。</p>
+<p>通过file指令，我们得以辨识该文件的类型。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file [-bcLvz][-f &lt;名称文件&gt;][-m &lt;魔法数字文件&gt;...][文件或目录...]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数</strong>：</p>
+<ul>
+<li>-b 　列出辨识结果时，不显示文件名称。</li>
+<li>-c 　详细显示指令执行过程，便于排错或分析程序执行的情形。</li>
+<li>-f&lt;名称文件&gt; 　指定名称文件，其内容有一个或多个文件名称时，让file依序辨识这些文件，格式为每列一个文件名称。</li>
+<li>-L 　直接显示符号连接所指向的文件的类别。</li>
+<li>-m&lt;魔法数字文件&gt; 　指定魔法数字文件。</li>
+<li>-v 　显示版本信息。</li>
+<li>-z 　尝试去解读压缩文件的内容。</li>
+<li>[文件或目录…] 要确定类型的文件列表，多个文件之间使用空格分开，可以使用shell通配符匹配多个文件。</li>
+</ul>
+<h2 id="fild"><a href="#fild" class="headerlink" title="fild"></a>fild</h2><blockquote>
+<p>Linux find 命令用来在指定目录下查找文件。任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时，不设置任何参数，则 find 命令将在当前目录下查找子目录与文件。并且将查找到的子目录和文件全部进行显示。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find   path   -option   [   -<span class="built_in">print</span> ]   [ -<span class="built_in">exec</span>   -ok   <span class="built_in">command</span> ]   &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+<p>expression 中可使用的选项有二三十个之多，在此只介绍最常用的部份。</p>
+<p>-mount, -xdev : 只检查和指定目录在同一个文件系统下的文件，避免列出其它文件系统中的文件</p>
+<p>-amin n : 在过去 n 分钟内被读取过</p>
+<p>-anewer file : 比文件 file 更晚被读取过的文件</p>
+<p>-atime n : 在过去n天内被读取过的文件</p>
+<p>-cmin n : 在过去 n 分钟内被修改过</p>
+<p>-cnewer file :比文件 file 更新的文件</p>
+<p>-ctime n : 在过去n天内被修改过的文件</p>
+<p>-empty : 空的文件-gid n or -group name : gid 是 n 或是 group 名称是 name</p>
+<p>-ipath p, -path p : 路径名称符合 p 的文件，ipath 会忽略大小写</p>
+<p>-name name, -iname name : 文件名称符合 name 的文件。iname 会忽略大小写</p>
+<p>-size n : 文件大小 是 n 单位，b 代表 512 位元组的区块，c 表示字元数，k 表示 kilo bytes，w 是二个位元组。</p>
+<p>-type c : 文件类型是 c 的文件。</p>
+<p>d: 目录</p>
+<p>c: 字型装置文件</p>
+<p>b: 区块装置文件</p>
+<p>p: 具名贮列</p>
+<p>f: 一般文件</p>
+<p>l: 符号连结</p>
+<p>s: socket</p>
+<p>-pid n : process id 是 n 的文件</p>
+<p>你可以使用 ( ) 将运算式分隔，并使用下列运算。</p>
+<p>exp1 -and exp2</p>
+<p>! expr</p>
+<p>-not expr</p>
+<p>exp1 -or exp2</p>
+<p>exp1, exp2</p>
+<h2 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h2><blockquote>
+<p>Linux cut命令用于显示每行从开头算起 num1 到 num2 的文字。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cut</span>  [-bn] [file]</span><br><span class="line"><span class="built_in">cut</span> [-c] [file]</span><br><span class="line"><span class="built_in">cut</span> [-<span class="built_in">df</span>] [file]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数:</strong></p>
+<ul>
+<li>-b ：以字节为单位进行分割。这些字节位置将忽略多字节字符边界，除非也指定了 -n 标志。</li>
+<li>-c ：以字符为单位进行分割。</li>
+<li>-d ：自定义分隔符，默认为制表符。</li>
+<li>-f ：与-d一起使用，指定显示哪个区域。</li>
+<li>-n ：取消分割多字节字符。仅和 -b 标志一起使用。如果字符的最后一个字节落在由 -b 标志的 List 参数指示的<br>范围之内，该字符将被写出；否则，该字符将被排除</li>
+</ul>
+<h2 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h2><blockquote>
+<p>Linux ln（英文全拼：link files）命令是一个非常重要命令，它的功能是为某一个文件在另外一个位置建立一个同步的链接。</p>
+<p>当我们需要在不同的目录，用到相同的文件时，我们不需要在每一个需要的目录下都放一个必须相同的文件，我们只要在某个固定的目录，放上该文件，然后在 其它的目录下用ln命令链接（link）它就可以，不必重复的占用磁盘空间。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> [参数][源文件或目录][目标文件或目录]</span><br></pre></td></tr></table></figure>
+
+<p>命令参数</p>
+<p><strong>必要参数</strong>：</p>
+<ul>
+<li>-b 删除，覆盖以前建立的链接</li>
+<li>-d 允许超级用户制作目录的硬链接</li>
+<li>-f 强制执行</li>
+<li>-i 交互模式，文件存在则提示用户是否覆盖</li>
+<li>-n 把符号链接视为一般目录</li>
+<li>-s 软链接(符号链接)</li>
+<li>-v 显示详细的处理过程</li>
+</ul>
+<p><strong>选择参数</strong>：</p>
+<ul>
+<li>-S “-S&lt;字尾备份字符串&gt; “或 “–suffix&#x3D;&lt;字尾备份字符串&gt;”</li>
+<li>-V “-V&lt;备份方式&gt;”或”–version-control&#x3D;&lt;备份方式&gt;”</li>
+<li>–help 显示帮助信息</li>
+<li>–version 显示版本信息</li>
+</ul>
+<h2 id="less"><a href="#less" class="headerlink" title="less"></a>less</h2><blockquote>
+<p>less 与 more 类似，less 可以随意浏览文件，支持翻页和搜索，支持向上翻页和向下翻页。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less [参数] 文件 </span><br></pre></td></tr></table></figure>
+
+<p><strong>参数说明</strong>：</p>
+<ul>
+<li>-b &lt;缓冲区大小&gt; 设置缓冲区的大小</li>
+<li>-e 当文件显示结束后，自动离开</li>
+<li>-f 强迫打开特殊文件，例如外围设备代号、目录和二进制文件</li>
+<li>-g 只标志最后搜索的关键词</li>
+<li>-i 忽略搜索时的大小写</li>
+<li>-m 显示类似more命令的百分比</li>
+<li>-N 显示每行的行号</li>
+<li>-o &lt;文件名&gt; 将less 输出的内容在指定文件中保存起来</li>
+<li>-Q 不使用警告音</li>
+<li>-s 显示连续空行为一行</li>
+<li>-S 行过长时间将超出部分舍弃</li>
+<li>-x &lt;数字&gt; 将”tab”键显示为规定的数字空格</li>
+<li>&#x2F;字符串：向下搜索”字符串”的功能</li>
+<li>?字符串：向上搜索”字符串”的功能</li>
+<li>n：重复前一个搜索（与 &#x2F; 或 ? 有关）</li>
+<li>N：反向重复前一个搜索（与 &#x2F; 或 ? 有关）</li>
+<li>b 向上翻一页</li>
+<li>d 向后翻半页</li>
+<li>h 显示帮助界面</li>
+<li>Q 退出less 命令</li>
+<li>u 向前滚动半页</li>
+<li>y 向前滚动一行</li>
+<li>空格键 滚动一页</li>
+<li>回车键 滚动一行</li>
+<li>[pagedown]： 向下翻动一页</li>
+<li>[pageup]： 向上翻动一页</li>
+</ul>
+<h2 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h2><blockquote>
+<p>Linux locate命令用于查找符合条件的文档，他会去保存文档和目录名称的数据库内，查找合乎范本样式条件的文档或目录。</p>
+<p>一般情况我们只需要输入 <strong>locate your_file_name</strong> 即可查找指定文件。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate [-d ][--<span class="built_in">help</span>][--version][范本样式...]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数：</strong></p>
+<ul>
+<li>-b, –basename – 仅匹配路径名的基本名称</li>
+<li>-c, –count – 只输出找到的数量</li>
+<li>-d, –database DBPATH – 使用 DBPATH 指定的数据库，而不是默认数据库 &#x2F;var&#x2F;lib&#x2F;mlocate&#x2F;mlocate.db</li>
+<li>-e, –existing – 仅打印当前现有文件的条目</li>
+<li>-1 – 如果 是 1．则启动安全模式。在安全模式下，使用者不会看到权限无法看到 的档案。这会始速度减慢，因为 locate 必须至实际的档案系统中取得档案的 权限资料。</li>
+<li>-0, –null – 在输出上带有NUL的单独条目</li>
+<li>-S, –statistics – 不搜索条目，打印有关每个数据库的统计信息</li>
+<li>-q – 安静模式，不会显示任何错误讯息。</li>
+<li>-P, –nofollow, -H – 检查文件存在时不要遵循尾随的符号链接</li>
+<li>-l, –limit, -n LIMIT – 将输出（或计数）限制为LIMIT个条目</li>
+<li>-n – 至多显示 n个输出。</li>
+<li>-m, –mmap – 被忽略，为了向后兼容</li>
+<li>-r, –regexp REGEXP – 使用基本正则表达式</li>
+<li>–regex – 使用扩展正则表达式</li>
+<li>-q, –quiet – 安静模式，不会显示任何错误讯息</li>
+<li>-s, –stdio – 被忽略，为了向后兼容</li>
+<li>-o – 指定资料库存的名称。</li>
+<li>-h, –help – 显示帮助</li>
+<li>-i, –ignore-case – 忽略大小写</li>
+<li>-V, –version – 显示版本信息</li>
+</ul>
+<h2 id="more"><a href="#more" class="headerlink" title="more"></a>more</h2><blockquote>
+<p>Linux more 命令类似 cat ，不过会以一页一页的形式显示，更方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示，而且还有搜寻字串的功能（与 vi 相似），使用中的说明文件，请按 h 。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">more [-dlfpcsu] [-num] [+/pattern] [+linenum] [fileNames..]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数</strong>：</p>
+<ul>
+<li>-num 一次显示的行数</li>
+<li>-d 提示使用者，在画面下方显示 [Press space to continue, ‘q’ to quit.] ，如果使用者按错键，则会显示 [Press ‘h’ for instructions.] 而不是 ‘哔’ 声</li>
+<li>-l 取消遇见特殊字元 ^L（送纸字元）时会暂停的功能</li>
+<li>-f 计算行数时，以实际上的行数，而非自动换行过后的行数（有些单行字数太长的会被扩展为两行或两行以上）</li>
+<li>-p 不以卷动的方式显示每一页，而是先清除萤幕后再显示内容</li>
+<li>-c 跟 -p 相似，不同的是先显示内容再清除其他旧资料</li>
+<li>-s 当遇到有连续两行以上的空白行，就代换为一行的空白行</li>
+<li>-u 不显示下引号 （根据环境变数 TERM 指定的 terminal 而有所不同）</li>
+<li>+&#x2F;pattern 在每个文档显示前搜寻该字串（pattern），然后从该字串之后开始显示</li>
+<li>+num 从第 num 行开始显示</li>
+<li>fileNames 欲显示内容的文档，可为复数个数</li>
+</ul>
+<h2 id="vi"><a href="#vi" class="headerlink" title="vi"></a>vi</h2><blockquote>
+<p>编辑文件</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vi 文件名 				<span class="comment"># 查看文件。（查看模式）</span></span><br><span class="line">i | a | o   		  <span class="comment"># 进入编辑模式。（编辑模式）</span></span><br><span class="line">                      <span class="comment"># i：在当前光标处，进入编辑模式。 </span></span><br><span class="line">                      <span class="comment"># a：在当前光标后一格，进入编辑模式。 </span></span><br><span class="line">                      <span class="comment"># o：在当前光标下一行，进入编辑模式。</span></span><br><span class="line">esc				      <span class="comment"># 退出编辑模式，回到查看模式。</span></span><br><span class="line">:				      <span class="comment"># 从查看模式进入到底行命令模式。（底行命名模式）</span></span><br><span class="line">                      <span class="comment"># 在底行命令模式下，输入wq：保存并退出。输入q!：不保存并退出</span></span><br><span class="line">                      <span class="comment"># :wq 保存并退出      # :q! 不保存退出</span></span><br><span class="line">                      <span class="comment"># 在查看模式下，摁ZZ，可以快速保存并退出。</span></span><br><span class="line"><span class="built_in">dd</span>  				  <span class="comment"># 在查看模式，直接按两下d,可以删除当前行</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编辑文件时，常用的快捷键，方便操作</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在vi文件时，在底行命令模式下可以输入以下常用内容</span></span><br><span class="line"><span class="comment"># 行号操作</span></span><br><span class="line"><span class="built_in">set</span> nu              <span class="comment"># 查看文件的行号</span></span><br><span class="line">to rownum           <span class="comment"># 快速的跳转到指定行</span></span><br><span class="line"><span class="built_in">set</span> nonu            <span class="comment"># 取消行号</span></span><br><span class="line"><span class="comment"># 搜索操作</span></span><br><span class="line">/word               <span class="comment"># 类似Windows的Ctrl + F搜索文件中的具体内容所在位置，查看下一个可以输入字母n</span></span><br><span class="line"><span class="comment"># 快速定位</span></span><br><span class="line">G                   <span class="comment"># 快速跳转到最后一行</span></span><br><span class="line">gg                  <span class="comment"># 快速跳转到第一行</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="查看文件"><a href="#查看文件" class="headerlink" title="查看文件"></a>查看文件</h2><blockquote>
+<p>根据不同的业务，可以选择不同的查看方式</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看文件</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> 文件名</span><br><span class="line"><span class="comment"># 从第一行开始查看文件内容，展示全部</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">tac</span> 文件名</span><br><span class="line"><span class="comment"># 从最后一行开始展示【倒着查看】</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">nl</span> 文件名</span><br><span class="line"><span class="comment"># 显示文件的内容时，展示行号</span></span><br><span class="line"></span><br><span class="line">more 文件名</span><br><span class="line"><span class="comment"># 查看大文件时，可以一页一页的向下翻</span></span><br><span class="line"><span class="comment"># 嗯space向下翻页，退出时摁q</span></span><br><span class="line"></span><br><span class="line">less 文件名</span><br><span class="line"><span class="comment"># 查看大文件时，可以任意的向上或者向下翻</span></span><br><span class="line"><span class="comment"># 向上或向下翻页摁PageUp和PageDown，一行一行查看，摁光标的↑↓</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">head</span> 文件名</span><br><span class="line"><span class="comment"># 只查看前几行</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">tail</span> 文件名</span><br><span class="line"><span class="comment"># 只查看后几行</span></span><br><span class="line"><span class="comment"># tail -f 日志 监控日志</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="mv-1"><a href="#mv-1" class="headerlink" title="mv"></a>mv</h2><blockquote>
+<p>移动、重命名目录，会根据第二个参数指定具体操作逻辑</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> 文件名 新文件名 | 路径</span><br><span class="line"><span class="comment"># 如果第二个参数指定的路径不存在，就是重命名，如果第二个参数的路径存在，就是移动</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>参数说明</strong>：</p>
+<ul>
+<li><strong>-b</strong>: 当目标文件或目录存在时，在执行覆盖前，会为其创建一个备份。</li>
+<li><strong>-i</strong>: 如果指定移动的源目录或文件与目标的目录或文件同名，则会先询问是否覆盖旧文件，输入 y 表示直接覆盖，输入 n 表示取消该操作。</li>
+<li><strong>-f</strong>: 如果指定移动的源目录或文件与目标的目录或文件同名，不会询问，直接覆盖旧文件。</li>
+<li><strong>-n</strong>: 不要覆盖任何已存在的文件或目录。</li>
+<li><strong>-u</strong>：当源文件比目标文件新或者目标文件不存在时，才执行移动操作。</li>
+</ul>
+<h2 id="touch"><a href="#touch" class="headerlink" title="touch"></a>touch</h2><blockquote>
+<p>Linux touch命令用于修改文件或者目录的时间属性，包括存取时间和更改时间。若文件不存在，系统会建立一个新的文件。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch [-acfm][-d&lt;日期时间&gt;][-r&lt;参考文件或目录&gt;] [-t&lt;日期时间&gt;][--help][--version][文件或目录…]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数说明</strong>：</p>
+<ul>
+<li>a 改变档案的读取时间记录。</li>
+<li>m 改变档案的修改时间记录。</li>
+<li>c 假如目的档案不存在，不会建立新的档案。与 –no-create 的效果一样。</li>
+<li>f 不使用，是为了与其他 unix 系统的相容性而保留。</li>
+<li>r 使用参考档的时间记录，与 –file 的效果一样。</li>
+<li>d 设定时间与日期，可以使用各种不同的格式。</li>
+<li>t 设定档案的时间记录，格式与 date 指令相同。</li>
+<li>–no-create 不会建立新档案。</li>
+<li>–help 列出指令格式。</li>
+<li>–version 列出版本讯息。</li>
+</ul>
+<h2 id="which"><a href="#which" class="headerlink" title="which"></a>which</h2><blockquote>
+<p>Linux which命令用于查找文件。</p>
+<p>which指令会在环境变量$PATH设置的目录里查找符合条件的文件。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which [文件...]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数</strong>：</p>
+<ul>
+<li>-n&lt;文件名长度&gt; 　指定文件名长度，指定的长度必须大于或等于所有文件中最长的文件名。</li>
+<li>-p&lt;文件名长度&gt; 　与-n参数相同，但此处的&lt;文件名长度&gt;包括了文件的路径。</li>
+<li>-w 　指定输出时栏位的宽度。</li>
+<li>-V 　显示版本信息。</li>
+</ul>
+<h2 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h2><blockquote>
+<p>tail 命令可用于查看文件的内容，有一个常用的参数 <strong>-f</strong> 常用于查阅正在改变的日志文件。</p>
+<p><strong>tail -f filename</strong> 会把 filename 文件里的最尾部的内容显示在屏幕上，并且不断刷新，只要 filename 更新就可以看到最新的文件内容。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tail</span> [参数] [文件]  </span><br></pre></td></tr></table></figure>
+
+<p><strong>参数：</strong></p>
+<ul>
+<li>-f 循环读取</li>
+<li>-q 不显示处理信息</li>
+<li>-v 显示详细的处理信息</li>
+<li>-c&lt;数目&gt; 显示的字节数</li>
+<li>-n&lt;行数&gt; 显示文件的尾部 n 行内容</li>
+<li>–pid&#x3D;PID 与-f合用,表示在进程ID,PID死掉之后结束</li>
+<li>-q, –quiet, –silent 从不输出给出文件名的首部</li>
+<li>-s, –sleep-interval&#x3D;S 与-f合用,表示在每次反复的间隔休眠S秒</li>
+</ul>
+<h2 id="cp-1"><a href="#cp-1" class="headerlink" title="cp"></a>cp</h2><blockquote>
+<p>复制文件到指定目录下</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> 文件名 目录</span><br></pre></td></tr></table></figure>
+
+<h2 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h2><blockquote>
+<p>删除文件方式</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> [-f] 文件名</span><br><span class="line"><span class="comment"># -f：是否询问</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/wwwangch/wwwangch.github.io/tags/linux/" rel="tag"># linux</a>
+              <a href="/wwwangch/wwwangch.github.io/tags/%E5%91%BD%E4%BB%A4/" rel="tag"># 命令</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/wwwangch/wwwangch.github.io/2021/12/29/Linux%E5%9F%BA%E7%A1%80/" rel="prev" title="linux基础知识">
+      <i class="fa fa-chevron-left"></i> linux基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/wwwangch/wwwangch.github.io/2021/12/31/%E8%BD%AF%E7%A1%AC%E9%93%BE%E6%8E%A5/" rel="next" title="软链接和硬链接">
+      软链接和硬链接 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%94%A8%E6%88%B7%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">1. 用户操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#useradd"><span class="nav-number">1.1.</span> <span class="nav-text">useradd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#userdel"><span class="nav-number">1.2.</span> <span class="nav-text">userdel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#passwd"><span class="nav-number">1.3.</span> <span class="nav-text">passwd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#whoami"><span class="nav-number">1.4.</span> <span class="nav-text">whoami</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#users-who-w"><span class="nav-number">1.5.</span> <span class="nav-text">users|who|w</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#logout"><span class="nav-number">1.6.</span> <span class="nav-text">logout</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">2. 系统操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%85%B3%E6%9C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 关机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#halt"><span class="nav-number">2.1.1.</span> <span class="nav-text">halt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#init-0"><span class="nav-number">2.1.2.</span> <span class="nav-text">init 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#poweroff"><span class="nav-number">2.1.3.</span> <span class="nav-text">poweroff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutdown"><span class="nav-number">2.1.4.</span> <span class="nav-text">shutdown</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%87%8D%E5%90%AF"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 重启</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#init-6"><span class="nav-number">2.2.1.</span> <span class="nav-text">init 6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reboot"><span class="nav-number">2.2.2.</span> <span class="nav-text">reboot</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">3. 目录操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ls"><span class="nav-number">3.1.</span> <span class="nav-text">ls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cd"><span class="nav-number">3.2.</span> <span class="nav-text">cd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkdir"><span class="nav-number">3.3.</span> <span class="nav-text">mkdir</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rmdir"><span class="nav-number">3.4.</span> <span class="nav-text">rmdir</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cp"><span class="nav-number">3.5.</span> <span class="nav-text">cp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mv"><span class="nav-number">3.6.</span> <span class="nav-text">mv</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">4. 文件管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cat"><span class="nav-number">4.1.</span> <span class="nav-text">cat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chattr"><span class="nav-number">4.2.</span> <span class="nav-text">chattr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsattr"><span class="nav-number">4.3.</span> <span class="nav-text">lsattr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chgrp"><span class="nav-number">4.4.</span> <span class="nav-text">chgrp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chmod"><span class="nav-number">4.5.</span> <span class="nav-text">chmod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chown"><span class="nav-number">4.6.</span> <span class="nav-text">chown</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cmp"><span class="nav-number">4.7.</span> <span class="nav-text">cmp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff"><span class="nav-number">4.8.</span> <span class="nav-text">diff</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diffstat"><span class="nav-number">4.9.</span> <span class="nav-text">diffstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file"><span class="nav-number">4.10.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fild"><span class="nav-number">4.11.</span> <span class="nav-text">fild</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cut"><span class="nav-number">4.12.</span> <span class="nav-text">cut</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ln"><span class="nav-number">4.13.</span> <span class="nav-text">ln</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less"><span class="nav-number">4.14.</span> <span class="nav-text">less</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#locate"><span class="nav-number">4.15.</span> <span class="nav-text">locate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#more"><span class="nav-number">4.16.</span> <span class="nav-text">more</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi"><span class="nav-number">4.17.</span> <span class="nav-text">vi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="nav-number">4.18.</span> <span class="nav-text">查看文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mv-1"><span class="nav-number">4.19.</span> <span class="nav-text">mv</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#touch"><span class="nav-number">4.20.</span> <span class="nav-text">touch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#which"><span class="nav-number">4.21.</span> <span class="nav-text">which</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tail"><span class="nav-number">4.22.</span> <span class="nav-text">tail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cp-1"><span class="nav-number">4.23.</span> <span class="nav-text">cp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rm"><span class="nav-number">4.24.</span> <span class="nav-text">rm</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wch</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/wwwangch/wwwangch.github.io/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/wwwangch/wwwangch.github.io/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/wwwangch/wwwangch.github.io/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wch</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/wwwangch/wwwangch.github.io/lib/anime.min.js"></script>
+  <script src="/wwwangch/wwwangch.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/wwwangch/wwwangch.github.io/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/wwwangch/wwwangch.github.io/js/utils.js"></script>
+
+<script src="/wwwangch/wwwangch.github.io/js/motion.js"></script>
+
+
+<script src="/wwwangch/wwwangch.github.io/js/schemes/pisces.js"></script>
+
+
+<script src="/wwwangch/wwwangch.github.io/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/wwwangch/wwwangch.github.io/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ce3c704806a6c87a5b71',
+      clientSecret: '1746595e6159dedd47e8f8ed7dbd73a084c01af0',
+      repo        : 'wwwangch.github.io',
+      owner       : 'wwwangch',
+      admin       : ['wwwangch'],
+      id          : '1b92c0e2103aa4a8f8df819cc72a671b',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

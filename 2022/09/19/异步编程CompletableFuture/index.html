@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/wwwangch/wwwangch.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/wwwangch/wwwangch.github.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/wwwangch/wwwangch.github.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/wwwangch/wwwangch.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/wwwangch/wwwangch.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/wwwangch/wwwangch.github.io/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/wwwangch/wwwangch.github.io/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="异步编程CompletableFuture">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异步编程CompletableFuture">
+<meta property="og:url" content="https://github.com/wwwangch/wwwangch.github.io/2022/09/19/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8BCompletableFuture/index.html">
+<meta property="og:site_name" content="wch&#39;s blogs">
+<meta property="og:description" content="异步编程CompletableFuture">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-09-19T14:33:05.000Z">
+<meta property="article:modified_time" content="2022-09-19T14:52:35.987Z">
+<meta property="article:author" content="wch">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="thread">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/wwwangch/wwwangch.github.io/2022/09/19/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8BCompletableFuture/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>异步编程CompletableFuture | wch's blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/wwwangch/wwwangch.github.io/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wch's blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/wwwangch/wwwangch.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/wwwangch/wwwangch.github.io/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/wwwangch/wwwangch.github.io/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/wwwangch/wwwangch.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/wwwangch/wwwangch.github.io/2022/09/19/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8BCompletableFuture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/wwwangch/wwwangch.github.io/images/avatar.gif">
+      <meta itemprop="name" content="wch">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wch's blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          异步编程CompletableFuture
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-09-19 22:33:05 / Modified: 22:52:35" itemprop="dateCreated datePublished" datetime="2022-09-19T22:33:05+08:00">2022-09-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/wwwangch/wwwangch.github.io/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">异步编程CompletableFuture</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="创建异步任务"><a href="#创建异步任务" class="headerlink" title="创建异步任务"></a>创建异步任务</h1><p>创建任务可以通过<code>runAsync</code>和<code>supplyAsync</code>两个方法来进行，区别是第一个不带返回参数，第二个可以带返回参数。</p>
+<p>对于Async后缀的方法，可以通过自定义执行器，也可以通过默认的执行器<code>ForkJoinPool</code>来执行。</p>
+<h2 id="runAsync"><a href="#runAsync" class="headerlink" title="runAsync"></a>runAsync</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 异步运行，不带返回值</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">runAsyncTest</span><span class="params">()</span>  &#123;</span><br><span class="line">    CompletableFuture.runAsync(() -&gt; System.out.println(getCurrentThreadName() + <span class="string">&quot;CompletableFuture runASync method&quot;</span>), threadPoolExecutor)</span><br><span class="line">            .join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="supplyAsync"><a href="#supplyAsync" class="headerlink" title="supplyAsync"></a>supplyAsync</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 异步运行，带返回值</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">supplyAsyncTest</span><span class="params">()</span>  &#123;</span><br><span class="line">    CompletableFuture.supplyAsync(() -&gt; getCurrentThreadName() + <span class="string">&quot;CompletableFuture supplyASync method&quot;</span>, threadPoolExecutor)</span><br><span class="line">            .thenAccept(System.out::println)</span><br><span class="line">            .join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="任务回调"><a href="#任务回调" class="headerlink" title="任务回调"></a>任务回调</h1><h2 id="无参无返回值"><a href="#无参无返回值" class="headerlink" title="无参无返回值"></a>无参无返回值</h2><p>无参无返回值指的是不接收上一步的参数，不返回参数，只是作为上一个任务结束后的下一个任务。</p>
+<p>Async后缀结尾的方法代表自定义执行器，也可使用默认执行器，不带后缀的代表与父任务共享执行器。</p>
+<h3 id="thenRun"><a href="#thenRun" class="headerlink" title="thenRun"></a>thenRun</h3><p>在上一个任务执行完后调用，和父任务共享执行器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 上一个任务完成后用上一个任务的线程执行下一个任务</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">thenRunTest</span><span class="params">()</span> &#123;</span><br><span class="line">    CompletableFuture.runAsync(() -&gt; System.out.println(getCurrentThreadName() + <span class="string">&quot;CompletableFuture runASync method&quot;</span>), threadPoolExecutor)</span><br><span class="line">            .thenRun(() -&gt; System.out.println(getCurrentThreadName() + <span class="string">&quot;CompletableFuture thenRun method&quot;</span>))</span><br><span class="line">            .join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="thenRunAsync"><a href="#thenRunAsync" class="headerlink" title="thenRunAsync"></a>thenRunAsync</h3><p>在上一个任务执行完后调用，使用自定义的执行器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 上一个任务完成后使用默认线程池异步执行下一个任务</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">thenRunAsyncTest</span><span class="params">()</span> &#123;</span><br><span class="line">    CompletableFuture.runAsync(() -&gt; System.out.println(getCurrentThreadName() + <span class="string">&quot;CompletableFuture runASync method&quot;</span>), threadPoolExecutor)</span><br><span class="line">            .thenRunAsync(() -&gt; System.out.println(getCurrentThreadName() + <span class="string">&quot;CompletableFuture thenRun method&quot;</span>))</span><br><span class="line">            .join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="有参无返回值"><a href="#有参无返回值" class="headerlink" title="有参无返回值"></a>有参无返回值</h2><h3 id="thenAccept"><a href="#thenAccept" class="headerlink" title="thenAccept"></a>thenAccept</h3><p>通过接收父任务的返回来结果来执行任务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">thenAcceptTest</span><span class="params">()</span>  &#123;</span><br><span class="line">    CompletableFuture.supplyAsync(() -&gt; getCurrentThreadName() + <span class="string">&quot;CompletableFuture supplyASync method&quot;</span>, threadPoolExecutor)</span><br><span class="line">            .thenAccept((str) -&gt; System.out.println(getCurrentThreadName() + <span class="string">&quot;\n&quot;</span> + str))</span><br><span class="line">            .join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="有参有返回值"><a href="#有参有返回值" class="headerlink" title="有参有返回值"></a>有参有返回值</h2><h3 id="thenApply"><a href="#thenApply" class="headerlink" title="thenApply"></a>thenApply</h3><p>通过接收父任务的返回结果来重新组装生成新的对象并返回。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">thenApplyTest</span><span class="params">()</span> &#123;</span><br><span class="line">    CompletableFuture.supplyAsync(() -&gt; getCurrentThreadName() + <span class="string">&quot;CompletableFuture supplyASync method&quot;</span>, threadPoolExecutor)</span><br><span class="line">            .thenApply((result) -&gt; getCurrentThreadName() + <span class="string">&quot;\n&quot;</span> + result)</span><br><span class="line">            .thenAccept(System.out::println)</span><br><span class="line">            .join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="exceptionally"><a href="#exceptionally" class="headerlink" title="exceptionally"></a>exceptionally</h3><p>某个任务执行异常时，执行的回调方法;并且有抛出异常作为参数，传递到回调方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">exceptionallyTest</span><span class="params">()</span> &#123;</span><br><span class="line">    CompletableFuture.supplyAsync(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>();</span><br><span class="line">    &#125;).exceptionally((e) -&gt; &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;程序异常&quot;</span>;</span><br><span class="line">    &#125;).thenAccept(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="handle"><a href="#handle" class="headerlink" title="handle"></a>handle</h3><p>某个任务执行完成后，接收父任务返回结果，执行回调方法，有返回值的;且可以通过异常参数判断父任务是否发生异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * handle方法可以对上个任务的异常进行处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleAsyncTest</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="comment">//        CompletableFuture.supplyAsync(() -&gt; getCurrentThreadName() + &quot;CompletableFuture supplyASync method&quot;, threadPoolExecutor)</span></span><br><span class="line"><span class="comment">//                        .handleAsync((result,e)-&gt;&#123;</span></span><br><span class="line"><span class="comment">//                            if (null==e)&#123;</span></span><br><span class="line"><span class="comment">//                                return &quot;无异常&quot;;</span></span><br><span class="line"><span class="comment">//                            &#125;else &#123;</span></span><br><span class="line"><span class="comment">//                                e.printStackTrace();</span></span><br><span class="line"><span class="comment">//                                return &quot;有异常&quot;;</span></span><br><span class="line"><span class="comment">//                            &#125;</span></span><br><span class="line"><span class="comment">//                        &#125;,threadPoolExecutor)</span></span><br><span class="line"><span class="comment">//                .thenAccept(System.out::println);</span></span><br><span class="line">        CompletableFuture.supplyAsync(() -&gt; <span class="string">&quot;23&quot;</span>.substring(<span class="number">4</span>), threadPoolExecutor)</span><br><span class="line">                .handleAsync((result, e) -&gt; &#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="literal">null</span> == e) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="string">&quot;无异常&quot;</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                        <span class="keyword">return</span> <span class="string">&quot;有异常&quot;</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;, threadPoolExecutor)</span><br><span class="line">                .thenAccept(System.out::println)</span><br><span class="line">                .join();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="whenComplete"><a href="#whenComplete" class="headerlink" title="whenComplete"></a>whenComplete</h3><p>某个任务执行完成后，接收父任务返回结果，执行回调方法，无返回值的;且可以通过异常参数判断父任务是否发生异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">whenCompleteTest</span><span class="params">()</span> &#123;</span><br><span class="line">    CompletableFuture&lt;String&gt; normal = CompletableFuture.supplyAsync(() -&gt; getCurrentThreadName() + <span class="string">&quot;supplyAsync method&quot;</span>, threadPoolExecutor)</span><br><span class="line">            .whenComplete((result, e) -&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="literal">null</span> != e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    System.out.println(result);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">    CompletableFuture&lt;String&gt; exception = CompletableFuture.supplyAsync(() -&gt; createException() + getCurrentThreadName() + <span class="string">&quot;supplyAsync method with exception&quot;</span>, threadPoolExecutor)</span><br><span class="line">            .whenComplete((result, e) -&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="literal">null</span> != e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    System.out.println(result);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">    CompletableFuture.allOf(normal, exception).join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="任务组合"><a href="#任务组合" class="headerlink" title="任务组合"></a>任务组合</h1><h2 id="thenCompose"><a href="#thenCompose" class="headerlink" title="thenCompose"></a>thenCompose</h2><p>用来连接两个<code>CompletableFuture</code>，是生成一个新的<code>CompletableFuture</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用来连接两个CompletableFuture，是生成一个新的CompletableFuture。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">thenComposeTest</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    CompletableFuture.supplyAsync(() -&gt; getCurrentThreadName() + <span class="string">&quot;CompletableFuture supplyASync method&quot;</span>, threadPoolExecutor)</span><br><span class="line">            .thenCompose((str) -&gt; CompletableFuture.runAsync(() -&gt; System.out.println(str)))</span><br><span class="line">            .join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="thenCombine"><a href="#thenCombine" class="headerlink" title="thenCombine"></a>thenCombine</h2><p>等两个任务执行完毕后回调任务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">thenCombineTest</span><span class="params">()</span> &#123;</span><br><span class="line">    CompletableFuture&lt;String&gt; stringCompletableFuture = CompletableFuture.supplyAsync(() -&gt; getCurrentThreadName() + <span class="string">&quot;CompletableFuture supplyASync method&quot;</span>, threadPoolExecutor);</span><br><span class="line">    CompletableFuture&lt;String&gt; stringCompletableFuture2 = CompletableFuture.supplyAsync(() -&gt; getCurrentThreadName() + <span class="string">&quot;CompletableFuture supplyASync method-2&quot;</span>, threadPoolExecutor);</span><br><span class="line">    stringCompletableFuture.thenCombine(stringCompletableFuture2, (result1, result2) -&gt;</span><br><span class="line">            result1 + <span class="string">&quot;\n&quot;</span> + result2 + <span class="string">&quot;\n&quot;</span> + getCurrentThreadName()</span><br><span class="line">    ).thenAccept(System.out::println).join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/wwwangch/wwwangch.github.io/tags/java/" rel="tag"># java</a>
+              <a href="/wwwangch/wwwangch.github.io/tags/thread/" rel="tag"># thread</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/wwwangch/wwwangch.github.io/2022/09/19/linux%E9%85%8D%E7%BD%AEssh%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/" rel="prev" title="linux配置ssh免密登录">
+      <i class="fa fa-chevron-left"></i> linux配置ssh免密登录
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/wwwangch/wwwangch.github.io/2022/11/05/protocol-buffers/" rel="next" title="protocol_buffers">
+      protocol_buffers <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">创建异步任务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#runAsync"><span class="nav-number">1.1.</span> <span class="nav-text">runAsync</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#supplyAsync"><span class="nav-number">1.2.</span> <span class="nav-text">supplyAsync</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%9B%9E%E8%B0%83"><span class="nav-number">2.</span> <span class="nav-text">任务回调</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%8F%82%E6%97%A0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">2.1.</span> <span class="nav-text">无参无返回值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#thenRun"><span class="nav-number">2.1.1.</span> <span class="nav-text">thenRun</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#thenRunAsync"><span class="nav-number">2.1.2.</span> <span class="nav-text">thenRunAsync</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%8F%82%E6%97%A0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">2.2.</span> <span class="nav-text">有参无返回值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#thenAccept"><span class="nav-number">2.2.1.</span> <span class="nav-text">thenAccept</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%8F%82%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">2.3.</span> <span class="nav-text">有参有返回值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#thenApply"><span class="nav-number">2.3.1.</span> <span class="nav-text">thenApply</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">2.4.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#exceptionally"><span class="nav-number">2.4.1.</span> <span class="nav-text">exceptionally</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#handle"><span class="nav-number">2.4.2.</span> <span class="nav-text">handle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#whenComplete"><span class="nav-number">2.4.3.</span> <span class="nav-text">whenComplete</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%BB%84%E5%90%88"><span class="nav-number">3.</span> <span class="nav-text">任务组合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#thenCompose"><span class="nav-number">3.1.</span> <span class="nav-text">thenCompose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#thenCombine"><span class="nav-number">3.2.</span> <span class="nav-text">thenCombine</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wch</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/wwwangch/wwwangch.github.io/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/wwwangch/wwwangch.github.io/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/wwwangch/wwwangch.github.io/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wch</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/wwwangch/wwwangch.github.io/lib/anime.min.js"></script>
+  <script src="/wwwangch/wwwangch.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/wwwangch/wwwangch.github.io/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/wwwangch/wwwangch.github.io/js/utils.js"></script>
+
+<script src="/wwwangch/wwwangch.github.io/js/motion.js"></script>
+
+
+<script src="/wwwangch/wwwangch.github.io/js/schemes/pisces.js"></script>
+
+
+<script src="/wwwangch/wwwangch.github.io/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/wwwangch/wwwangch.github.io/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ce3c704806a6c87a5b71',
+      clientSecret: '1746595e6159dedd47e8f8ed7dbd73a084c01af0',
+      repo        : 'wwwangch.github.io',
+      owner       : 'wwwangch',
+      admin       : ['wwwangch'],
+      id          : '1e15677070d903c1524d626eafacbd8c',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
